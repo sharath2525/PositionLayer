@@ -1,70 +1,374 @@
-# PositionLayer
+<p align="center">
+  <img src="public/brand/positionlayer-mark.png" alt="PositionLayer Logo" width="110">
+</p>
 
-### When Wall Street closes, your loan doesn't.
+<h1 align="center">PositionLayer</h1>
 
-PositionLayer is a read-only Solana portfolio and loan-risk workspace for tokenized stocks. It turns a public wallet address into a reconciled view of holdings, issuer-confirmed xStocks, Jupiter Earn and Lend positions, company exposure, and hypothetical protection plans. The public Stocks market works without a wallet.
+<h3 align="center">When Wall Street closes, your loan doesn't.</h3>
 
-> No signing, transaction construction, submission, trading, or funds movement. A Jupiter liquidity check is a user-triggered quote-only read, not an order.
+<p align="center">
+  <strong>A read-only Solana workspace for tokenized-stock portfolios, lending exposure, and loan-risk analysis.</strong>
+</p>
 
-## Explore the product
+<p align="center">
+  Connect a Solana wallet or paste any public address to understand xStocks, collateral, debt, portfolio exposure, liquidity, and hypothetical protection plans in one reconciled view.
+</p>
 
-| Workspace | What it answers |
+<p align="center">
+  <a href="YOUR_LIVE_APP_URL"><strong>Live App</strong></a>
+  &nbsp;•&nbsp;
+  <a href="YOUR_YOUTUBE_DEMO_URL"><strong>Demo Video</strong></a>
+  &nbsp;•&nbsp;
+  <a href="docs/PRODUCT_GUIDE.md"><strong>Product Guide</strong></a>
+  &nbsp;•&nbsp;
+  <a href="docs/METHODOLOGY.md"><strong>Methodology</strong></a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/SOLANA-Tokenized%20Stocks-9945FF?style=for-the-badge&logo=solana&logoColor=white" alt="Solana">
+  <img src="https://img.shields.io/badge/MODE-Read%20Only-111827?style=for-the-badge" alt="Read Only">
+  <img src="https://img.shields.io/badge/JUPITER-Price%20%7C%20Earn%20%7C%20Lend-F59E0B?style=for-the-badge" alt="Jupiter">
+  <img src="https://img.shields.io/badge/STATUS-Hackathon%20Prototype-10B981?style=for-the-badge" alt="Hackathon Prototype">
+</p>
+
+---
+
+## Overview
+
+PositionLayer is a **read-only analytical workspace for tokenized stocks on Solana**.
+
+Instead of showing only a raw token list, it helps users understand:
+
+- what they hold
+- where their exposure comes from
+- how lending positions are structured
+- how risky a stock-backed loan may become
+- what hypothetical repayment could move a loan toward a selected target LTV
+
+> **See the position. Understand the exposure. Model the risk.**
+
+---
+
+## The Problem
+
+Tokenized stocks become more powerful when they are used across wallets, lending, liquidity, and portfolio workflows.
+
+But that also makes a position harder to understand.
+
+A single wallet may contain:
+
+- direct xStock holdings
+- xStocks posted as collateral
+- borrowed USDC
+- Jupiter Earn positions
+- Jupiter Lend positions
+- ETF-based indirect company exposure
+- receipt or accounting tokens
+- indexed records that should not be counted as additional portfolio value
+
+The important question is no longer just:
+
+> **What tokens are in this wallet?**
+
+It becomes:
+
+> **What do I actually own, where is my exposure, how risky is my loan, and what happens if the underlying stock moves?**
+
+PositionLayer brings those pieces together in one workspace.
+
+---
+
+## Product Workspaces
+
+| Workspace | What it helps answer |
 | --- | --- |
-| **Overview** | What is my covered value, free USDC, debt, net equity, highest-risk loan, and largest company exposure? |
-| **Stocks** | Which issuer-confirmed Solana xStocks have market observations, liquidity, and source-backed details? |
-| **Portfolio** | Where is every wallet, posted-collateral, Earn, borrow, indexed, or excluded position counted? |
-| **Exposure** | Which companies and sectors appear directly and through verified ETF look-through? |
-| **Protect** | How would a hypothetical stock shock affect a loan, and what USDC repayment would reach a target LTV? |
-| **Market analysis** | Coming soon. The navigation item is intentionally disabled. |
+| **Overview** | Covered value, free USDC, debt, net equity, highest-risk loan, and largest company exposure |
+| **Stocks** | Issuer-confirmed Solana xStocks with market observations, liquidity information, and source-backed details |
+| **Portfolio** | Wallet holdings, collateral, Earn, borrow, indexed, and excluded positions in one reconciled view |
+| **Exposure** | Direct and indirect company/sector exposure, including verified ETF look-through |
+| **Protect** | Hypothetical stock shocks, resulting loan risk, and repayment toward a target LTV |
 
-Live is the default. Connect a Solana Wallet Standard wallet or paste a public address for read-only analysis. **Sample** opens only when selected; reloading does not silently restore sample data. Stocks is wallet-independent.
+> **Stocks works without connecting a wallet.**
 
-## Why it is different
+---
 
-- Exact Solana mint matching separates issuer-confirmed xStocks from unrelated token names. The selected market price comes from Jupiter Price V3; issuer marks and Meteora pool observations retain separate labels and cannot silently replace it.
-- A shared, process-local worker rotates **six sequential, keyless batches of 50 mints** through a 300-asset issuer universe. A page reload reads cached results rather than restarting the worker. Missing observations stay unavailable or visibly aged; they are never zero-filled.
-- Protocol LTV uses Jupiter's loan accounting/oracle basis, not a public token price. Stale, invalid, or unsupported risk inputs fail closed.
-- Portfolio and exposure totals avoid double-counting receipt tokens, posted collateral, Earn underlying assets, and indexed comparison records.
-- Six-hour, sanitized, bounded monitoring is available through an optional protected `/admin/health` page. It is process-local and never persists indefinitely.
+## How PositionLayer Works
 
-## Run locally
-
-Node.js **22.14+** and npm are required.
-
-```bash
-npm ci
-npm run dev
+```mermaid
+flowchart LR
+    A[Connect wallet<br/>or paste address] --> B[Discover Solana positions]
+    B --> C[Verify issuer-confirmed xStocks]
+    C --> D[Reconcile wallet + protocol positions]
+    D --> E[Build company & sector exposure]
+    E --> F[Evaluate loan risk]
+    F --> G[Run hypothetical protection scenarios]
 ```
 
-Open `http://127.0.0.1:3000`. No `.env.local` is required for Sample or the keyless public-market path. For Live, copy `.env.example` to `.env.local` and configure `SOLANA_RPC_URL` if the public Solana endpoint is too constrained. `JUPITER_API_KEY` is optional and server-only. Never add private keys or seed phrases.
+PositionLayer follows one core rule:
 
-```bash
-npm test
-npm run typecheck
-npm run lint
-npm run build
-npm run test:ui
+**Portfolio value, market pricing, protocol accounting, and exposure are related — but they should never be silently treated as the same thing.**
+
+---
+
+## Why PositionLayer Is Different
+
+### Exact xStock verification
+
+PositionLayer does not rely on token names or symbols alone.
+
+Issuer-confirmed Solana mint addresses are used to distinguish supported xStocks from unrelated assets with similar naming.
+
+### Source-aware market data
+
+The selected market observation comes from **Jupiter Price V3**.
+
+Issuer marks and Meteora pool observations keep their own labels and do not silently replace the selected market price.
+
+Missing or stale observations remain visibly unavailable rather than being replaced with synthetic zero values.
+
+### Protocol-aware loan risk
+
+Public market prices and protocol loan accounting are not interchangeable.
+
+PositionLayer keeps protocol LTV and oracle accounting separate from public market observations.
+
+If required risk inputs are stale, invalid, or unsupported, the affected calculation fails closed.
+
+### Portfolio reconciliation
+
+PositionLayer separates:
+
+- wallet holdings
+- posted collateral
+- borrowed assets
+- Earn underlying assets
+- receipt/accounting tokens
+- indexed comparison records
+- excluded assets
+
+> **One economic position should not quietly become two portfolio positions.**
+
+### Company and sector exposure
+
+PositionLayer groups supported positions by company and sector and supports verified ETF look-through where source data is available.
+
+### Hypothetical protection planning
+
+The Protect workspace models hypothetical stock-price shocks and their effect on loan LTV.
+
+It can estimate the USDC repayment associated with moving a position toward a selected target LTV.
+
+It does **not** create, sign, or submit transactions.
+
+---
+
+## Built for Solana
+
+PositionLayer uses Solana as the common portfolio and settlement layer connecting tokenized stocks with lending and liquidity.
+
+| Integration | Role in PositionLayer |
+| --- | --- |
+| **Solana RPC** | Wallet balances, token accounts, mint-level discovery, and on-chain state |
+| **Solana Wallet Standard** | Wallet connection for read-only public-address analysis |
+| **xStocks issuer data** | Exact supported-mint verification and issuer-backed metadata |
+| **Jupiter Price V3** | Selected public market-price observations |
+| **Jupiter Earn** | Read-only Earn position discovery |
+| **Jupiter Lend** | Lending, borrowing, collateral, and protocol-risk data |
+| **Jupiter Quote** | User-triggered quote-only liquidity checks |
+| **Meteora** | Separate liquidity and pool observations where available |
+
+No integration is allowed to silently redefine another provider's data.
+
+---
+
+## Read-Only by Design
+
+PositionLayer intentionally has **no transaction execution path**.
+
+It does not:
+
+- request private keys
+- request seed phrases
+- construct transactions
+- sign transactions
+- submit transactions
+- execute swaps
+- execute repayments
+- move user funds
+- automatically rebalance positions
+- automatically protect a loan
+
+A Jupiter liquidity check is a **quote-only read** initiated by the user. It is not an order.
+
+---
+
+## Explore PositionLayer
+
+### Live Wallet
+
+Connect a compatible Solana Wallet Standard wallet.
+
+Only the wallet's public address is used for analysis.
+
+### Public Address
+
+Paste any public Solana address and inspect supported positions without connecting a wallet.
+
+### Sample
+
+Open the built-in sample portfolio to explore the product without using a real address.
+
+Sample data is loaded only when **Sample** is explicitly selected.
+
+---
+
+## Stocks Without a Wallet
+
+The Stocks workspace is independent from wallet state.
+
+It can be used to explore the supported tokenized-stock universe, including:
+
+- issuer identity
+- exact Solana mint
+- market observation
+- observation age
+- liquidity information
+- source labels
+- supported metadata
+
+---
+
+## Data Integrity Principles
+
+**Identity before symbol**  
+Assets are matched by exact mint where required.
+
+**Unavailable is better than fake precision**  
+Missing data remains missing.
+
+**Price source stays visible**  
+Different observations retain different source labels.
+
+**Protocol accounting stays protocol accounting**  
+Public market prices do not silently replace loan-oracle inputs.
+
+**One economic position is counted once**  
+Receipt tokens and indexed records are reconciled before totals are produced.
+
+**Stale risk inputs fail closed**  
+Unsupported, invalid, or stale risk data is not presented as a trustworthy calculation.
+
+---
+
+## Architecture
+
+```mermaid
+flowchart TD
+    UI[PositionLayer UI] --> API[Application Layer]
+
+    API --> SOL[Solana RPC]
+    API --> ISSUER[xStocks Issuer Sources]
+    API --> JPRICE[Jupiter Price V3]
+    API --> JEARN[Jupiter Earn]
+    API --> JLEND[Jupiter Lend]
+    API --> JQUOTE[Jupiter Quote]
+    API --> METEORA[Meteora]
+
+    SOL --> REC[Portfolio Reconciliation]
+    ISSUER --> REC
+    JEARN --> REC
+    JLEND --> REC
+
+    JPRICE --> MARKET[Source-aware Market Layer]
+    METEORA --> MARKET
+
+    REC --> EXP[Company & Sector Exposure]
+    REC --> RISK[Loan-risk Engine]
+    MARKET --> RISK
+
+    EXP --> UI
+    RISK --> UI
 ```
 
-The production start command binds to `0.0.0.0` for container/platform hosting:
-
-```bash
-npm run build
-npm run start
-```
-
-## Deployment fit
-
-For the **current architecture**, use **one continuously running Node.js instance** with HTTPS, such as a persistent Node web service, a VM, or the included Dockerfile. The 300-mint price worker, provider queues, caches, quote throttling, and temporary health logs are in memory in that one process. Free services that sleep can work for a demo but lose warm prices on restart. **Vercel Functions and multi-instance replicas are not equivalent full-scale deployments** until a durable single-leader worker and shared cache/rate limiter are built. Do not claim an always-warm 30-second refresh there.
-
-Follow [Hosting and release](docs/HOSTING_AND_RELEASE.md) for GitHub, Vercel, Render, Railway, Docker/VM steps, exact variables, verification, and limitations.
+---
 
 ## Documentation
 
-- [Official product and feature guide](docs/PRODUCT_GUIDE.md)
-- [Hosting and release checklist](docs/HOSTING_AND_RELEASE.md)
-- [Methods and source limitations](docs/METHODOLOGY.md)
+| Document | Purpose |
+| --- | --- |
+| [`PRODUCT_GUIDE.md`](docs/PRODUCT_GUIDE.md) | Full product behavior and workspace guide |
+| [`METHODOLOGY.md`](docs/METHODOLOGY.md) | Data sources, reconciliation rules, calculations, assumptions, and limitations |
+| [`HOSTING_AND_RELEASE.md`](docs/HOSTING_AND_RELEASE.md) | Development, environment, hosting, deployment, and release instructions |
 
-Phase plans, review evidence, and local maintainer/submission notes are kept locally and intentionally excluded from the public repository.
+Technical setup is intentionally kept outside the main README so this page stays focused on the product.
 
-This project is an analytical prototype, not investment advice, a brokerage, an automated monitor, or a liquidation-prevention guarantee. Data quality and access depend on the named providers; unavailable fields remain explicit.
+---
+
+## Built for Stocklana
+
+PositionLayer was built for the **Stocklana — Stocks on Solana Hackathon**.
+
+The project explores what happens when tokenized stocks stop being isolated wallet assets and become part of a broader on-chain portfolio, lending, liquidity, and risk environment.
+
+Rather than building another trading interface, PositionLayer focuses on the layer **after ownership**:
+
+> **Understanding the position itself.**
+
+---
+
+## Current Scope
+
+PositionLayer currently focuses on:
+
+- tokenized stocks on Solana
+- portfolio reconciliation
+- Jupiter Earn and Lend visibility
+- stock-backed loan-risk analysis
+- company and sector exposure
+- ETF look-through where verified data is available
+- public stock discovery
+- quote-only liquidity checks
+- hypothetical protection planning
+
+### Coming Later
+
+**Market Analysis** is reserved for a future release and is intentionally disabled in the current navigation.
+
+---
+
+## Disclaimer
+
+PositionLayer is an analytical prototype.
+
+It is **not**:
+
+- investment advice
+- a brokerage
+- a trading system
+- an automated monitoring guarantee
+- a liquidation-prevention service
+- a guarantee of data availability or accuracy
+
+Market, issuer, protocol, and liquidity information depends on the availability and quality of the named providers.
+
+Users should independently verify important financial information before acting on it.
+
+---
+
+<p align="center">
+  <img src="public/brand/positionlayer-layer-mark.png" alt="PositionLayer" width="60">
+</p>
+
+<h3 align="center">PositionLayer</h3>
+
+<p align="center">
+  <strong>See the position. Understand the exposure. Model the risk.</strong>
+</p>
+
+<p align="center">
+  <a href="YOUR_LIVE_APP_URL"><strong>Live App</strong></a>
+  &nbsp;•&nbsp;
+  <a href="YOUR_YOUTUBE_DEMO_URL"><strong>Demo Video</strong></a>
+  &nbsp;•&nbsp;
+  <a href="docs/PRODUCT_GUIDE.md"><strong>Product Guide</strong></a>
+</p>
