@@ -1,0 +1,4064 @@
+{
+  "id": "SPY-2026-09-10-eb17a9de8a79",
+  "fundId": "SPY",
+  "holdingsDate": "2026-09-10",
+  "source": {
+    "id": "ssga-spy-2026-09-10",
+    "label": "State Street daily full holdings",
+    "url": "https://www.ssga.com/library-content/products/fund-data/etfs/us/holdings-daily-us-en-spy.xlsx",
+    "observedAt": "2026-09-10T00:00:00.000Z",
+    "retrievedAt": "2026-09-12T17:29:26.150Z",
+    "slot": null,
+    "endSlot": null,
+    "kind": "issuer-snapshot",
+    "validity": "valid"
+  },
+  "status": "complete",
+  "checksum": "eb17a9de8a7976d5e47a7a386fa8e12796b50b6488ff5824fdfe28c6bc1f9bce",
+  "reportedWeight": "0.99960481",
+  "residualWeight": "0.00039519",
+  "coverageWeight": "0.99775977",
+  "note": "Weights copied from the dated issuer workbook. Signed rounding/cash residual is retained. Workbook sectors are blank; PositionLayer sector map v1 classifies NVIDIA and Tesla only. Date has daily granularity; midnight is a serialization convention, not a price observation.",
+  "constituents": [
+    {
+      "securityId": "67066G104",
+      "ticker": "NVDA",
+      "name": "NVIDIA CORP",
+      "companyId": "NVIDIA",
+      "sector": "Information technology",
+      "weight": "0.08080921"
+    },
+    {
+      "securityId": "037833100",
+      "ticker": "AAPL",
+      "name": "APPLE INC",
+      "companyId": "security:037833100",
+      "sector": null,
+      "weight": "0.07328627"
+    },
+    {
+      "securityId": "594918104",
+      "ticker": "MSFT",
+      "name": "MICROSOFT CORP",
+      "companyId": "security:594918104",
+      "sector": null,
+      "weight": "0.05589195"
+    },
+    {
+      "securityId": "023135106",
+      "ticker": "AMZN",
+      "name": "AMAZON.COM INC",
+      "companyId": "security:023135106",
+      "sector": null,
+      "weight": "0.03767656"
+    },
+    {
+      "securityId": "02079K305",
+      "ticker": "GOOGL",
+      "name": "ALPHABET INC CL A",
+      "companyId": "ALPHABET",
+      "sector": null,
+      "weight": "0.02979945"
+    },
+    {
+      "securityId": "11135F101",
+      "ticker": "AVGO",
+      "name": "BROADCOM INC",
+      "companyId": "security:11135F101",
+      "sector": null,
+      "weight": "0.02610393"
+    },
+    {
+      "securityId": "02079K107",
+      "ticker": "GOOG",
+      "name": "ALPHABET INC CL C",
+      "companyId": "ALPHABET",
+      "sector": null,
+      "weight": "0.02385989"
+    },
+    {
+      "securityId": "30303M102",
+      "ticker": "META",
+      "name": "META PLATFORMS INC CLASS A",
+      "companyId": "security:30303M102",
+      "sector": null,
+      "weight": "0.02162158"
+    },
+    {
+      "securityId": "595112103",
+      "ticker": "MU",
+      "name": "MICRON TECHNOLOGY INC",
+      "companyId": "security:595112103",
+      "sector": null,
+      "weight": "0.01684126"
+    },
+    {
+      "securityId": "88160R101",
+      "ticker": "TSLA",
+      "name": "TESLA INC",
+      "companyId": "TESLA",
+      "sector": "Consumer discretionary",
+      "weight": "0.01563817"
+    },
+    {
+      "securityId": "46625H100",
+      "ticker": "JPM",
+      "name": "JPMORGAN CHASE + CO",
+      "companyId": "security:46625H100",
+      "sector": null,
+      "weight": "0.01447452"
+    },
+    {
+      "securityId": "084670702",
+      "ticker": "BRK.B",
+      "name": "BERKSHIRE HATHAWAY INC CL B",
+      "companyId": "security:084670702",
+      "sector": null,
+      "weight": "0.01420151"
+    },
+    {
+      "securityId": "532457108",
+      "ticker": "LLY",
+      "name": "ELI LILLY + CO",
+      "companyId": "security:532457108",
+      "sector": null,
+      "weight": "0.0135729"
+    },
+    {
+      "securityId": "007903107",
+      "ticker": "AMD",
+      "name": "ADVANCED MICRO DEVICES",
+      "companyId": "security:007903107",
+      "sector": null,
+      "weight": "0.01254612"
+    },
+    {
+      "securityId": "30233Q108",
+      "ticker": "XOM",
+      "name": "EXXONMOBIL HOLDINGS CORP",
+      "companyId": "security:30233Q108",
+      "sector": null,
+      "weight": "0.01046323"
+    },
+    {
+      "securityId": "478160104",
+      "ticker": "JNJ",
+      "name": "JOHNSON + JOHNSON",
+      "companyId": "security:478160104",
+      "sector": null,
+      "weight": "0.00979535"
+    },
+    {
+      "securityId": "92826C839",
+      "ticker": "V",
+      "name": "VISA INC CLASS A SHARES",
+      "companyId": "security:92826C839",
+      "sector": null,
+      "weight": "0.00931035"
+    },
+    {
+      "securityId": "458140100",
+      "ticker": "INTC",
+      "name": "INTEL CORP",
+      "companyId": "security:458140100",
+      "sector": null,
+      "weight": "0.00756907"
+    },
+    {
+      "securityId": "931142103",
+      "ticker": "WMT",
+      "name": "WALMART INC",
+      "companyId": "security:931142103",
+      "sector": null,
+      "weight": "0.00708115"
+    },
+    {
+      "securityId": "57636Q104",
+      "ticker": "MA",
+      "name": "MASTERCARD INC   A",
+      "companyId": "security:57636Q104",
+      "sector": null,
+      "weight": "0.00696878"
+    },
+    {
+      "securityId": "00287Y109",
+      "ticker": "ABBV",
+      "name": "ABBVIE INC",
+      "companyId": "security:00287Y109",
+      "sector": null,
+      "weight": "0.00688237"
+    },
+    {
+      "securityId": "17275R102",
+      "ticker": "CSCO",
+      "name": "CISCO SYSTEMS INC",
+      "companyId": "security:17275R102",
+      "sector": null,
+      "weight": "0.00648284"
+    },
+    {
+      "securityId": "060505104",
+      "ticker": "BAC",
+      "name": "BANK OF AMERICA CORP",
+      "companyId": "security:060505104",
+      "sector": null,
+      "weight": "0.00623938"
+    },
+    {
+      "securityId": "22160K105",
+      "ticker": "COST",
+      "name": "COSTCO WHOLESALE CORP",
+      "companyId": "security:22160K105",
+      "sector": null,
+      "weight": "0.00611564"
+    },
+    {
+      "securityId": "166764100",
+      "ticker": "CVX",
+      "name": "CHEVRON CORP",
+      "companyId": "security:166764100",
+      "sector": null,
+      "weight": "0.00608428"
+    },
+    {
+      "securityId": "69608A108",
+      "ticker": "PLTR",
+      "name": "PALANTIR TECHNOLOGIES INC A",
+      "companyId": "security:69608A108",
+      "sector": null,
+      "weight": "0.00581696"
+    },
+    {
+      "securityId": "512807306",
+      "ticker": "LRCX",
+      "name": "LAM RESEARCH CORP",
+      "companyId": "security:512807306",
+      "sector": null,
+      "weight": "0.00569493"
+    },
+    {
+      "securityId": "149123101",
+      "ticker": "CAT",
+      "name": "CATERPILLAR INC",
+      "companyId": "security:149123101",
+      "sector": null,
+      "weight": "0.00566384"
+    },
+    {
+      "securityId": "038222105",
+      "ticker": "AMAT",
+      "name": "APPLIED MATERIALS INC",
+      "companyId": "security:038222105",
+      "sector": null,
+      "weight": "0.00550611"
+    },
+    {
+      "securityId": "58933Y105",
+      "ticker": "MRK",
+      "name": "MERCK + CO. INC.",
+      "companyId": "security:58933Y105",
+      "sector": null,
+      "weight": "0.00546114"
+    },
+    {
+      "securityId": "91324P102",
+      "ticker": "UNH",
+      "name": "UNITEDHEALTH GROUP INC",
+      "companyId": "security:91324P102",
+      "sector": null,
+      "weight": "0.00538624"
+    },
+    {
+      "securityId": "191216100",
+      "ticker": "KO",
+      "name": "COCA COLA CO/THE",
+      "companyId": "security:191216100",
+      "sector": null,
+      "weight": "0.00519459"
+    },
+    {
+      "securityId": "369604301",
+      "ticker": "GE",
+      "name": "GENERAL ELECTRIC",
+      "companyId": "security:369604301",
+      "sector": null,
+      "weight": "0.00516611"
+    },
+    {
+      "securityId": "742718109",
+      "ticker": "PG",
+      "name": "PROCTER + GAMBLE CO/THE",
+      "companyId": "security:742718109",
+      "sector": null,
+      "weight": "0.00508489"
+    },
+    {
+      "securityId": "64110L106",
+      "ticker": "NFLX",
+      "name": "NETFLIX INC",
+      "companyId": "security:64110L106",
+      "sector": null,
+      "weight": "0.00488847"
+    },
+    {
+      "securityId": "437076102",
+      "ticker": "HD",
+      "name": "HOME DEPOT INC",
+      "companyId": "security:437076102",
+      "sector": null,
+      "weight": "0.00465044"
+    },
+    {
+      "securityId": "38141G104",
+      "ticker": "GS",
+      "name": "GOLDMAN SACHS GROUP INC",
+      "companyId": "security:38141G104",
+      "sector": null,
+      "weight": "0.00459472"
+    },
+    {
+      "securityId": "718172109",
+      "ticker": "PM",
+      "name": "PHILIP MORRIS INTERNATIONAL",
+      "companyId": "security:718172109",
+      "sector": null,
+      "weight": "0.00451752"
+    },
+    {
+      "securityId": "697435105",
+      "ticker": "PANW",
+      "name": "PALO ALTO NETWORKS INC",
+      "companyId": "security:697435105",
+      "sector": null,
+      "weight": "0.004193"
+    },
+    {
+      "securityId": "949746101",
+      "ticker": "WFC",
+      "name": "WELLS FARGO + CO",
+      "companyId": "security:949746101",
+      "sector": null,
+      "weight": "0.00418081"
+    },
+    {
+      "securityId": "75513E101",
+      "ticker": "RTX",
+      "name": "RTX CORP",
+      "companyId": "security:75513E101",
+      "sector": null,
+      "weight": "0.0040766"
+    },
+    {
+      "securityId": "68389X105",
+      "ticker": "ORCL",
+      "name": "ORACLE CORP",
+      "companyId": "security:68389X105",
+      "sector": null,
+      "weight": "0.0039666"
+    },
+    {
+      "securityId": "617446448",
+      "ticker": "MS",
+      "name": "MORGAN STANLEY",
+      "companyId": "security:617446448",
+      "sector": null,
+      "weight": "0.00389341"
+    },
+    {
+      "securityId": "80004C200",
+      "ticker": "SNDK",
+      "name": "SANDISK CORP",
+      "companyId": "security:80004C200",
+      "sector": null,
+      "weight": "0.00383137"
+    },
+    {
+      "securityId": "36828A101",
+      "ticker": "GEV",
+      "name": "GE VERNOVA INC",
+      "companyId": "security:36828A101",
+      "sector": null,
+      "weight": "0.00379481"
+    },
+    {
+      "securityId": "172967424",
+      "ticker": "C",
+      "name": "CITIGROUP INC",
+      "companyId": "security:172967424",
+      "sector": null,
+      "weight": "0.00360767"
+    },
+    {
+      "securityId": "882508104",
+      "ticker": "TXN",
+      "name": "TEXAS INSTRUMENTS INC",
+      "companyId": "security:882508104",
+      "sector": null,
+      "weight": "0.00359877"
+    },
+    {
+      "securityId": "482480100",
+      "ticker": "KLAC",
+      "name": "KLA CORP",
+      "companyId": "security:482480100",
+      "sector": null,
+      "weight": "0.00353615"
+    },
+    {
+      "securityId": "883556102",
+      "ticker": "TMO",
+      "name": "THERMO FISHER SCIENTIFIC INC",
+      "companyId": "security:883556102",
+      "sector": null,
+      "weight": "0.0034244"
+    },
+    {
+      "securityId": "459200101",
+      "ticker": "IBM",
+      "name": "INTL BUSINESS MACHINES CORP",
+      "companyId": "security:459200101",
+      "sector": null,
+      "weight": "0.00335899"
+    },
+    {
+      "securityId": "G54950103",
+      "ticker": "LIN",
+      "name": "LINDE PLC",
+      "companyId": "security:G54950103",
+      "sector": null,
+      "weight": "0.00325939"
+    },
+    {
+      "securityId": "22788C105",
+      "ticker": "CRWD",
+      "name": "CROWDSTRIKE HOLDINGS INC   A",
+      "companyId": "security:22788C105",
+      "sector": null,
+      "weight": "0.00324877"
+    },
+    {
+      "securityId": "92343V104",
+      "ticker": "VZ",
+      "name": "VERIZON COMMUNICATIONS INC",
+      "companyId": "security:92343V104",
+      "sector": null,
+      "weight": "0.00318736"
+    },
+    {
+      "securityId": "031162100",
+      "ticker": "AMGN",
+      "name": "AMGEN INC",
+      "companyId": "security:031162100",
+      "sector": null,
+      "weight": "0.00315421"
+    },
+    {
+      "securityId": "79466L302",
+      "ticker": "CRM",
+      "name": "SALESFORCE INC",
+      "companyId": "security:79466L302",
+      "sector": null,
+      "weight": "0.00303619"
+    },
+    {
+      "securityId": "573874104",
+      "ticker": "MRVL",
+      "name": "MARVELL TECHNOLOGY INC",
+      "companyId": "security:573874104",
+      "sector": null,
+      "weight": "0.00303443"
+    },
+    {
+      "securityId": "032095101",
+      "ticker": "APH",
+      "name": "AMPHENOL CORP CL A",
+      "companyId": "security:032095101",
+      "sector": null,
+      "weight": "0.00301636"
+    },
+    {
+      "securityId": "040413205",
+      "ticker": "ANET",
+      "name": "ARISTA NETWORKS INC",
+      "companyId": "security:040413205",
+      "sector": null,
+      "weight": "0.00298101"
+    },
+    {
+      "securityId": "G7997R103",
+      "ticker": "STX",
+      "name": "SEAGATE TECHNOLOGY HOLDINGS",
+      "companyId": "security:G7997R103",
+      "sector": null,
+      "weight": "0.00295285"
+    },
+    {
+      "securityId": "713448108",
+      "ticker": "PEP",
+      "name": "PEPSICO INC",
+      "companyId": "security:713448108",
+      "sector": null,
+      "weight": "0.00285299"
+    },
+    {
+      "securityId": "747525103",
+      "ticker": "QCOM",
+      "name": "QUALCOMM INC",
+      "companyId": "security:747525103",
+      "sector": null,
+      "weight": "0.00284761"
+    },
+    {
+      "securityId": "254687106",
+      "ticker": "DIS",
+      "name": "WALT DISNEY CO/THE",
+      "companyId": "security:254687106",
+      "sector": null,
+      "weight": "0.00280688"
+    },
+    {
+      "securityId": "002824100",
+      "ticker": "ABT",
+      "name": "ABBOTT LABORATORIES",
+      "companyId": "security:002824100",
+      "sector": null,
+      "weight": "0.00275014"
+    },
+    {
+      "securityId": "580135101",
+      "ticker": "MCD",
+      "name": "MCDONALD S CORP",
+      "companyId": "security:580135101",
+      "sector": null,
+      "weight": "0.0027465"
+    },
+    {
+      "securityId": "375558103",
+      "ticker": "GILD",
+      "name": "GILEAD SCIENCES INC",
+      "companyId": "security:375558103",
+      "sector": null,
+      "weight": "0.00274616"
+    },
+    {
+      "securityId": "00206R102",
+      "ticker": "T",
+      "name": "AT+T INC",
+      "companyId": "security:00206R102",
+      "sector": null,
+      "weight": "0.00271163"
+    },
+    {
+      "securityId": "032654105",
+      "ticker": "ADI",
+      "name": "ANALOG DEVICES INC",
+      "companyId": "security:032654105",
+      "sector": null,
+      "weight": "0.00269403"
+    },
+    {
+      "securityId": "808513105",
+      "ticker": "SCHW",
+      "name": "SCHWAB (CHARLES) CORP",
+      "companyId": "security:808513105",
+      "sector": null,
+      "weight": "0.00268015"
+    },
+    {
+      "securityId": "65339F101",
+      "ticker": "NEE",
+      "name": "NEXTERA ENERGY INC",
+      "companyId": "security:65339F101",
+      "sector": null,
+      "weight": "0.00262598"
+    },
+    {
+      "securityId": "025816109",
+      "ticker": "AXP",
+      "name": "AMERICAN EXPRESS CO",
+      "companyId": "security:025816109",
+      "sector": null,
+      "weight": "0.00260721"
+    },
+    {
+      "securityId": "244199105",
+      "ticker": "DE",
+      "name": "DEERE + CO",
+      "companyId": "security:244199105",
+      "sector": null,
+      "weight": "0.00260098"
+    },
+    {
+      "securityId": "907818108",
+      "ticker": "UNP",
+      "name": "UNION PACIFIC CORP",
+      "companyId": "security:907818108",
+      "sector": null,
+      "weight": "0.00259166"
+    },
+    {
+      "securityId": "20825C104",
+      "ticker": "COP",
+      "name": "CONOCOPHILLIPS",
+      "companyId": "security:20825C104",
+      "sector": null,
+      "weight": "0.0025499"
+    },
+    {
+      "securityId": "95040Q104",
+      "ticker": "WELL",
+      "name": "WELLTOWER INC",
+      "companyId": "security:95040Q104",
+      "sector": null,
+      "weight": "0.00254136"
+    },
+    {
+      "securityId": "097023105",
+      "ticker": "BA",
+      "name": "BOEING CO/THE",
+      "companyId": "security:097023105",
+      "sector": null,
+      "weight": "0.00246611"
+    },
+    {
+      "securityId": "G29183103",
+      "ticker": "ETN",
+      "name": "EATON CORP PLC",
+      "companyId": "security:G29183103",
+      "sector": null,
+      "weight": "0.00242676"
+    },
+    {
+      "securityId": "958102105",
+      "ticker": "WDC",
+      "name": "WESTERN DIGITAL CORP",
+      "companyId": "security:958102105",
+      "sector": null,
+      "weight": "0.00242586"
+    },
+    {
+      "securityId": "717081103",
+      "ticker": "PFE",
+      "name": "PFIZER INC",
+      "companyId": "security:717081103",
+      "sector": null,
+      "weight": "0.00240598"
+    },
+    {
+      "securityId": "09290D101",
+      "ticker": "BLK",
+      "name": "BLACKROCK INC",
+      "companyId": "security:09290D101",
+      "sector": null,
+      "weight": "0.00234272"
+    },
+    {
+      "securityId": "90353T100",
+      "ticker": "UBER",
+      "name": "UBER TECHNOLOGIES INC",
+      "companyId": "security:90353T100",
+      "sector": null,
+      "weight": "0.00225594"
+    },
+    {
+      "securityId": "24703L202",
+      "ticker": "DELL",
+      "name": "DELL TECHNOLOGIES  C",
+      "companyId": "security:24703L202",
+      "sector": null,
+      "weight": "0.00223802"
+    },
+    {
+      "securityId": "872540109",
+      "ticker": "TJX",
+      "name": "TJX COMPANIES INC",
+      "companyId": "security:872540109",
+      "sector": null,
+      "weight": "0.0021353"
+    },
+    {
+      "securityId": "81762P102",
+      "ticker": "NOW",
+      "name": "SERVICENOW INC",
+      "companyId": "security:81762P102",
+      "sector": null,
+      "weight": "0.00206578"
+    },
+    {
+      "securityId": "09857L108",
+      "ticker": "BKNG",
+      "name": "BOOKING HOLDINGS INC",
+      "companyId": "security:09857L108",
+      "sector": null,
+      "weight": "0.00205829"
+    },
+    {
+      "securityId": "651639106",
+      "ticker": "NEM",
+      "name": "NEWMONT CORP",
+      "companyId": "security:651639106",
+      "sector": null,
+      "weight": "0.00205553"
+    },
+    {
+      "securityId": "92532F100",
+      "ticker": "VRTX",
+      "name": "VERTEX PHARMACEUTICALS INC",
+      "companyId": "security:92532F100",
+      "sector": null,
+      "weight": "0.00199356"
+    },
+    {
+      "securityId": "110122108",
+      "ticker": "BMY",
+      "name": "BRISTOL MYERS SQUIBB CO",
+      "companyId": "security:110122108",
+      "sector": null,
+      "weight": "0.00198724"
+    },
+    {
+      "securityId": "14040H105",
+      "ticker": "COF",
+      "name": "CAPITAL ONE FINANCIAL CORP",
+      "companyId": "security:14040H105",
+      "sector": null,
+      "weight": "0.00196821"
+    },
+    {
+      "securityId": "219350105",
+      "ticker": "GLW",
+      "name": "CORNING INC",
+      "companyId": "security:219350105",
+      "sector": null,
+      "weight": "0.00195016"
+    },
+    {
+      "securityId": "46120E602",
+      "ticker": "ISRG",
+      "name": "INTUITIVE SURGICAL INC",
+      "companyId": "security:46120E602",
+      "sector": null,
+      "weight": "0.0019489"
+    },
+    {
+      "securityId": "74340W103",
+      "ticker": "PLD",
+      "name": "PROLOGIS INC",
+      "companyId": "security:74340W103",
+      "sector": null,
+      "weight": "0.00194529"
+    },
+    {
+      "securityId": "743315103",
+      "ticker": "PGR",
+      "name": "PROGRESSIVE CORP",
+      "companyId": "security:743315103",
+      "sector": null,
+      "weight": "0.00192828"
+    },
+    {
+      "securityId": "235851102",
+      "ticker": "DHR",
+      "name": "DANAHER CORP",
+      "companyId": "security:235851102",
+      "sector": null,
+      "weight": "0.0019282"
+    },
+    {
+      "securityId": "78409V104",
+      "ticker": "SPGI",
+      "name": "S+P GLOBAL INC",
+      "companyId": "security:78409V104",
+      "sector": null,
+      "weight": "0.00189953"
+    },
+    {
+      "securityId": "H1467J104",
+      "ticker": "CB",
+      "name": "CHUBB LTD",
+      "companyId": "security:H1467J104",
+      "sector": null,
+      "weight": "0.00185909"
+    },
+    {
+      "securityId": "126650100",
+      "ticker": "CVS",
+      "name": "CVS HEALTH CORP",
+      "companyId": "security:126650100",
+      "sector": null,
+      "weight": "0.00185587"
+    },
+    {
+      "securityId": "999USDZ92",
+      "ticker": "-",
+      "name": "US DOLLAR",
+      "companyId": null,
+      "sector": null,
+      "weight": "0.00184504"
+    },
+    {
+      "securityId": "701094104",
+      "ticker": "PH",
+      "name": "PARKER HANNIFIN CORP",
+      "companyId": "security:701094104",
+      "sector": null,
+      "weight": "0.00179836"
+    },
+    {
+      "securityId": "G5960L103",
+      "ticker": "MDT",
+      "name": "MEDTRONIC PLC",
+      "companyId": "security:G5960L103",
+      "sector": null,
+      "weight": "0.00179542"
+    },
+    {
+      "securityId": "02209S103",
+      "ticker": "MO",
+      "name": "ALTRIA GROUP INC",
+      "companyId": "security:02209S103",
+      "sector": null,
+      "weight": "0.00175319"
+    },
+    {
+      "securityId": "56585A102",
+      "ticker": "MPC",
+      "name": "MARATHON PETROLEUM CORP",
+      "companyId": "security:56585A102",
+      "sector": null,
+      "weight": "0.00174829"
+    },
+    {
+      "securityId": "91913Y100",
+      "ticker": "VLO",
+      "name": "VALERO ENERGY CORP",
+      "companyId": "security:91913Y100",
+      "sector": null,
+      "weight": "0.00174646"
+    },
+    {
+      "securityId": "855244109",
+      "ticker": "SBUX",
+      "name": "STARBUCKS CORP",
+      "companyId": "security:855244109",
+      "sector": null,
+      "weight": "0.00172608"
+    },
+    {
+      "securityId": "064058100",
+      "ticker": "BNY",
+      "name": "BANK OF NEW YORK MELLON CORP",
+      "companyId": "security:064058100",
+      "sector": null,
+      "weight": "0.00170328"
+    },
+    {
+      "securityId": "548661107",
+      "ticker": "LOW",
+      "name": "LOWE S COS INC",
+      "companyId": "security:548661107",
+      "sector": null,
+      "weight": "0.00168061"
+    },
+    {
+      "securityId": "G1151C101",
+      "ticker": "ACN",
+      "name": "ACCENTURE PLC CL A",
+      "companyId": "security:G1151C101",
+      "sector": null,
+      "weight": "0.001667"
+    },
+    {
+      "securityId": "539830109",
+      "ticker": "LMT",
+      "name": "LOCKHEED MARTIN CORP",
+      "companyId": "security:539830109",
+      "sector": null,
+      "weight": "0.00164278"
+    },
+    {
+      "securityId": "053015103",
+      "ticker": "ADP",
+      "name": "AUTOMATIC DATA PROCESSING",
+      "companyId": "security:053015103",
+      "sector": null,
+      "weight": "0.00162056"
+    },
+    {
+      "securityId": "58155Q103",
+      "ticker": "MCK",
+      "name": "MCKESSON CORP",
+      "companyId": "security:58155Q103",
+      "sector": null,
+      "weight": "0.00161664"
+    },
+    {
+      "securityId": "718546104",
+      "ticker": "PSX",
+      "name": "PHILLIPS 66",
+      "companyId": "security:718546104",
+      "sector": null,
+      "weight": "0.00158519"
+    },
+    {
+      "securityId": "35671D857",
+      "ticker": "FCX",
+      "name": "FREEPORT MCMORAN INC",
+      "companyId": "security:35671D857",
+      "sector": null,
+      "weight": "0.00156574"
+    },
+    {
+      "securityId": "29444U700",
+      "ticker": "EQIX",
+      "name": "EQUINIX INC",
+      "companyId": "security:29444U700",
+      "sector": null,
+      "weight": "0.00154286"
+    },
+    {
+      "securityId": "00724F101",
+      "ticker": "ADBE",
+      "name": "ADOBE INC",
+      "companyId": "security:00724F101",
+      "sector": null,
+      "weight": "0.00153486"
+    },
+    {
+      "securityId": "12572Q105",
+      "ticker": "CME",
+      "name": "CME GROUP INC",
+      "companyId": "security:12572Q105",
+      "sector": null,
+      "weight": "0.00151538"
+    },
+    {
+      "securityId": "842587107",
+      "ticker": "SO",
+      "name": "SOUTHERN CO/THE",
+      "companyId": "security:842587107",
+      "sector": null,
+      "weight": "0.00150965"
+    },
+    {
+      "securityId": "34959E109",
+      "ticker": "FTNT",
+      "name": "FORTINET INC",
+      "companyId": "security:34959E109",
+      "sector": null,
+      "weight": "0.00150948"
+    },
+    {
+      "securityId": "693475105",
+      "ticker": "PNC",
+      "name": "PNC FINANCIAL SERVICES GROUP",
+      "companyId": "security:693475105",
+      "sector": null,
+      "weight": "0.00148912"
+    },
+    {
+      "securityId": "G8994E103",
+      "ticker": "TT",
+      "name": "TRANE TECHNOLOGIES PLC",
+      "companyId": "security:G8994E103",
+      "sector": null,
+      "weight": "0.00148367"
+    },
+    {
+      "securityId": "902973304",
+      "ticker": "USB",
+      "name": "US BANCORP",
+      "companyId": "security:902973304",
+      "sector": null,
+      "weight": "0.00147844"
+    },
+    {
+      "securityId": "92537N108",
+      "ticker": "VRT",
+      "name": "VERTIV HOLDINGS CO A",
+      "companyId": "security:92537N108",
+      "sector": null,
+      "weight": "0.00145692"
+    },
+    {
+      "securityId": "863667101",
+      "ticker": "SYK",
+      "name": "STRYKER CORP",
+      "companyId": "security:863667101",
+      "sector": null,
+      "weight": "0.00142193"
+    },
+    {
+      "securityId": "09260D107",
+      "ticker": "BX",
+      "name": "BLACKSTONE INC",
+      "companyId": "security:09260D107",
+      "sector": null,
+      "weight": "0.00142185"
+    },
+    {
+      "securityId": "26441C204",
+      "ticker": "DUK",
+      "name": "DUKE ENERGY CORP",
+      "companyId": "security:26441C204",
+      "sector": null,
+      "weight": "0.00141998"
+    },
+    {
+      "securityId": "74762E102",
+      "ticker": "PWR",
+      "name": "QUANTA SERVICES INC",
+      "companyId": "security:74762E102",
+      "sector": null,
+      "weight": "0.00141692"
+    },
+    {
+      "securityId": "21037T109",
+      "ticker": "CEG",
+      "name": "CONSTELLATION ENERGY",
+      "companyId": "security:21037T109",
+      "sector": null,
+      "weight": "0.00139819"
+    },
+    {
+      "securityId": "126408103",
+      "ticker": "CSX",
+      "name": "CSX CORP",
+      "companyId": "security:126408103",
+      "sector": null,
+      "weight": "0.00139376"
+    },
+    {
+      "securityId": "443201108",
+      "ticker": "HWM",
+      "name": "HOWMET AEROSPACE INC",
+      "companyId": "security:443201108",
+      "sector": null,
+      "weight": "0.00139181"
+    },
+    {
+      "securityId": "036752103",
+      "ticker": "ELV",
+      "name": "ELEVANCE HEALTH INC",
+      "companyId": "security:036752103",
+      "sector": null,
+      "weight": "0.00138362"
+    },
+    {
+      "securityId": "369550108",
+      "ticker": "GD",
+      "name": "GENERAL DYNAMICS CORP",
+      "companyId": "security:369550108",
+      "sector": null,
+      "weight": "0.00137525"
+    },
+    {
+      "securityId": "20030N101",
+      "ticker": "CMCSA",
+      "name": "COMCAST CORP CLASS A",
+      "companyId": "security:20030N101",
+      "sector": null,
+      "weight": "0.0013716"
+    },
+    {
+      "securityId": "770700102",
+      "ticker": "HOOD",
+      "name": "ROBINHOOD MARKETS INC   A",
+      "companyId": "security:770700102",
+      "sector": null,
+      "weight": "0.00136819"
+    },
+    {
+      "securityId": "969457100",
+      "ticker": "WMB",
+      "name": "WILLIAMS COS INC",
+      "companyId": "security:969457100",
+      "sector": null,
+      "weight": "0.00135004"
+    },
+    {
+      "securityId": "45866F104",
+      "ticker": "ICE",
+      "name": "INTERCONTINENTAL EXCHANGE IN",
+      "companyId": "security:45866F104",
+      "sector": null,
+      "weight": "0.00134776"
+    },
+    {
+      "securityId": "G51502105",
+      "ticker": "JCI",
+      "name": "JOHNSON CONTROLS INTERNATION",
+      "companyId": "security:G51502105",
+      "sector": null,
+      "weight": "0.00133272"
+    },
+    {
+      "securityId": "461202103",
+      "ticker": "INTU",
+      "name": "INTUIT INC",
+      "companyId": "security:461202103",
+      "sector": null,
+      "weight": "0.00132289"
+    },
+    {
+      "securityId": "571748102",
+      "ticker": "MRSH",
+      "name": "MARSH + MCLENNAN COS",
+      "companyId": "security:571748102",
+      "sector": null,
+      "weight": "0.00130643"
+    },
+    {
+      "securityId": "88579Y101",
+      "ticker": "MMM",
+      "name": "3M CO",
+      "companyId": "security:88579Y101",
+      "sector": null,
+      "weight": "0.00129916"
+    },
+    {
+      "securityId": "03831W108",
+      "ticker": "APP",
+      "name": "APPLOVIN CORP CLASS A",
+      "companyId": "security:03831W108",
+      "sector": null,
+      "weight": "0.00129419"
+    },
+    {
+      "securityId": "806857108",
+      "ticker": "SLB",
+      "name": "SLB LTD",
+      "companyId": "security:806857108",
+      "sector": null,
+      "weight": "0.00128077"
+    },
+    {
+      "securityId": "291011104",
+      "ticker": "EMR",
+      "name": "EMERSON ELECTRIC CO",
+      "companyId": "security:291011104",
+      "sector": null,
+      "weight": "0.00127115"
+    },
+    {
+      "securityId": "872590104",
+      "ticker": "TMUS",
+      "name": "T MOBILE US INC",
+      "companyId": "security:872590104",
+      "sector": null,
+      "weight": "0.00126102"
+    },
+    {
+      "securityId": "03027X100",
+      "ticker": "AMT",
+      "name": "AMERICAN TOWER CORP",
+      "companyId": "security:03027X100",
+      "sector": null,
+      "weight": "0.00123265"
+    },
+    {
+      "securityId": "609207105",
+      "ticker": "MDLZ",
+      "name": "MONDELEZ INTERNATIONAL INC A",
+      "companyId": "security:609207105",
+      "sector": null,
+      "weight": "0.00122335"
+    },
+    {
+      "securityId": "75886F107",
+      "ticker": "REGN",
+      "name": "REGENERON PHARMACEUTICALS",
+      "companyId": "security:75886F107",
+      "sector": null,
+      "weight": "0.00121245"
+    },
+    {
+      "securityId": "94106L109",
+      "ticker": "WM",
+      "name": "WASTE MANAGEMENT INC",
+      "companyId": "security:94106L109",
+      "sector": null,
+      "weight": "0.00120827"
+    },
+    {
+      "securityId": "127387108",
+      "ticker": "CDNS",
+      "name": "CADENCE DESIGN SYS INC",
+      "companyId": "security:127387108",
+      "sector": null,
+      "weight": "0.00120216"
+    },
+    {
+      "securityId": "26875P101",
+      "ticker": "EOG",
+      "name": "EOG RESOURCES INC",
+      "companyId": "security:26875P101",
+      "sector": null,
+      "weight": "0.00120134"
+    },
+    {
+      "securityId": "89417E109",
+      "ticker": "TRV",
+      "name": "TRAVELERS COS INC/THE",
+      "companyId": "security:89417E109",
+      "sector": null,
+      "weight": "0.00119537"
+    },
+    {
+      "securityId": "37045V100",
+      "ticker": "GM",
+      "name": "GENERAL MOTORS CO",
+      "companyId": "security:37045V100",
+      "sector": null,
+      "weight": "0.00118771"
+    },
+    {
+      "securityId": "620076307",
+      "ticker": "MSI",
+      "name": "MOTOROLA SOLUTIONS INC",
+      "companyId": "security:620076307",
+      "sector": null,
+      "weight": "0.0011774"
+    },
+    {
+      "securityId": "871607107",
+      "ticker": "SNPS",
+      "name": "SYNOPSYS INC",
+      "companyId": "security:871607107",
+      "sector": null,
+      "weight": "0.0011637"
+    },
+    {
+      "securityId": "25809K105",
+      "ticker": "DASH",
+      "name": "DOORDASH INC   A",
+      "companyId": "security:25809K105",
+      "sector": null,
+      "weight": "0.00116353"
+    },
+    {
+      "securityId": "231021106",
+      "ticker": "CMI",
+      "name": "CUMMINS INC",
+      "companyId": "security:231021106",
+      "sector": null,
+      "weight": "0.00116089"
+    },
+    {
+      "securityId": "911312106",
+      "ticker": "UPS",
+      "name": "UNITED PARCEL SERVICE CL B",
+      "companyId": "security:911312106",
+      "sector": null,
+      "weight": "0.0011416"
+    },
+    {
+      "securityId": "125523100",
+      "ticker": "CI",
+      "name": "THE CIGNA GROUP",
+      "companyId": "security:125523100",
+      "sector": null,
+      "weight": "0.00113649"
+    },
+    {
+      "securityId": "23804L103",
+      "ticker": "DDOG",
+      "name": "DATADOG INC   CLASS A",
+      "companyId": "security:23804L103",
+      "sector": null,
+      "weight": "0.00112199"
+    },
+    {
+      "securityId": "42824C109",
+      "ticker": "HPE",
+      "name": "HEWLETT PACKARD ENTERPRISE",
+      "companyId": "security:42824C109",
+      "sector": null,
+      "weight": "0.0011203"
+    },
+    {
+      "securityId": "824348106",
+      "ticker": "SHW",
+      "name": "SHERWIN WILLIAMS CO/THE",
+      "companyId": "security:824348106",
+      "sector": null,
+      "weight": "0.0011137"
+    },
+    {
+      "securityId": "55024U109",
+      "ticker": "LITE",
+      "name": "LUMENTUM HOLDINGS INC",
+      "companyId": "security:55024U109",
+      "sector": null,
+      "weight": "0.00111334"
+    },
+    {
+      "securityId": "778296103",
+      "ticker": "ROST",
+      "name": "ROSS STORES INC",
+      "companyId": "security:778296103",
+      "sector": null,
+      "weight": "0.00111109"
+    },
+    {
+      "securityId": "655844108",
+      "ticker": "NSC",
+      "name": "NORFOLK SOUTHERN CORP",
+      "companyId": "security:655844108",
+      "sector": null,
+      "weight": "0.00110798"
+    },
+    {
+      "securityId": "571903202",
+      "ticker": "MAR",
+      "name": "MARRIOTT INTERNATIONAL  CL A",
+      "companyId": "security:571903202",
+      "sector": null,
+      "weight": "0.00110163"
+    },
+    {
+      "securityId": "67103H107",
+      "ticker": "ORLY",
+      "name": "O REILLY AUTOMOTIVE INC",
+      "companyId": "security:67103H107",
+      "sector": null,
+      "weight": "0.00108384"
+    },
+    {
+      "securityId": "87612E106",
+      "ticker": "TGT",
+      "name": "TARGET CORP",
+      "companyId": "security:87612E106",
+      "sector": null,
+      "weight": "0.00107986"
+    },
+    {
+      "securityId": "194162103",
+      "ticker": "CL",
+      "name": "COLGATE PALMOLIVE CO",
+      "companyId": "security:194162103",
+      "sector": null,
+      "weight": "0.00107583"
+    },
+    {
+      "securityId": "615369105",
+      "ticker": "MCO",
+      "name": "MOODY S CORP",
+      "companyId": "security:615369105",
+      "sector": null,
+      "weight": "0.00107396"
+    },
+    {
+      "securityId": "009066101",
+      "ticker": "ABNB",
+      "name": "AIRBNB INC CLASS A",
+      "companyId": "security:009066101",
+      "sector": null,
+      "weight": "0.00107163"
+    },
+    {
+      "securityId": "934423104",
+      "ticker": "WBD",
+      "name": "WARNER BROS DISCOVERY INC",
+      "companyId": "security:934423104",
+      "sector": null,
+      "weight": "0.00106898"
+    },
+    {
+      "securityId": "48251W104",
+      "ticker": "KKR",
+      "name": "KKR + CO INC",
+      "companyId": "security:48251W104",
+      "sector": null,
+      "weight": "0.00106668"
+    },
+    {
+      "securityId": "43300A203",
+      "ticker": "HLT",
+      "name": "HILTON WORLDWIDE HOLDINGS IN",
+      "companyId": "security:43300A203",
+      "sector": null,
+      "weight": "0.00106633"
+    },
+    {
+      "securityId": "452308109",
+      "ticker": "ITW",
+      "name": "ILLINOIS TOOL WORKS",
+      "companyId": "security:452308109",
+      "sector": null,
+      "weight": "0.00106204"
+    },
+    {
+      "securityId": "666807102",
+      "ticker": "NOC",
+      "name": "NORTHROP GRUMMAN CORP",
+      "companyId": "security:666807102",
+      "sector": null,
+      "weight": "0.00105953"
+    },
+    {
+      "securityId": "278865100",
+      "ticker": "ECL",
+      "name": "ECOLAB INC",
+      "companyId": "security:278865100",
+      "sector": null,
+      "weight": "0.00105229"
+    },
+    {
+      "securityId": "31428X106",
+      "ticker": "FDX",
+      "name": "FEDEX CORP",
+      "companyId": "security:31428X106",
+      "sector": null,
+      "weight": "0.00104682"
+    },
+    {
+      "securityId": "172908105",
+      "ticker": "CTAS",
+      "name": "CINTAS CORP",
+      "companyId": "security:172908105",
+      "sector": null,
+      "weight": "0.00102963"
+    },
+    {
+      "securityId": "025537101",
+      "ticker": "AEP",
+      "name": "AMERICAN ELECTRIC POWER",
+      "companyId": "security:025537101",
+      "sector": null,
+      "weight": "0.0010275"
+    },
+    {
+      "securityId": "828806109",
+      "ticker": "SPG",
+      "name": "SIMON PROPERTY GROUP INC",
+      "companyId": "security:828806109",
+      "sector": null,
+      "weight": "0.00101516"
+    },
+    {
+      "securityId": "G0403H108",
+      "ticker": "AON",
+      "name": "AON PLC CLASS A",
+      "companyId": "security:G0403H108",
+      "sector": null,
+      "weight": "0.00100547"
+    },
+    {
+      "securityId": "009158106",
+      "ticker": "APD",
+      "name": "AIR PRODUCTS + CHEMICALS INC",
+      "companyId": "security:009158106",
+      "sector": null,
+      "weight": "0.00100049"
+    },
+    {
+      "securityId": "40412C101",
+      "ticker": "HCA",
+      "name": "HCA HEALTHCARE INC",
+      "companyId": "security:40412C101",
+      "sector": null,
+      "weight": "0.00100044"
+    },
+    {
+      "securityId": "020002101",
+      "ticker": "ALL",
+      "name": "ALLSTATE CORP",
+      "companyId": "security:020002101",
+      "sector": null,
+      "weight": "0.00099132"
+    },
+    {
+      "securityId": "V7780T103",
+      "ticker": "RCL",
+      "name": "ROYAL CARIBBEAN CRUISES LTD",
+      "companyId": "security:V7780T103",
+      "sector": null,
+      "weight": "0.00098828"
+    },
+    {
+      "securityId": "693718108",
+      "ticker": "PCAR",
+      "name": "PACCAR INC",
+      "companyId": "security:693718108",
+      "sector": null,
+      "weight": "0.00098664"
+    },
+    {
+      "securityId": "253868103",
+      "ticker": "DLR",
+      "name": "DIGITAL REALTY TRUST INC",
+      "companyId": "security:253868103",
+      "sector": null,
+      "weight": "0.00098543"
+    },
+    {
+      "securityId": "101137107",
+      "ticker": "BSX",
+      "name": "BOSTON SCIENTIFIC CORP",
+      "companyId": "security:101137107",
+      "sector": null,
+      "weight": "0.00097982"
+    },
+    {
+      "securityId": "438516205",
+      "ticker": "HON",
+      "name": "HONEYWELL INTERNATIONAL INC",
+      "companyId": "security:438516205",
+      "sector": null,
+      "weight": "0.00097975"
+    },
+    {
+      "securityId": "893641100",
+      "ticker": "TDG",
+      "name": "TRANSDIGM GROUP INC",
+      "companyId": "security:893641100",
+      "sector": null,
+      "weight": "0.00096356"
+    },
+    {
+      "securityId": "89832Q109",
+      "ticker": "TFC",
+      "name": "TRUIST FINANCIAL CORP",
+      "companyId": "security:89832Q109",
+      "sector": null,
+      "weight": "0.00095909"
+    },
+    {
+      "securityId": "87612G101",
+      "ticker": "TRGP",
+      "name": "TARGA RESOURCES CORP",
+      "companyId": "security:87612G101",
+      "sector": null,
+      "weight": "0.00095823"
+    },
+    {
+      "securityId": "363576109",
+      "ticker": "AJG",
+      "name": "ARTHUR J GALLAGHER + CO",
+      "companyId": "security:363576109",
+      "sector": null,
+      "weight": "0.00095609"
+    },
+    {
+      "securityId": "03073E105",
+      "ticker": "COR",
+      "name": "CENCORA INC",
+      "companyId": "security:03073E105",
+      "sector": null,
+      "weight": "0.00095519"
+    },
+    {
+      "securityId": "911363109",
+      "ticker": "URI",
+      "name": "UNITED RENTALS INC",
+      "companyId": "security:911363109",
+      "sector": null,
+      "weight": "0.0009474"
+    },
+    {
+      "securityId": "61174X109",
+      "ticker": "MNST",
+      "name": "MONSTER BEVERAGE CORP",
+      "companyId": "security:61174X109",
+      "sector": null,
+      "weight": "0.00094059"
+    },
+    {
+      "securityId": "49456B101",
+      "ticker": "KMI",
+      "name": "KINDER MORGAN INC",
+      "companyId": "security:49456B101",
+      "sector": null,
+      "weight": "0.00092682"
+    },
+    {
+      "securityId": "30609A109",
+      "ticker": "2682320D",
+      "name": "FALCON TOPCO INC",
+      "companyId": "security:30609A109",
+      "sector": null,
+      "weight": "0.00092239"
+    },
+    {
+      "securityId": "G87052109",
+      "ticker": "TEL",
+      "name": "TE CONNECTIVITY PLC",
+      "companyId": "security:G87052109",
+      "sector": null,
+      "weight": "0.00091357"
+    },
+    {
+      "securityId": "03769M106",
+      "ticker": "APO",
+      "name": "APOLLO GLOBAL MANAGEMENT INC",
+      "companyId": "security:03769M106",
+      "sector": null,
+      "weight": "0.00090228"
+    },
+    {
+      "securityId": "05722G100",
+      "ticker": "BKR",
+      "name": "BAKER HUGHES CO",
+      "companyId": "security:05722G100",
+      "sector": null,
+      "weight": "0.00090147"
+    },
+    {
+      "securityId": "G25508105",
+      "ticker": "CRH",
+      "name": "CRH PLC",
+      "companyId": "security:G25508105",
+      "sector": null,
+      "weight": "0.00089588"
+    },
+    {
+      "securityId": "609839105",
+      "ticker": "MPWR",
+      "name": "MONOLITHIC POWER SYSTEMS INC",
+      "companyId": "security:609839105",
+      "sector": null,
+      "weight": "0.00089066"
+    },
+    {
+      "securityId": "670346105",
+      "ticker": "NUE",
+      "name": "NUCOR CORP",
+      "companyId": "security:670346105",
+      "sector": null,
+      "weight": "0.00088987"
+    },
+    {
+      "securityId": "880770102",
+      "ticker": "TER",
+      "name": "TERADYNE INC",
+      "companyId": "security:880770102",
+      "sector": null,
+      "weight": "0.00088607"
+    },
+    {
+      "securityId": "25179M103",
+      "ticker": "DVN",
+      "name": "DEVON ENERGY CORP",
+      "companyId": "security:25179M103",
+      "sector": null,
+      "weight": "0.00087952"
+    },
+    {
+      "securityId": "19247G107",
+      "ticker": "COHR",
+      "name": "COHERENT CORP",
+      "companyId": "security:19247G107",
+      "sector": null,
+      "weight": "0.00087713"
+    },
+    {
+      "securityId": "25746U109",
+      "ticker": "D",
+      "name": "DOMINION ENERGY INC",
+      "companyId": "security:25746U109",
+      "sector": null,
+      "weight": "0.00087505"
+    },
+    {
+      "securityId": "N6596X109",
+      "ticker": "NXPI",
+      "name": "NXP SEMICONDUCTORS NV",
+      "companyId": "security:N6596X109",
+      "sector": null,
+      "weight": "0.00087466"
+    },
+    {
+      "securityId": "22052L104",
+      "ticker": "CTVA",
+      "name": "CORTEVA INC",
+      "companyId": "security:22052L104",
+      "sector": null,
+      "weight": "0.00086434"
+    },
+    {
+      "securityId": "311900104",
+      "ticker": "FAST",
+      "name": "FASTENAL CO",
+      "companyId": "security:311900104",
+      "sector": null,
+      "weight": "0.00086057"
+    },
+    {
+      "securityId": "199908104",
+      "ticker": "FIX",
+      "name": "COMFORT SYSTEMS USA INC",
+      "companyId": "security:199908104",
+      "sector": null,
+      "weight": "0.00085448"
+    },
+    {
+      "securityId": "49338L103",
+      "ticker": "KEYS",
+      "name": "KEYSIGHT TECHNOLOGIES IN",
+      "companyId": "security:49338L103",
+      "sector": null,
+      "weight": "0.00085218"
+    },
+    {
+      "securityId": "756109104",
+      "ticker": "O",
+      "name": "REALTY INCOME CORP",
+      "companyId": "security:756109104",
+      "sector": null,
+      "weight": "0.0008496"
+    },
+    {
+      "securityId": "14149Y108",
+      "ticker": "CAH",
+      "name": "CARDINAL HEALTH INC",
+      "companyId": "security:14149Y108",
+      "sector": null,
+      "weight": "0.00084556"
+    },
+    {
+      "securityId": "384802104",
+      "ticker": "GWW",
+      "name": "WW GRAINGER INC",
+      "companyId": "security:384802104",
+      "sector": null,
+      "weight": "0.00084449"
+    },
+    {
+      "securityId": "816851109",
+      "ticker": "SRE",
+      "name": "SEMPRA",
+      "companyId": "security:816851109",
+      "sector": null,
+      "weight": "0.00083988"
+    },
+    {
+      "securityId": "345370860",
+      "ticker": "F",
+      "name": "FORD MOTOR CO",
+      "companyId": "security:345370860",
+      "sector": null,
+      "weight": "0.0008309"
+    },
+    {
+      "securityId": "031100100",
+      "ticker": "AME",
+      "name": "AMETEK INC",
+      "companyId": "security:031100100",
+      "sector": null,
+      "weight": "0.00082123"
+    },
+    {
+      "securityId": "857477103",
+      "ticker": "STT",
+      "name": "STATE STREET CORP",
+      "companyId": "security:857477103",
+      "sector": null,
+      "weight": "0.00080973"
+    },
+    {
+      "securityId": "001055102",
+      "ticker": "AFL",
+      "name": "AFLAC INC",
+      "companyId": "security:001055102",
+      "sector": null,
+      "weight": "0.00080198"
+    },
+    {
+      "securityId": "59156R108",
+      "ticker": "MET",
+      "name": "METLIFE INC",
+      "companyId": "security:59156R108",
+      "sector": null,
+      "weight": "0.00080004"
+    },
+    {
+      "securityId": "247361702",
+      "ticker": "DAL",
+      "name": "DELTA AIR LINES INC",
+      "companyId": "security:247361702",
+      "sector": null,
+      "weight": "0.00078116"
+    },
+    {
+      "securityId": "146869102",
+      "ticker": "CVNA",
+      "name": "CARVANA CO",
+      "companyId": "security:146869102",
+      "sector": null,
+      "weight": "0.00076996"
+    },
+    {
+      "securityId": "28176E108",
+      "ticker": "EW",
+      "name": "EDWARDS LIFESCIENCES CORP",
+      "companyId": "security:28176E108",
+      "sector": null,
+      "weight": "0.0007642"
+    },
+    {
+      "securityId": "03076C106",
+      "ticker": "AMP",
+      "name": "AMERIPRISE FINANCIAL INC",
+      "companyId": "security:03076C106",
+      "sector": null,
+      "weight": "0.00076104"
+    },
+    {
+      "securityId": "74460D109",
+      "ticker": "PSA",
+      "name": "PUBLIC STORAGE",
+      "companyId": "security:74460D109",
+      "sector": null,
+      "weight": "0.00075571"
+    },
+    {
+      "securityId": "316773100",
+      "ticker": "FITB",
+      "name": "FIFTH THIRD BANCORP",
+      "companyId": "security:316773100",
+      "sector": null,
+      "weight": "0.00075271"
+    },
+    {
+      "securityId": "43849R105",
+      "ticker": "HONA",
+      "name": "HONEYWELL AEROSPACE INC",
+      "companyId": "security:43849R105",
+      "sector": null,
+      "weight": "0.00074506"
+    },
+    {
+      "securityId": "075887109",
+      "ticker": "BDX",
+      "name": "BECTON DICKINSON AND CO",
+      "companyId": "security:075887109",
+      "sector": null,
+      "weight": "0.00074357"
+    },
+    {
+      "securityId": "29364G103",
+      "ticker": "ETR",
+      "name": "ENTERGY CORP",
+      "companyId": "security:29364G103",
+      "sector": null,
+      "weight": "0.00074044"
+    },
+    {
+      "securityId": "60770K107",
+      "ticker": "MRNA",
+      "name": "MODERNA INC",
+      "companyId": "security:60770K107",
+      "sector": null,
+      "weight": "0.00073799"
+    },
+    {
+      "securityId": "444859102",
+      "ticker": "HUM",
+      "name": "HUMANA INC",
+      "companyId": "security:444859102",
+      "sector": null,
+      "weight": "0.0007361"
+    },
+    {
+      "securityId": "929740108",
+      "ticker": "WAB",
+      "name": "WABTEC CORP",
+      "companyId": "security:929740108",
+      "sector": null,
+      "weight": "0.00072726"
+    },
+    {
+      "securityId": "053332102",
+      "ticker": "AZO",
+      "name": "AUTOZONE INC",
+      "companyId": "security:053332102",
+      "sector": null,
+      "weight": "0.00072598"
+    },
+    {
+      "securityId": "29476L107",
+      "ticker": "VMRK",
+      "name": "VIVMARK RESIDENTIAL",
+      "companyId": "security:29476L107",
+      "sector": null,
+      "weight": "0.00072412"
+    },
+    {
+      "securityId": "171779309",
+      "ticker": "CIEN",
+      "name": "CIENA CORP",
+      "companyId": "security:171779309",
+      "sector": null,
+      "weight": "0.00072194"
+    },
+    {
+      "securityId": "98389B100",
+      "ticker": "XEL",
+      "name": "XCEL ENERGY INC",
+      "companyId": "security:98389B100",
+      "sector": null,
+      "weight": "0.00072006"
+    },
+    {
+      "securityId": "70450Y103",
+      "ticker": "PYPL",
+      "name": "PAYPAL HOLDINGS INC",
+      "companyId": "security:70450Y103",
+      "sector": null,
+      "weight": "0.00071924"
+    },
+    {
+      "securityId": "773903109",
+      "ticker": "ROK",
+      "name": "ROCKWELL AUTOMATION INC",
+      "companyId": "security:773903109",
+      "sector": null,
+      "weight": "0.00071692"
+    },
+    {
+      "securityId": "278642103",
+      "ticker": "EBAY",
+      "name": "EBAY INC",
+      "companyId": "security:278642103",
+      "sector": null,
+      "weight": "0.00071323"
+    },
+    {
+      "securityId": "92840M102",
+      "ticker": "VST",
+      "name": "VISTRA CORP",
+      "companyId": "security:92840M102",
+      "sector": null,
+      "weight": "0.00071293"
+    },
+    {
+      "securityId": "169656105",
+      "ticker": "CMG",
+      "name": "CHIPOTLE MEXICAN GRILL INC",
+      "companyId": "security:169656105",
+      "sector": null,
+      "weight": "0.00070884"
+    },
+    {
+      "securityId": "502431109",
+      "ticker": "LHX",
+      "name": "L3HARRIS TECHNOLOGIES INC",
+      "companyId": "security:502431109",
+      "sector": null,
+      "weight": "0.00070773"
+    },
+    {
+      "securityId": "052769106",
+      "ticker": "ADSK",
+      "name": "AUTODESK INC",
+      "companyId": "security:052769106",
+      "sector": null,
+      "weight": "0.00068332"
+    },
+    {
+      "securityId": "674599105",
+      "ticker": "OXY",
+      "name": "OCCIDENTAL PETROLEUM CORP",
+      "companyId": "security:674599105",
+      "sector": null,
+      "weight": "0.00067923"
+    },
+    {
+      "securityId": "30161N101",
+      "ticker": "EXC",
+      "name": "EXELON CORP",
+      "companyId": "security:30161N101",
+      "sector": null,
+      "weight": "0.00067906"
+    },
+    {
+      "securityId": "H2906T109",
+      "ticker": "GRMN",
+      "name": "GARMIN LTD",
+      "companyId": "security:H2906T109",
+      "sector": null,
+      "weight": "0.00067751"
+    },
+    {
+      "securityId": "14448C104",
+      "ticker": "CARR",
+      "name": "CARRIER GLOBAL CORP",
+      "companyId": "security:14448C104",
+      "sector": null,
+      "weight": "0.00067634"
+    },
+    {
+      "securityId": "760759100",
+      "ticker": "RSG",
+      "name": "REPUBLIC SERVICES INC",
+      "companyId": "security:760759100",
+      "sector": null,
+      "weight": "0.00067624"
+    },
+    {
+      "securityId": "92276F100",
+      "ticker": "VTR",
+      "name": "VENTAS INC",
+      "companyId": "security:92276F100",
+      "sector": null,
+      "weight": "0.00067255"
+    },
+    {
+      "securityId": "654106103",
+      "ticker": "NKE",
+      "name": "NIKE INC  CL B",
+      "companyId": "security:654106103",
+      "sector": null,
+      "weight": "0.00067186"
+    },
+    {
+      "securityId": "46266C105",
+      "ticker": "IQV",
+      "name": "IQVIA HOLDINGS INC",
+      "companyId": "security:46266C105",
+      "sector": null,
+      "weight": "0.00065691"
+    },
+    {
+      "securityId": "49271V100",
+      "ticker": "KDP",
+      "name": "KEURIG DR PEPPER INC",
+      "companyId": "security:49271V100",
+      "sector": null,
+      "weight": "0.00065468"
+    },
+    {
+      "securityId": "31488V107",
+      "ticker": "FERG",
+      "name": "FERGUSON ENTERPRISES INC",
+      "companyId": "security:31488V107",
+      "sector": null,
+      "weight": "0.00065199"
+    },
+    {
+      "securityId": "852234103",
+      "ticker": "XYZ",
+      "name": "BLOCK INC",
+      "companyId": "security:852234103",
+      "sector": null,
+      "weight": "0.00064725"
+    },
+    {
+      "securityId": "039483102",
+      "ticker": "ADM",
+      "name": "ARCHER DANIELS MIDLAND CO",
+      "companyId": "security:039483102",
+      "sector": null,
+      "weight": "0.00064061"
+    },
+    {
+      "securityId": "744320102",
+      "ticker": "PRU",
+      "name": "PRUDENTIAL FINANCIAL INC",
+      "companyId": "security:744320102",
+      "sector": null,
+      "weight": "0.00062881"
+    },
+    {
+      "securityId": "631103108",
+      "ticker": "NDAQ",
+      "name": "NASDAQ INC",
+      "companyId": "security:631103108",
+      "sector": null,
+      "weight": "0.00062665"
+    },
+    {
+      "securityId": "00846U101",
+      "ticker": "A",
+      "name": "AGILENT TECHNOLOGIES INC",
+      "companyId": "security:00846U101",
+      "sector": null,
+      "weight": "0.00061868"
+    },
+    {
+      "securityId": "12504L109",
+      "ticker": "CBRE",
+      "name": "CBRE GROUP INC   A",
+      "companyId": "security:12504L109",
+      "sector": null,
+      "weight": "0.00061805"
+    },
+    {
+      "securityId": "45168D104",
+      "ticker": "IDXX",
+      "name": "IDEXX LABORATORIES INC",
+      "companyId": "security:45168D104",
+      "sector": null,
+      "weight": "0.0006113"
+    },
+    {
+      "securityId": "25278X109",
+      "ticker": "FANG",
+      "name": "DIAMONDBACK ENERGY INC",
+      "companyId": "security:25278X109",
+      "sector": null,
+      "weight": "0.00060968"
+    },
+    {
+      "securityId": "55354G100",
+      "ticker": "MSCI",
+      "name": "MSCI INC",
+      "companyId": "security:55354G100",
+      "sector": null,
+      "weight": "0.00060964"
+    },
+    {
+      "securityId": "45841N107",
+      "ticker": "IBKR",
+      "name": "INTERACTIVE BROKERS GRO CL A",
+      "companyId": "security:45841N107",
+      "sector": null,
+      "weight": "0.00060927"
+    },
+    {
+      "securityId": "026874784",
+      "ticker": "AIG",
+      "name": "AMERICAN INTERNATIONAL GROUP",
+      "companyId": "security:026874784",
+      "sector": null,
+      "weight": "0.00060844"
+    },
+    {
+      "securityId": "Y2573F102",
+      "ticker": "FLEX",
+      "name": "FLEX LTD",
+      "companyId": "security:Y2573F102",
+      "sector": null,
+      "weight": "0.0006074"
+    },
+    {
+      "securityId": "988498101",
+      "ticker": "YUM",
+      "name": "YUM  BRANDS INC",
+      "companyId": "security:988498101",
+      "sector": null,
+      "weight": "0.00060664"
+    },
+    {
+      "securityId": "941848103",
+      "ticker": "WAT",
+      "name": "WATERS CORP",
+      "companyId": "security:941848103",
+      "sector": null,
+      "weight": "0.0006024"
+    },
+    {
+      "securityId": "871829107",
+      "ticker": "SYY",
+      "name": "SYSCO CORP",
+      "companyId": "security:871829107",
+      "sector": null,
+      "weight": "0.00060199"
+    },
+    {
+      "securityId": "209115104",
+      "ticker": "ED",
+      "name": "CONSOLIDATED EDISON INC",
+      "companyId": "security:209115104",
+      "sector": null,
+      "weight": "0.00060168"
+    },
+    {
+      "securityId": "776696106",
+      "ticker": "ROP",
+      "name": "ROPER TECHNOLOGIES INC",
+      "companyId": "security:776696106",
+      "sector": null,
+      "weight": "0.00059958"
+    },
+    {
+      "securityId": "922475108",
+      "ticker": "VEEV",
+      "name": "VEEVA SYSTEMS INC CLASS A",
+      "companyId": "security:922475108",
+      "sector": null,
+      "weight": "0.00059932"
+    },
+    {
+      "securityId": "595017104",
+      "ticker": "MCHP",
+      "name": "MICROCHIP TECHNOLOGY INC",
+      "companyId": "security:595017104",
+      "sector": null,
+      "weight": "0.00059249"
+    },
+    {
+      "securityId": "05464C101",
+      "ticker": "AXON",
+      "name": "AXON ENTERPRISE INC",
+      "companyId": "security:05464C101",
+      "sector": null,
+      "weight": "0.00059048"
+    },
+    {
+      "securityId": "19260Q107",
+      "ticker": "COIN",
+      "name": "COINBASE GLOBAL INC  CLASS A",
+      "companyId": "security:19260Q107",
+      "sector": null,
+      "weight": "0.00058612"
+    },
+    {
+      "securityId": "874054109",
+      "ticker": "TTWO",
+      "name": "TAKE TWO INTERACTIVE SOFTWRE",
+      "companyId": "security:874054109",
+      "sector": null,
+      "weight": "0.00057766"
+    },
+    {
+      "securityId": "98138H101",
+      "ticker": "WDAY",
+      "name": "WORKDAY INC CLASS A",
+      "companyId": "security:98138H101",
+      "sector": null,
+      "weight": "0.00057668"
+    },
+    {
+      "securityId": "416515104",
+      "ticker": "HIG",
+      "name": "HARTFORD INSURANCE GROUP INC",
+      "companyId": "security:416515104",
+      "sector": null,
+      "weight": "0.00057361"
+    },
+    {
+      "securityId": "704326107",
+      "ticker": "PAYX",
+      "name": "PAYCHEX INC",
+      "companyId": "security:704326107",
+      "sector": null,
+      "weight": "0.00056819"
+    },
+    {
+      "securityId": "64110D104",
+      "ticker": "NTAP",
+      "name": "NETAPP INC",
+      "companyId": "security:64110D104",
+      "sector": null,
+      "weight": "0.0005549"
+    },
+    {
+      "securityId": "744573106",
+      "ticker": "PEG",
+      "name": "PUBLIC SERVICE ENTERPRISE GP",
+      "companyId": "security:744573106",
+      "sector": null,
+      "weight": "0.00055245"
+    },
+    {
+      "securityId": "23331A109",
+      "ticker": "DHI",
+      "name": "DR HORTON INC",
+      "companyId": "security:23331A109",
+      "sector": null,
+      "weight": "0.00054689"
+    },
+    {
+      "securityId": "55261F104",
+      "ticker": "MTB",
+      "name": "M + T BANK CORP",
+      "companyId": "security:55261F104",
+      "sector": null,
+      "weight": "0.00053542"
+    },
+    {
+      "securityId": "665859104",
+      "ticker": "NTRS",
+      "name": "NORTHERN TRUST CORP",
+      "companyId": "security:665859104",
+      "sector": null,
+      "weight": "0.00052975"
+    },
+    {
+      "securityId": "910047109",
+      "ticker": "UAL",
+      "name": "UNITED AIRLINES HOLDINGS INC",
+      "companyId": "security:910047109",
+      "sector": null,
+      "weight": "0.00052865"
+    },
+    {
+      "securityId": "26884L109",
+      "ticker": "EQT",
+      "name": "EQT CORP",
+      "companyId": "security:26884L109",
+      "sector": null,
+      "weight": "0.00052576"
+    },
+    {
+      "securityId": "92939U106",
+      "ticker": "WEC",
+      "name": "WEC ENERGY GROUP INC",
+      "companyId": "security:92939U106",
+      "sector": null,
+      "weight": "0.00052489"
+    },
+    {
+      "securityId": "49177J102",
+      "ticker": "KVUE",
+      "name": "KENVUE INC",
+      "companyId": "security:49177J102",
+      "sector": null,
+      "weight": "0.00052244"
+    },
+    {
+      "securityId": "446150104",
+      "ticker": "HBAN",
+      "name": "HUNTINGTON BANCSHARES INC",
+      "companyId": "security:446150104",
+      "sector": null,
+      "weight": "0.00051872"
+    },
+    {
+      "securityId": "46284V101",
+      "ticker": "IRM",
+      "name": "IRON MOUNTAIN INC",
+      "companyId": "security:46284V101",
+      "sector": null,
+      "weight": "0.00051372"
+    },
+    {
+      "securityId": "G0450A105",
+      "ticker": "ACGL",
+      "name": "ARCH CAPITAL GROUP LTD",
+      "companyId": "security:G0450A105",
+      "sector": null,
+      "weight": "0.00051206"
+    },
+    {
+      "securityId": "29084Q100",
+      "ticker": "EME",
+      "name": "EMCOR GROUP INC",
+      "companyId": "security:29084Q100",
+      "sector": null,
+      "weight": "0.00050886"
+    },
+    {
+      "securityId": "679580100",
+      "ticker": "ODFL",
+      "name": "OLD DOMINION FREIGHT LINE",
+      "companyId": "security:679580100",
+      "sector": null,
+      "weight": "0.00050538"
+    },
+    {
+      "securityId": "494368103",
+      "ticker": "KMB",
+      "name": "KIMBERLY CLARK CORP",
+      "companyId": "security:494368103",
+      "sector": null,
+      "weight": "0.00049995"
+    },
+    {
+      "securityId": "929160109",
+      "ticker": "VMC",
+      "name": "VULCAN MATERIALS CO",
+      "companyId": "security:929160109",
+      "sector": null,
+      "weight": "0.00049729"
+    },
+    {
+      "securityId": "252131107",
+      "ticker": "DXCM",
+      "name": "DEXCOM INC",
+      "companyId": "security:252131107",
+      "sector": null,
+      "weight": "0.00049713"
+    },
+    {
+      "securityId": "501044101",
+      "ticker": "KR",
+      "name": "KROGER CO",
+      "companyId": "security:501044101",
+      "sector": null,
+      "weight": "0.00049412"
+    },
+    {
+      "securityId": "22822V101",
+      "ticker": "CCI",
+      "name": "CROWN CASTLE INC",
+      "companyId": "security:22822V101",
+      "sector": null,
+      "weight": "0.00049398"
+    },
+    {
+      "securityId": "858119100",
+      "ticker": "STLD",
+      "name": "STEEL DYNAMICS INC",
+      "companyId": "security:858119100",
+      "sector": null,
+      "weight": "0.00049171"
+    },
+    {
+      "securityId": "466313103",
+      "ticker": "JBL",
+      "name": "JABIL INC",
+      "companyId": "security:466313103",
+      "sector": null,
+      "weight": "0.00048861"
+    },
+    {
+      "securityId": "09062X103",
+      "ticker": "BIIB",
+      "name": "BIOGEN INC",
+      "companyId": "security:09062X103",
+      "sector": null,
+      "weight": "0.00048719"
+    },
+    {
+      "securityId": "761152107",
+      "ticker": "RMD",
+      "name": "RESMED INC",
+      "companyId": "security:761152107",
+      "sector": null,
+      "weight": "0.00048715"
+    },
+    {
+      "securityId": "30212P303",
+      "ticker": "EXPE",
+      "name": "EXPEDIA GROUP INC",
+      "companyId": "security:30212P303",
+      "sector": null,
+      "weight": "0.00048479"
+    },
+    {
+      "securityId": "69331C108",
+      "ticker": "PCG",
+      "name": "P G + E CORP",
+      "companyId": "security:69331C108",
+      "sector": null,
+      "weight": "0.00047258"
+    },
+    {
+      "securityId": "15135B101",
+      "ticker": "CNC",
+      "name": "CENTENE CORP",
+      "companyId": "security:15135B101",
+      "sector": null,
+      "weight": "0.0004686"
+    },
+    {
+      "securityId": "98978V103",
+      "ticker": "ZTS",
+      "name": "ZOETIS INC",
+      "companyId": "security:98978V103",
+      "sector": null,
+      "weight": "0.0004672"
+    },
+    {
+      "securityId": "573284106",
+      "ticker": "MLM",
+      "name": "MARTIN MARIETTA MATERIALS",
+      "companyId": "security:573284106",
+      "sector": null,
+      "weight": "0.00046158"
+    },
+    {
+      "securityId": "12503M108",
+      "ticker": "CBOE",
+      "name": "CBOE GLOBAL MARKETS INC",
+      "companyId": "security:12503M108",
+      "sector": null,
+      "weight": "0.0004611"
+    },
+    {
+      "securityId": "406216101",
+      "ticker": "HAL",
+      "name": "HALLIBURTON CO",
+      "companyId": "security:406216101",
+      "sector": null,
+      "weight": "0.00046074"
+    },
+    {
+      "securityId": "754730109",
+      "ticker": "RJF",
+      "name": "RAYMOND JAMES FINANCIAL INC",
+      "companyId": "security:754730109",
+      "sector": null,
+      "weight": "0.00046042"
+    },
+    {
+      "securityId": "40434L105",
+      "ticker": "HPQ",
+      "name": "HP INC",
+      "companyId": "security:40434L105",
+      "sector": null,
+      "weight": "0.00045812"
+    },
+    {
+      "securityId": "G96629103",
+      "ticker": "WTW",
+      "name": "WILLIS TOWERS WATSON PLC",
+      "companyId": "security:G96629103",
+      "sector": null,
+      "weight": "0.00045574"
+    },
+    {
+      "securityId": "174610105",
+      "ticker": "CFG",
+      "name": "CITIZENS FINANCIAL GROUP",
+      "companyId": "security:174610105",
+      "sector": null,
+      "weight": "0.00045036"
+    },
+    {
+      "securityId": "36266G107",
+      "ticker": "GEHC",
+      "name": "GE HEALTHCARE TECHNOLOGY",
+      "companyId": "security:36266G107",
+      "sector": null,
+      "weight": "0.00044698"
+    },
+    {
+      "securityId": "023608102",
+      "ticker": "AEE",
+      "name": "AMEREN CORPORATION",
+      "companyId": "security:023608102",
+      "sector": null,
+      "weight": "0.0004441"
+    },
+    {
+      "securityId": "30225T102",
+      "ticker": "EXR",
+      "name": "EXTRA SPACE STORAGE INC",
+      "companyId": "security:30225T102",
+      "sector": null,
+      "weight": "0.00044085"
+    },
+    {
+      "securityId": "G2004J103",
+      "ticker": "CCL",
+      "name": "CARNIVAL CORP LTD",
+      "companyId": "security:G2004J103",
+      "sector": null,
+      "weight": "0.00044059"
+    },
+    {
+      "securityId": "233331107",
+      "ticker": "DTE",
+      "name": "DTE ENERGY COMPANY",
+      "companyId": "security:233331107",
+      "sector": null,
+      "weight": "0.00042747"
+    },
+    {
+      "securityId": "879360105",
+      "ticker": "TDY",
+      "name": "TELEDYNE TECHNOLOGIES INC",
+      "companyId": "security:879360105",
+      "sector": null,
+      "weight": "0.00042278"
+    },
+    {
+      "securityId": "192446102",
+      "ticker": "CTSH",
+      "name": "COGNIZANT TECH SOLUTIONS A",
+      "companyId": "security:192446102",
+      "sector": null,
+      "weight": "0.00042272"
+    },
+    {
+      "securityId": "03990B101",
+      "ticker": "ARES",
+      "name": "ARES MANAGEMENT CORP   A",
+      "companyId": "security:03990B101",
+      "sector": null,
+      "weight": "0.00042139"
+    },
+    {
+      "securityId": "682189105",
+      "ticker": "ON",
+      "name": "ON SEMICONDUCTOR",
+      "companyId": "security:682189105",
+      "sector": null,
+      "weight": "0.00042061"
+    },
+    {
+      "securityId": "049560105",
+      "ticker": "ATO",
+      "name": "ATMOS ENERGY CORP",
+      "companyId": "security:049560105",
+      "sector": null,
+      "weight": "0.00041856"
+    },
+    {
+      "securityId": "030420103",
+      "ticker": "AWK",
+      "name": "AMERICAN WATER WORKS CO INC",
+      "companyId": "security:030420103",
+      "sector": null,
+      "weight": "0.00041765"
+    },
+    {
+      "securityId": "217204106",
+      "ticker": "CPRT",
+      "name": "COPART INC",
+      "companyId": "security:217204106",
+      "sector": null,
+      "weight": "0.00041684"
+    },
+    {
+      "securityId": "256677105",
+      "ticker": "DG",
+      "name": "DOLLAR GENERAL CORP",
+      "companyId": "security:256677105",
+      "sector": null,
+      "weight": "0.00041479"
+    },
+    {
+      "securityId": "925652109",
+      "ticker": "VICI",
+      "name": "VICI PROPERTIES INC",
+      "companyId": "security:925652109",
+      "sector": null,
+      "weight": "0.00041293"
+    },
+    {
+      "securityId": "538034109",
+      "ticker": "LYV",
+      "name": "LIVE NATION ENTERTAINMENT IN",
+      "companyId": "security:538034109",
+      "sector": null,
+      "weight": "0.00041171"
+    },
+    {
+      "securityId": "219948106",
+      "ticker": "CPAY",
+      "name": "CORPAY INC",
+      "companyId": "security:219948106",
+      "sector": null,
+      "weight": "0.00040842"
+    },
+    {
+      "securityId": "969904101",
+      "ticker": "WSM",
+      "name": "WILLIAMS SONOMA INC",
+      "companyId": "security:969904101",
+      "sector": null,
+      "weight": "0.00040288"
+    },
+    {
+      "securityId": "172062101",
+      "ticker": "CINF",
+      "name": "CINCINNATI FINANCIAL CORP",
+      "companyId": "security:172062101",
+      "sector": null,
+      "weight": "0.00040131"
+    },
+    {
+      "securityId": "337738108",
+      "ticker": "FISV",
+      "name": "FISERV INC",
+      "companyId": "security:337738108",
+      "sector": null,
+      "weight": "0.00039908"
+    },
+    {
+      "securityId": "68902V107",
+      "ticker": "OTIS",
+      "name": "OTIS WORLDWIDE CORP",
+      "companyId": "security:68902V107",
+      "sector": null,
+      "weight": "0.00039842"
+    },
+    {
+      "securityId": "45687V106",
+      "ticker": "IR",
+      "name": "INGERSOLL RAND INC",
+      "companyId": "security:45687V106",
+      "sector": null,
+      "weight": "0.00039771"
+    },
+    {
+      "securityId": "30040W108",
+      "ticker": "ES",
+      "name": "EVERSOURCE ENERGY",
+      "companyId": "security:30040W108",
+      "sector": null,
+      "weight": "0.00039628"
+    },
+    {
+      "securityId": "427866108",
+      "ticker": "HSY",
+      "name": "HERSHEY CO/THE",
+      "companyId": "security:427866108",
+      "sector": null,
+      "weight": "0.00039597"
+    },
+    {
+      "securityId": "74743L100",
+      "ticker": "Q",
+      "name": "QNITY ELECTRONICS INC",
+      "companyId": "security:74743L100",
+      "sector": null,
+      "weight": "0.00039459"
+    },
+    {
+      "securityId": "592688105",
+      "ticker": "MTD",
+      "name": "METTLER TOLEDO INTERNATIONAL",
+      "companyId": "security:592688105",
+      "sector": null,
+      "weight": "0.00039373"
+    },
+    {
+      "securityId": "69351T106",
+      "ticker": "PPL",
+      "name": "PPL CORP",
+      "companyId": "security:69351T106",
+      "sector": null,
+      "weight": "0.00039367"
+    },
+    {
+      "securityId": "74834L100",
+      "ticker": "DGX",
+      "name": "QUEST DIAGNOSTICS INC",
+      "companyId": "security:74834L100",
+      "sector": null,
+      "weight": "0.00039131"
+    },
+    {
+      "securityId": "15189T107",
+      "ticker": "CNP",
+      "name": "CENTERPOINT ENERGY INC",
+      "companyId": "security:15189T107",
+      "sector": null,
+      "weight": "0.00039127"
+    },
+    {
+      "securityId": "7591EP100",
+      "ticker": "RF",
+      "name": "REGIONS FINANCIAL CORP",
+      "companyId": "security:7591EP100",
+      "sector": null,
+      "weight": "0.00039093"
+    },
+    {
+      "securityId": "87165B103",
+      "ticker": "SYF",
+      "name": "SYNCHRONY FINANCIAL",
+      "companyId": "security:87165B103",
+      "sector": null,
+      "weight": "0.00038813"
+    },
+    {
+      "securityId": "98419M100",
+      "ticker": "XYL",
+      "name": "XYLEM INC",
+      "companyId": "security:98419M100",
+      "sector": null,
+      "weight": "0.00038739"
+    },
+    {
+      "securityId": "260003108",
+      "ticker": "DOV",
+      "name": "DOVER CORP",
+      "companyId": "security:260003108",
+      "sector": null,
+      "weight": "0.00038622"
+    },
+    {
+      "securityId": "504922105",
+      "ticker": "LH",
+      "name": "LABCORP HOLDINGS INC",
+      "companyId": "security:504922105",
+      "sector": null,
+      "weight": "0.00038512"
+    },
+    {
+      "securityId": "302130109",
+      "ticker": "EXPD",
+      "name": "EXPEDITORS INTL WASH INC",
+      "companyId": "security:302130109",
+      "sector": null,
+      "weight": "0.00037876"
+    },
+    {
+      "securityId": "955306105",
+      "ticker": "WST",
+      "name": "WEST PHARMACEUTICAL SERVICES",
+      "companyId": "security:955306105",
+      "sector": null,
+      "weight": "0.00037199"
+    },
+    {
+      "securityId": "337932107",
+      "ticker": "FE",
+      "name": "FIRSTENERGY CORP",
+      "companyId": "security:337932107",
+      "sector": null,
+      "weight": "0.00036826"
+    },
+    {
+      "securityId": "443510607",
+      "ticker": "HUBB",
+      "name": "HUBBELL INC",
+      "companyId": "security:443510607",
+      "sector": null,
+      "weight": "0.00036585"
+    },
+    {
+      "securityId": "518439104",
+      "ticker": "EL",
+      "name": "ESTEE LAUDER COMPANIES CL A",
+      "companyId": "security:518439104",
+      "sector": null,
+      "weight": "0.00036374"
+    },
+    {
+      "securityId": "237194105",
+      "ticker": "DRI",
+      "name": "DARDEN RESTAURANTS INC",
+      "companyId": "security:237194105",
+      "sector": null,
+      "weight": "0.00036348"
+    },
+    {
+      "securityId": "92343E102",
+      "ticker": "VRSN",
+      "name": "VERISIGN INC",
+      "companyId": "security:92343E102",
+      "sector": null,
+      "weight": "0.00036167"
+    },
+    {
+      "securityId": "629377508",
+      "ticker": "NRG",
+      "name": "NRG ENERGY INC",
+      "companyId": "security:629377508",
+      "sector": null,
+      "weight": "0.00036027"
+    },
+    {
+      "securityId": "876030107",
+      "ticker": "TPR",
+      "name": "TAPESTRY INC",
+      "companyId": "security:876030107",
+      "sector": null,
+      "weight": "0.00035863"
+    },
+    {
+      "securityId": "693506107",
+      "ticker": "PPG",
+      "name": "PPG INDUSTRIES INC",
+      "companyId": "security:693506107",
+      "sector": null,
+      "weight": "0.00035812"
+    },
+    {
+      "securityId": "90384S303",
+      "ticker": "ULTA",
+      "name": "ULTA BEAUTY INC",
+      "companyId": "security:90384S303",
+      "sector": null,
+      "weight": "0.00035673"
+    },
+    {
+      "securityId": "147528103",
+      "ticker": "CASY",
+      "name": "CASEY S GENERAL STORES INC",
+      "companyId": "security:147528103",
+      "sector": null,
+      "weight": "0.00035527"
+    },
+    {
+      "securityId": "165167735",
+      "ticker": "EXE",
+      "name": "EXPAND ENERGY CORP",
+      "companyId": "security:165167735",
+      "sector": null,
+      "weight": "0.00035474"
+    },
+    {
+      "securityId": "74144T108",
+      "ticker": "TROW",
+      "name": "T ROWE PRICE GROUP INC",
+      "companyId": "security:74144T108",
+      "sector": null,
+      "weight": "0.00035245"
+    },
+    {
+      "securityId": "92345Y106",
+      "ticker": "VRSK",
+      "name": "VERISK ANALYTICS INC",
+      "companyId": "security:92345Y106",
+      "sector": null,
+      "weight": "0.00035244"
+    },
+    {
+      "securityId": "92338C103",
+      "ticker": "VLTO",
+      "name": "VERALTO CORP",
+      "companyId": "security:92338C103",
+      "sector": null,
+      "weight": "0.00035101"
+    },
+    {
+      "securityId": "681919106",
+      "ticker": "OMC",
+      "name": "OMNICOM GROUP",
+      "companyId": "security:681919106",
+      "sector": null,
+      "weight": "0.00034632"
+    },
+    {
+      "securityId": "74251V102",
+      "ticker": "PFG",
+      "name": "PRINCIPAL FINANCIAL GROUP",
+      "companyId": "security:74251V102",
+      "sector": null,
+      "weight": "0.00034552"
+    },
+    {
+      "securityId": "315616102",
+      "ticker": "FFIV",
+      "name": "F5 INC",
+      "companyId": "security:315616102",
+      "sector": null,
+      "weight": "0.00034349"
+    },
+    {
+      "securityId": "303250104",
+      "ticker": "FICO",
+      "name": "FAIR ISAAC CORP",
+      "companyId": "security:303250104",
+      "sector": null,
+      "weight": "0.00034029"
+    },
+    {
+      "securityId": "336433107",
+      "ticker": "FSLR",
+      "name": "FIRST SOLAR INC",
+      "companyId": "security:336433107",
+      "sector": null,
+      "weight": "0.00034018"
+    },
+    {
+      "securityId": "171340102",
+      "ticker": "CHD",
+      "name": "CHURCH + DWIGHT CO INC",
+      "companyId": "security:171340102",
+      "sector": null,
+      "weight": "0.00033957"
+    },
+    {
+      "securityId": "745867101",
+      "ticker": "PHM",
+      "name": "PULTEGROUP INC",
+      "companyId": "security:745867101",
+      "sector": null,
+      "weight": "0.00033911"
+    },
+    {
+      "securityId": "G8267P108",
+      "ticker": "SW",
+      "name": "SMURFIT WESTROCK PLC",
+      "companyId": "security:G8267P108",
+      "sector": null,
+      "weight": "0.00033884"
+    },
+    {
+      "securityId": "281020107",
+      "ticker": "EIX",
+      "name": "EDISON INTERNATIONAL",
+      "companyId": "security:281020107",
+      "sector": null,
+      "weight": "0.000334"
+    },
+    {
+      "securityId": "459506101",
+      "ticker": "IFF",
+      "name": "INTL FLAVORS + FRAGRANCES",
+      "companyId": "security:459506101",
+      "sector": null,
+      "weight": "0.00032898"
+    },
+    {
+      "securityId": "256746108",
+      "ticker": "DLTR",
+      "name": "DOLLAR TREE INC",
+      "companyId": "security:256746108",
+      "sector": null,
+      "weight": "0.00032868"
+    },
+    {
+      "securityId": "260557103",
+      "ticker": "DOW",
+      "name": "DOW INC",
+      "companyId": "security:260557103",
+      "sector": null,
+      "weight": "0.00032561"
+    },
+    {
+      "securityId": "88262P102",
+      "ticker": "TPL",
+      "name": "TEXAS PACIFIC LAND CORP",
+      "companyId": "security:88262P102",
+      "sector": null,
+      "weight": "0.00032433"
+    },
+    {
+      "securityId": "86800U302",
+      "ticker": "SMCI",
+      "name": "SUPER MICRO COMPUTER INC",
+      "companyId": "security:86800U302",
+      "sector": null,
+      "weight": "0.00032174"
+    },
+    {
+      "securityId": "500754106",
+      "ticker": "KHC",
+      "name": "KRAFT HEINZ CO/THE",
+      "companyId": "security:500754106",
+      "sector": null,
+      "weight": "0.00031949"
+    },
+    {
+      "securityId": "G8473T100",
+      "ticker": "STE",
+      "name": "STERIS PLC",
+      "companyId": "security:G8473T100",
+      "sector": null,
+      "weight": "0.00031872"
+    },
+    {
+      "securityId": "125896100",
+      "ticker": "CMS",
+      "name": "CMS ENERGY CORP",
+      "companyId": "security:125896100",
+      "sector": null,
+      "weight": "0.00031832"
+    },
+    {
+      "securityId": "125269100",
+      "ticker": "CF",
+      "name": "CF INDUSTRIES HOLDINGS INC",
+      "companyId": "security:125269100",
+      "sector": null,
+      "weight": "0.00031748"
+    },
+    {
+      "securityId": "084423102",
+      "ticker": "WRB",
+      "name": "WR BERKLEY CORP",
+      "companyId": "security:084423102",
+      "sector": null,
+      "weight": "0.00031507"
+    },
+    {
+      "securityId": "695156109",
+      "ticker": "PKG",
+      "name": "PACKAGING CORP OF AMERICA",
+      "companyId": "security:695156109",
+      "sector": null,
+      "weight": "0.00031466"
+    },
+    {
+      "securityId": "45337C102",
+      "ticker": "INCY",
+      "name": "INCYTE CORP",
+      "companyId": "security:45337C102",
+      "sector": null,
+      "weight": "0.00031423"
+    },
+    {
+      "securityId": "37940X102",
+      "ticker": "GPN",
+      "name": "GLOBAL PAYMENTS INC",
+      "companyId": "security:37940X102",
+      "sector": null,
+      "weight": "0.00031405"
+    },
+    {
+      "securityId": "75734B100",
+      "ticker": "RDDT",
+      "name": "REDDIT INC CL A",
+      "companyId": "security:75734B100",
+      "sector": null,
+      "weight": "0.00030931"
+    },
+    {
+      "securityId": "493267108",
+      "ticker": "KEY",
+      "name": "KEYCORP",
+      "companyId": "security:493267108",
+      "sector": null,
+      "weight": "0.0003063"
+    },
+    {
+      "securityId": "294429105",
+      "ticker": "EFX",
+      "name": "EQUIFAX INC",
+      "companyId": "security:294429105",
+      "sector": null,
+      "weight": "0.00030603"
+    },
+    {
+      "securityId": "445658107",
+      "ticker": "JBHT",
+      "name": "HUNT (JB) TRANSPRT SVCS INC",
+      "companyId": "security:445658107",
+      "sector": null,
+      "weight": "0.000305"
+    },
+    {
+      "securityId": "65473P105",
+      "ticker": "NI",
+      "name": "NISOURCE INC",
+      "companyId": "security:65473P105",
+      "sector": null,
+      "weight": "0.00030289"
+    },
+    {
+      "securityId": "G0250X149",
+      "ticker": "AMCR",
+      "name": "AMCOR PLC",
+      "companyId": "security:G0250X149",
+      "sector": null,
+      "weight": "0.00030197"
+    },
+    {
+      "securityId": "31620M106",
+      "ticker": "FIS",
+      "name": "FIDELITY NATIONAL INFO SERV",
+      "companyId": "security:31620M106",
+      "sector": null,
+      "weight": "0.00030106"
+    },
+    {
+      "securityId": "11133T103",
+      "ticker": "BR",
+      "name": "BROADRIDGE FINANCIAL SOLUTIO",
+      "companyId": "security:11133T103",
+      "sector": null,
+      "weight": "0.00029761"
+    },
+    {
+      "securityId": "833034101",
+      "ticker": "SNA",
+      "name": "SNAP ON INC",
+      "companyId": "security:833034101",
+      "sector": null,
+      "weight": "0.00029698"
+    },
+    {
+      "securityId": "115236101",
+      "ticker": "BRO",
+      "name": "BROWN + BROWN INC",
+      "companyId": "security:115236101",
+      "sector": null,
+      "weight": "0.00029573"
+    },
+    {
+      "securityId": "78410G104",
+      "ticker": "SBAC",
+      "name": "SBA COMMUNICATIONS CORP",
+      "companyId": "security:78410G104",
+      "sector": null,
+      "weight": "0.00029421"
+    },
+    {
+      "securityId": "370334104",
+      "ticker": "GIS",
+      "name": "GENERAL MILLS INC",
+      "companyId": "security:370334104",
+      "sector": null,
+      "weight": "0.00029352"
+    },
+    {
+      "securityId": "92556V106",
+      "ticker": "VTRS",
+      "name": "VIATRIS INC",
+      "companyId": "security:92556V106",
+      "sector": null,
+      "weight": "0.00029145"
+    },
+    {
+      "securityId": "844741108",
+      "ticker": "LUV",
+      "name": "SOUTHWEST AIRLINES CO",
+      "companyId": "security:844741108",
+      "sector": null,
+      "weight": "0.00028915"
+    },
+    {
+      "securityId": "30034W106",
+      "ticker": "EVRG",
+      "name": "EVERGY INC",
+      "companyId": "security:30034W106",
+      "sector": null,
+      "weight": "0.0002869"
+    },
+    {
+      "securityId": "372460105",
+      "ticker": "GPC",
+      "name": "GENUINE PARTS CO",
+      "companyId": "security:372460105",
+      "sector": null,
+      "weight": "0.00028244"
+    },
+    {
+      "securityId": "540424108",
+      "ticker": "L",
+      "name": "LOEWS CORP",
+      "companyId": "security:540424108",
+      "sector": null,
+      "weight": "0.00028154"
+    },
+    {
+      "securityId": "12514G108",
+      "ticker": "CDW",
+      "name": "CDW CORP/DE",
+      "companyId": "security:12514G108",
+      "sector": null,
+      "weight": "0.00027863"
+    },
+    {
+      "securityId": "460146103",
+      "ticker": "IP",
+      "name": "INTERNATIONAL PAPER CO",
+      "companyId": "security:460146103",
+      "sector": null,
+      "weight": "0.00027712"
+    },
+    {
+      "securityId": "12541W209",
+      "ticker": "CHRW",
+      "name": "C.H. ROBINSON WORLDWIDE INC",
+      "companyId": "security:12541W209",
+      "sector": null,
+      "weight": "0.00027475"
+    },
+    {
+      "securityId": "98956P102",
+      "ticker": "ZBH",
+      "name": "ZIMMER BIOMET HOLDINGS INC",
+      "companyId": "security:98956P102",
+      "sector": null,
+      "weight": "0.00027352"
+    },
+    {
+      "securityId": "892356106",
+      "ticker": "TSCO",
+      "name": "TRACTOR SUPPLY COMPANY",
+      "companyId": "security:892356106",
+      "sector": null,
+      "weight": "0.00026889"
+    },
+    {
+      "securityId": "297178105",
+      "ticker": "ESS",
+      "name": "ESSEX PROPERTY TRUST INC",
+      "companyId": "security:297178105",
+      "sector": null,
+      "weight": "0.00026662"
+    },
+    {
+      "securityId": "086516101",
+      "ticker": "BBY",
+      "name": "BEST BUY CO INC",
+      "companyId": "security:086516101",
+      "sector": null,
+      "weight": "0.00026492"
+    },
+    {
+      "securityId": "018802108",
+      "ticker": "LNT",
+      "name": "ALLIANT ENERGY CORP",
+      "companyId": "security:018802108",
+      "sector": null,
+      "weight": "0.00026419"
+    },
+    {
+      "securityId": "26614N201",
+      "ticker": "DD",
+      "name": "DUPONT DE NEMOURS INC",
+      "companyId": "security:26614N201",
+      "sector": null,
+      "weight": "0.00026415"
+    },
+    {
+      "securityId": "21036P108",
+      "ticker": "STZ",
+      "name": "CONSTELLATION BRANDS INC A",
+      "companyId": "security:21036P108",
+      "sector": null,
+      "weight": "0.00026411"
+    },
+    {
+      "securityId": "H11356104",
+      "ticker": "BG",
+      "name": "BUNGE GLOBAL SA",
+      "companyId": "security:H11356104",
+      "sector": null,
+      "weight": "0.00025962"
+    },
+    {
+      "securityId": "526057104",
+      "ticker": "LEN",
+      "name": "LENNAR CORP A",
+      "companyId": "security:526057104",
+      "sector": null,
+      "weight": "0.00025649"
+    },
+    {
+      "securityId": "N53745100",
+      "ticker": "LYB",
+      "name": "LYONDELLBASELL INDU CL A",
+      "companyId": "security:N53745100",
+      "sector": null,
+      "weight": "0.00025488"
+    },
+    {
+      "securityId": "34959J108",
+      "ticker": "FTV",
+      "name": "FORTIVE CORP",
+      "companyId": "security:34959J108",
+      "sector": null,
+      "weight": "0.00025419"
+    },
+    {
+      "securityId": "46982L108",
+      "ticker": "J",
+      "name": "JACOBS SOLUTIONS INC",
+      "companyId": "security:46982L108",
+      "sector": null,
+      "weight": "0.00025374"
+    },
+    {
+      "securityId": "668771108",
+      "ticker": "GEN",
+      "name": "GEN DIGITAL INC",
+      "companyId": "security:668771108",
+      "sector": null,
+      "weight": "0.00025122"
+    },
+    {
+      "securityId": "62944T105",
+      "ticker": "NVR",
+      "name": "NVR INC",
+      "companyId": "security:62944T105",
+      "sector": null,
+      "weight": "0.0002508"
+    },
+    {
+      "securityId": "989207105",
+      "ticker": "ZBRA",
+      "name": "ZEBRA TECHNOLOGIES CORP CL A",
+      "companyId": "security:989207105",
+      "sector": null,
+      "weight": "0.00025078"
+    },
+    {
+      "securityId": "45167R104",
+      "ticker": "IEX",
+      "name": "IDEX CORP",
+      "companyId": "security:45167R104",
+      "sector": null,
+      "weight": "0.00025072"
+    },
+    {
+      "securityId": "655663102",
+      "ticker": "NDSN",
+      "name": "NORDSON CORP",
+      "companyId": "security:655663102",
+      "sector": null,
+      "weight": "0.0002493"
+    },
+    {
+      "securityId": "525327102",
+      "ticker": "LDOS",
+      "name": "LEIDOS HOLDINGS INC",
+      "companyId": "security:525327102",
+      "sector": null,
+      "weight": "0.00024926"
+    },
+    {
+      "securityId": "16119P108",
+      "ticker": "CHTR",
+      "name": "CHARTER COMMUNICATIONS INC A",
+      "companyId": "security:16119P108",
+      "sector": null,
+      "weight": "0.00024538"
+    },
+    {
+      "securityId": "058498106",
+      "ticker": "BALL",
+      "name": "BALL CORP",
+      "companyId": "security:058498106",
+      "sector": null,
+      "weight": "0.00024326"
+    },
+    {
+      "securityId": "03743Q108",
+      "ticker": "APA",
+      "name": "APA CORP",
+      "companyId": "security:03743Q108",
+      "sector": null,
+      "weight": "0.00024075"
+    },
+    {
+      "securityId": "962166104",
+      "ticker": "WY",
+      "name": "WEYERHAEUSER CO",
+      "companyId": "security:962166104",
+      "sector": null,
+      "weight": "0.0002407"
+    },
+    {
+      "securityId": "49446R109",
+      "ticker": "KIM",
+      "name": "KIMCO REALTY CORP",
+      "companyId": "security:49446R109",
+      "sector": null,
+      "weight": "0.00024024"
+    },
+    {
+      "securityId": "00971T101",
+      "ticker": "AKAM",
+      "name": "AKAMAI TECHNOLOGIES INC",
+      "companyId": "security:00971T101",
+      "sector": null,
+      "weight": "0.0002382"
+    },
+    {
+      "securityId": "46187W107",
+      "ticker": "INVH",
+      "name": "INVITATION HOMES INC",
+      "companyId": "security:46187W107",
+      "sector": null,
+      "weight": "0.00023039"
+    },
+    {
+      "securityId": "69370C100",
+      "ticker": "PTC",
+      "name": "PTC INC",
+      "companyId": "security:69370C100",
+      "sector": null,
+      "weight": "0.00022741"
+    },
+    {
+      "securityId": "902494103",
+      "ticker": "TSN",
+      "name": "TYSON FOODS INC CL A",
+      "companyId": "security:902494103",
+      "sector": null,
+      "weight": "0.00022637"
+    },
+    {
+      "securityId": "G3223R108",
+      "ticker": "EG",
+      "name": "EVEREST GROUP LTD",
+      "companyId": "security:G3223R108",
+      "sector": null,
+      "weight": "0.0002246"
+    },
+    {
+      "securityId": "59522J103",
+      "ticker": "MAA",
+      "name": "MID AMERICA APARTMENT COMM",
+      "companyId": "security:59522J103",
+      "sector": null,
+      "weight": "0.00022152"
+    },
+    {
+      "securityId": "012653101",
+      "ticker": "ALB",
+      "name": "ALBEMARLE CORP",
+      "companyId": "security:012653101",
+      "sector": null,
+      "weight": "0.00021922"
+    },
+    {
+      "securityId": "G491BT108",
+      "ticker": "IVZ",
+      "name": "INVESCO LTD",
+      "companyId": "security:G491BT108",
+      "sector": null,
+      "weight": "0.00021696"
+    },
+    {
+      "securityId": "902252105",
+      "ticker": "TYL",
+      "name": "TYLER TECHNOLOGIES INC",
+      "companyId": "security:902252105",
+      "sector": null,
+      "weight": "0.00021621"
+    },
+    {
+      "securityId": "44107P104",
+      "ticker": "HST",
+      "name": "HOST HOTELS + RESORTS INC",
+      "companyId": "security:44107P104",
+      "sector": null,
+      "weight": "0.00021569"
+    },
+    {
+      "securityId": "42250P103",
+      "ticker": "DOC",
+      "name": "HEALTHPEAK PROPERTIES INC",
+      "companyId": "security:42250P103",
+      "sector": null,
+      "weight": "0.00021563"
+    },
+    {
+      "securityId": "04621X108",
+      "ticker": "AIZ",
+      "name": "ASSURANT INC",
+      "companyId": "security:04621X108",
+      "sector": null,
+      "weight": "0.00021304"
+    },
+    {
+      "securityId": "854502101",
+      "ticker": "SWK",
+      "name": "STANLEY BLACK + DECKER INC",
+      "companyId": "security:854502101",
+      "sector": null,
+      "weight": "0.00021215"
+    },
+    {
+      "securityId": "883203101",
+      "ticker": "TXT",
+      "name": "TEXTRON INC",
+      "companyId": "security:883203101",
+      "sector": null,
+      "weight": "0.00021014"
+    },
+    {
+      "securityId": "574599106",
+      "ticker": "MAS",
+      "name": "MASCO CORP",
+      "companyId": "security:574599106",
+      "sector": null,
+      "weight": "0.00020939"
+    },
+    {
+      "securityId": "714046109",
+      "ticker": "RVTY",
+      "name": "REVVITY INC",
+      "companyId": "security:714046109",
+      "sector": null,
+      "weight": "0.00020641"
+    },
+    {
+      "securityId": "314352105",
+      "ticker": "FDXF",
+      "name": "FEDEX FREIGHT HOLDING CO",
+      "companyId": "security:314352105",
+      "sector": null,
+      "weight": "0.00020559"
+    },
+    {
+      "securityId": "37959E102",
+      "ticker": "GL",
+      "name": "GLOBE LIFE INC",
+      "companyId": "security:37959E102",
+      "sector": null,
+      "weight": "0.00020285"
+    },
+    {
+      "securityId": "896239100",
+      "ticker": "TRMB",
+      "name": "TRIMBLE INC",
+      "companyId": "security:896239100",
+      "sector": null,
+      "weight": "0.00020266"
+    },
+    {
+      "securityId": "159864107",
+      "ticker": "CRL",
+      "name": "CHARLES RIVER LABORATORIES",
+      "companyId": "security:159864107",
+      "sector": null,
+      "weight": "0.00020114"
+    },
+    {
+      "securityId": "751212101",
+      "ticker": "RL",
+      "name": "RALPH LAUREN CORP",
+      "companyId": "security:751212101",
+      "sector": null,
+      "weight": "0.00019953"
+    },
+    {
+      "securityId": "579780206",
+      "ticker": "MKC",
+      "name": "MCCORMICK + CO NON VTG SHRS",
+      "companyId": "security:579780206",
+      "sector": null,
+      "weight": "0.00019911"
+    },
+    {
+      "securityId": "35137L105",
+      "ticker": "FOXA",
+      "name": "FOX CORP   CLASS A",
+      "companyId": "FOX",
+      "sector": null,
+      "weight": "0.00019889"
+    },
+    {
+      "securityId": "832696405",
+      "ticker": "SJM",
+      "name": "JM SMUCKER CO/THE",
+      "companyId": "security:832696405",
+      "sector": null,
+      "weight": "0.00019752"
+    },
+    {
+      "securityId": "053611109",
+      "ticker": "AVY",
+      "name": "AVERY DENNISON CORP",
+      "companyId": "security:053611109",
+      "sector": null,
+      "weight": "0.00019739"
+    },
+    {
+      "securityId": "83444M101",
+      "ticker": "SOLV",
+      "name": "SOLVENTUM CORP",
+      "companyId": "security:83444M101",
+      "sector": null,
+      "weight": "0.00019731"
+    },
+    {
+      "securityId": "G0176J109",
+      "ticker": "ALLE",
+      "name": "ALLEGION PLC",
+      "companyId": "security:G0176J109",
+      "sector": null,
+      "weight": "0.00019661"
+    },
+    {
+      "securityId": "380237107",
+      "ticker": "GDDY",
+      "name": "GODADDY INC   CLASS A",
+      "companyId": "security:380237107",
+      "sector": null,
+      "weight": "0.0001952"
+    },
+    {
+      "securityId": "517834107",
+      "ticker": "LVS",
+      "name": "LAS VEGAS SANDS CORP",
+      "companyId": "security:517834107",
+      "sector": null,
+      "weight": "0.00019429"
+    },
+    {
+      "securityId": "83088M102",
+      "ticker": "SWKS",
+      "name": "SKYWORKS SOLUTIONS INC",
+      "companyId": "security:83088M102",
+      "sector": null,
+      "weight": "0.00019329"
+    },
+    {
+      "securityId": "071813109",
+      "ticker": "BAX",
+      "name": "BAXTER INTERNATIONAL INC",
+      "companyId": "security:071813109",
+      "sector": null,
+      "weight": "0.00019188"
+    },
+    {
+      "securityId": "278768106",
+      "ticker": "ECHO",
+      "name": "ECHOSTAR CORP A",
+      "companyId": "security:278768106",
+      "sector": null,
+      "weight": "0.00018981"
+    },
+    {
+      "securityId": "758849103",
+      "ticker": "REG",
+      "name": "REGENCY CENTERS CORP",
+      "companyId": "security:758849103",
+      "sector": null,
+      "weight": "0.00018791"
+    },
+    {
+      "securityId": "22160N109",
+      "ticker": "CSGP",
+      "name": "COSTAR GROUP INC",
+      "companyId": "security:22160N109",
+      "sector": null,
+      "weight": "0.00018421"
+    },
+    {
+      "securityId": "418056107",
+      "ticker": "HAS",
+      "name": "HASBRO INC",
+      "companyId": "security:418056107",
+      "sector": null,
+      "weight": "0.00018396"
+    },
+    {
+      "securityId": "87256C101",
+      "ticker": "TKO",
+      "name": "TKO GROUP HOLDINGS INC",
+      "companyId": "security:87256C101",
+      "sector": null,
+      "weight": "0.00018256"
+    },
+    {
+      "securityId": "526107107",
+      "ticker": "LII",
+      "name": "LENNOX INTERNATIONAL INC",
+      "companyId": "security:526107107",
+      "sector": null,
+      "weight": "0.00018033"
+    },
+    {
+      "securityId": "723484101",
+      "ticker": "PNW",
+      "name": "PINNACLE WEST CAPITAL",
+      "companyId": "security:723484101",
+      "sector": null,
+      "weight": "0.00017914"
+    },
+    {
+      "securityId": "426281101",
+      "ticker": "JKHY",
+      "name": "JACK HENRY + ASSOCIATES INC",
+      "companyId": "security:426281101",
+      "sector": null,
+      "weight": "0.00017538"
+    },
+    {
+      "securityId": "366651107",
+      "ticker": "IT",
+      "name": "GARTNER INC",
+      "companyId": "security:366651107",
+      "sector": null,
+      "weight": "0.00017476"
+    },
+    {
+      "securityId": "09073M104",
+      "ticker": "TECH",
+      "name": "BIO TECHNE CORP",
+      "companyId": "security:09073M104",
+      "sector": null,
+      "weight": "0.00017291"
+    },
+    {
+      "securityId": "243537107",
+      "ticker": "DECK",
+      "name": "DECKERS OUTDOOR CORP",
+      "companyId": "security:243537107",
+      "sector": null,
+      "weight": "0.00017281"
+    },
+    {
+      "securityId": "446413106",
+      "ticker": "HII",
+      "name": "HUNTINGTON INGALLS INDUSTRIE",
+      "companyId": "security:446413106",
+      "sector": null,
+      "weight": "0.00016898"
+    },
+    {
+      "securityId": "189054109",
+      "ticker": "CLX",
+      "name": "CLOROX COMPANY",
+      "companyId": "security:189054109",
+      "sector": null,
+      "weight": "0.00016506"
+    },
+    {
+      "securityId": "65249B109",
+      "ticker": "NWSA",
+      "name": "NEWS CORP   CLASS A",
+      "companyId": "NEWS_CORP",
+      "sector": null,
+      "weight": "0.00016396"
+    },
+    {
+      "securityId": "368736104",
+      "ticker": "GNRC",
+      "name": "GENERAC HOLDINGS INC",
+      "companyId": "security:368736104",
+      "sector": null,
+      "weight": "0.00016206"
+    },
+    {
+      "securityId": "216648501",
+      "ticker": "COO",
+      "name": "COOPER COS INC/THE",
+      "companyId": "security:216648501",
+      "sector": null,
+      "weight": "0.00016162"
+    },
+    {
+      "securityId": "00130H105",
+      "ticker": "AES",
+      "name": "AES CORP",
+      "companyId": "security:00130H105",
+      "sector": null,
+      "weight": "0.00016143"
+    },
+    {
+      "securityId": "902653104",
+      "ticker": "UDR",
+      "name": "UDR INC",
+      "companyId": "security:902653104",
+      "sector": null,
+      "weight": "0.0001589"
+    },
+    {
+      "securityId": "354613101",
+      "ticker": "BEN",
+      "name": "FRANKLIN TEMPLETON INC",
+      "companyId": "security:354613101",
+      "sector": null,
+      "weight": "0.00015786"
+    },
+    {
+      "securityId": "133131102",
+      "ticker": "CPT",
+      "name": "CAMDEN PROPERTY TRUST",
+      "companyId": "security:133131102",
+      "sector": null,
+      "weight": "0.00015756"
+    },
+    {
+      "securityId": "775711104",
+      "ticker": "ROL",
+      "name": "ROLLINS INC",
+      "companyId": "security:775711104",
+      "sector": null,
+      "weight": "0.00015526"
+    },
+    {
+      "securityId": "550021109",
+      "ticker": "LULU",
+      "name": "LULULEMON ATHLETICA INC",
+      "companyId": "security:550021109",
+      "sector": null,
+      "weight": "0.0001552"
+    },
+    {
+      "securityId": "016255101",
+      "ticker": "ALGN",
+      "name": "ALIGN TECHNOLOGY INC",
+      "companyId": "security:016255101",
+      "sector": null,
+      "weight": "0.00015193"
+    },
+    {
+      "securityId": "25754A201",
+      "ticker": "DPZ",
+      "name": "DOMINO S PIZZA INC",
+      "companyId": "security:25754A201",
+      "sector": null,
+      "weight": "0.0001486"
+    },
+    {
+      "securityId": "G3265R107",
+      "ticker": "APTV",
+      "name": "APTIV PLC",
+      "companyId": "security:G3265R107",
+      "sector": null,
+      "weight": "0.00014807"
+    },
+    {
+      "securityId": "303075105",
+      "ticker": "FDS",
+      "name": "FACTSET RESEARCH SYSTEMS INC",
+      "companyId": "security:303075105",
+      "sector": null,
+      "weight": "0.00014648"
+    },
+    {
+      "securityId": "101121101",
+      "ticker": "BXP",
+      "name": "BXP INC",
+      "companyId": "security:101121101",
+      "sector": null,
+      "weight": "0.00014404"
+    },
+    {
+      "securityId": "45784P101",
+      "ticker": "PODD",
+      "name": "INSULET CORP",
+      "companyId": "security:45784P101",
+      "sector": null,
+      "weight": "0.00014267"
+    },
+    {
+      "securityId": "913903100",
+      "ticker": "UHS",
+      "name": "UNIVERSAL HEALTH SERVICES B",
+      "companyId": "security:913903100",
+      "sector": null,
+      "weight": "0.00014081"
+    },
+    {
+      "securityId": "G7S00T104",
+      "ticker": "PNR",
+      "name": "PENTAIR PLC",
+      "companyId": "security:G7S00T104",
+      "sector": null,
+      "weight": "0.00014024"
+    },
+    {
+      "securityId": "313745101",
+      "ticker": "FRT",
+      "name": "FEDERAL REALTY INVS TRUST",
+      "companyId": "security:313745101",
+      "sector": null,
+      "weight": "0.00013856"
+    },
+    {
+      "securityId": "806407102",
+      "ticker": "HSIC",
+      "name": "HENRY SCHEIN INC",
+      "companyId": "security:806407102",
+      "sector": null,
+      "weight": "0.00012928"
+    },
+    {
+      "securityId": "61945C103",
+      "ticker": "MOS",
+      "name": "MOSAIC CO/THE",
+      "companyId": "security:61945C103",
+      "sector": null,
+      "weight": "0.00012437"
+    },
+    {
+      "securityId": "35137L204",
+      "ticker": "FOX",
+      "name": "FOX CORP   CLASS B",
+      "companyId": "FOX",
+      "sector": null,
+      "weight": "0.00012423"
+    },
+    {
+      "securityId": "015271109",
+      "ticker": "ARE",
+      "name": "ALEXANDRIA REAL ESTATE EQUIT",
+      "companyId": "security:015271109",
+      "sector": null,
+      "weight": "0.00011846"
+    },
+    {
+      "securityId": "552953101",
+      "ticker": "MGM",
+      "name": "MGM RESORTS INTERNATIONAL",
+      "companyId": "security:552953101",
+      "sector": null,
+      "weight": "0.00011817"
+    },
+    {
+      "securityId": "983134107",
+      "ticker": "WYNN",
+      "name": "WYNN RESORTS LTD",
+      "companyId": "security:983134107",
+      "sector": null,
+      "weight": "0.00011338"
+    },
+    {
+      "securityId": "G66721104",
+      "ticker": "NCLH",
+      "name": "NORWEGIAN CRUISE LINE HOLDIN",
+      "companyId": "security:G66721104",
+      "sector": null,
+      "weight": "0.00010302"
+    },
+    {
+      "securityId": "831865209",
+      "ticker": "AOS",
+      "name": "SMITH (A.O.) CORP",
+      "companyId": "security:831865209",
+      "sector": null,
+      "weight": "0.00009708"
+    },
+    {
+      "securityId": "12008R107",
+      "ticker": "BLDR",
+      "name": "BUILDERS FIRSTSOURCE INC",
+      "companyId": "security:12008R107",
+      "sector": null,
+      "weight": "0.00009699"
+    },
+    {
+      "securityId": "60871R209",
+      "ticker": "TAP",
+      "name": "MOLSON COORS BEVERAGE CO   B",
+      "companyId": "security:60871R209",
+      "sector": null,
+      "weight": "0.00009432"
+    },
+    {
+      "securityId": "29530P102",
+      "ticker": "ERIE",
+      "name": "ERIE INDEMNITY COMPANY CL A",
+      "companyId": "security:29530P102",
+      "sector": null,
+      "weight": "0.00009337"
+    },
+    {
+      "securityId": "440452100",
+      "ticker": "HRL",
+      "name": "HORMEL FOODS CORP",
+      "companyId": "security:440452100",
+      "sector": null,
+      "weight": "0.00009296"
+    },
+    {
+      "securityId": "88339J105",
+      "ticker": "TTD",
+      "name": "TRADE DESK INC/THE  CLASS A",
+      "companyId": "security:88339J105",
+      "sector": null,
+      "weight": "0.00009123"
+    },
+    {
+      "securityId": "23918K108",
+      "ticker": "DVA",
+      "name": "DAVITA INC",
+      "companyId": "security:23918K108",
+      "sector": null,
+      "weight": "0.0000891"
+    },
+    {
+      "securityId": "115637209",
+      "ticker": "BF.B",
+      "name": "BROWN FORMAN CORP CLASS B",
+      "companyId": "security:115637209",
+      "sector": null,
+      "weight": "0.00006848"
+    },
+    {
+      "securityId": "65249B208",
+      "ticker": "NWS",
+      "name": "NEWS CORP   CLASS B",
+      "companyId": "NEWS_CORP",
+      "sector": null,
+      "weight": "0.00006115"
+    },
+    {
+      "securityId": "69932A204",
+      "ticker": "PSKY",
+      "name": "PARAMOUNT SKYDANCE CL B",
+      "companyId": "security:69932A204",
+      "sector": null,
+      "weight": "0.00004989"
+    },
+    {
+      "securityId": "436CVR021",
+      "ticker": "2602335D",
+      "name": "CONTRA HOLOGIC INCORPO",
+      "companyId": "security:436CVR021",
+      "sector": null,
+      "weight": "0.00000003"
+    }
+  ]
+}

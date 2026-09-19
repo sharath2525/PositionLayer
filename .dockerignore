@@ -1,0 +1,16 @@
+.git
+.next
+node_modules
+.env*
+!.env.example
+.vercel
+.turbo
+test-results
+playwright-report
+coverage
+.research
+docs
+*.log
+*.tsbuildinfo
+Thumbs.db
+.DS_Store

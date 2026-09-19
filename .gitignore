@@ -1,0 +1,29 @@
+node_modules/
+.next/
+out/
+.vercel/
+.turbo/
+.env*
+!.env.example
+*.tsbuildinfo
+playwright-report/
+test-results/
+coverage/
+.nyc_output/
+.research/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+
+# Publish only current product documentation. Keep plans, prompts, handoffs,
+# local maintainer notes, and provider/test evidence on this computer.
+/docs/*
+!/docs/PRODUCT_GUIDE.md
+!/docs/METHODOLOGY.md
+!/docs/HOSTING_AND_RELEASE.md
+
+# Local clean-history export prepared for a first public GitHub commit.
+/.public-release/

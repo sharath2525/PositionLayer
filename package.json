@@ -1,0 +1,58 @@
+{
+  "name": "positionlayer",
+  "version": "0.3.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "next start --hostname 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:ui": "playwright test",
+    "probe:lend": "tsx --env-file-if-exists=.env.local scripts/inspect-live.mts",
+    "probe:liquidity": "tsx --env-file-if-exists=.env.local scripts/probe-liquidity.mts",
+    "data:spy": "tsx scripts/import-spy.ts"
+  },
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "overrides": {
+    "@coral-xyz/anchor": { "toml": "4.2.0" },
+    "jayson": { "uuid": "11.1.1" },
+    "exceljs": { "uuid": "11.1.1" }
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/bn.js": "5.2.0",
+    "@types/node": "22.20.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.5",
+    "exceljs": "4.4.0",
+    "tailwindcss": "4.3.3",
+    "tsx": "4.23.13",
+    "typescript": "6.0.3",
+    "vitest": "5.0.0"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "0.31.1",
+    "@jup-ag/lend": "0.2.0",
+    "@jup-ag/lend-read": "0.0.14",
+    "@solana/spl-token": "0.4.15",
+    "@solana/web3.js": "1.99.0",
+    "@wallet-standard/app": "1.1.1",
+    "@wallet-standard/base": "1.1.1",
+    "@wallet-standard/features": "1.1.1",
+    "bn.js": "5.2.5",
+    "decimal.js": "10.6.0",
+    "lucide-react": "1.45.0",
+    "next": "16.3.5",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1",
+    "zod": "4.6.2"
+  }
+}
