@@ -276,6 +276,31 @@ export function issuerSnapshotUniverse(): UniverseSnapshot {
   };
 }
 
+/** Split-deployment outage fallback. Pure reviewed identity projection: no
+ * provider request, timer, price worker, or synthetic market observation. */
+export function readOfflineStockMarketPage(query: StockMarketQuery): StockMarketPage {
+  const snapshot = issuerSnapshotUniverse();
+  const selected = selectStockMarketPage(snapshot.records, query);
+  return StockMarketPageSchema.parse({
+    status: 'stale', records: selected.records,
+    pagination: { page: selected.page, pageSize: query.pageSize,
+      total: selected.total, totalPages: selected.totalPages },
+    summary: summarizeStockMarket(snapshot.records),
+    providers: { xstocks: 'stale', jupiterTokens: 'unavailable', jupiterPrice: 'unavailable',
+      xstocksIntelligence: 'unavailable', jupiterLend: 'unavailable' },
+    cache: { universe: 'stale', visiblePrices: 'unavailable', universeExpiresAt: snapshot.updatedAt,
+      priceWorker: priceWorkerSnapshot() },
+    updatedAt: snapshot.updatedAt,
+    issues: [...snapshot.issues, 'The shared market host is temporarily unavailable; showing reviewed identities without live prices.'],
+  });
+}
+
+export function readOfflineStockMarketDetail(mint: string) {
+  const record = issuerSnapshotUniverse().records.find(item => item.mint === mint);
+  return record ? StockMarketDetailSchema.parse({ status: 'stale', record,
+    issues: ['The shared market host is temporarily unavailable; this reviewed identity has no live price or intelligence.'] }) : null;
+}
+
 function seedCatalog() {
   if (state.catalogSeeded) return;
   state.universe.replace(issuerSnapshotUniverse());

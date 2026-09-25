@@ -15,9 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="YOUR_LIVE_APP_URL"><strong>Live App</strong></a>
-  &nbsp;•&nbsp;
-  <a href="YOUR_YOUTUBE_DEMO_URL"><strong>Demo Video</strong></a>
+  <strong>Live deployment and demo links will be added after host verification.</strong>
   &nbsp;•&nbsp;
   <a href="docs/PRODUCT_GUIDE.md"><strong>Product Guide</strong></a>
   &nbsp;•&nbsp;
@@ -89,6 +87,12 @@ PositionLayer brings those pieces together in one workspace.
 | **Protect** | Hypothetical stock shocks, resulting loan risk, and repayment toward a target LTV |
 
 > **Stocks works without connecting a wallet.**
+
+### Canonical catalog preview
+
+The Stocks workspace also has an opt-in **Canonical preview**. It keeps reviewed and live issuer-confirmed Solana mints searchable instead of stopping at the current market's 300-mint display set. It reports unique mints, actual Jupiter Price V3 observations, freshness, failed/omitted batches, and source coverage separately. A mint in the catalog is **not** a promise of a live price or a verified U.S. equity classification. Unpriced entries remain visible; the preview leads with observed token prices when available. The approved **Current market** view remains one-click rollback.
+
+Canonical prices come from a single, paced, server-side writer on a continuously running Node process. Website requests only read a completed snapshot; on a cold start or market-host outage, the reviewed catalog remains searchable without inventing prices. A Vercel deployment must point its server-only reader at that persistent writer; enabling the writer inside Vercel Functions is not a supported deployment. See [hosting and release](docs/HOSTING_AND_RELEASE.md) for exact variables, validation, and limitations. The preview's covered Solana tokenized cap and original company cap remain unavailable without qualifying supply/company evidence; they are never derived from an unrelated reported token cap.
 
 ---
 

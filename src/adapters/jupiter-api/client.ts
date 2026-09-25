@@ -56,10 +56,10 @@ async function waitFor(milliseconds:number,signal?:AbortSignal) {
   });
 }
 
-export async function jupiterJson<T>(path: string, schema: z.ZodType<T>, signal?: AbortSignal, policy: 'generic'|'wallet-specific'|'global-market'|'keyless-global-market' = 'generic', operation: MonitoringOperation = 'token_metadata'): Promise<T> {
+export async function jupiterJson<T>(path: string, schema: z.ZodType<T>, signal?: AbortSignal, policy: 'generic'|'wallet-specific'|'global-market'|'keyless-global-market' = 'generic', operation: MonitoringOperation = 'token_metadata', options: { retryRateLimit?: boolean } = {}): Promise<T> {
   const forceKeyless = policy === 'keyless-global-market';
   const headers: HeadersInit = jupiterRequestHeaders(forceKeyless);
-  for(let attempt=0;attempt<2;attempt++){
+  for(let attempt=0;attempt<(options.retryRateLimit === false ? 1 : 2);attempt++){
     try {
       return await observeProviderCall({ provider: 'JUPITER', operation }, async () => {
         await takeTurn(signal, forceKeyless);
@@ -89,7 +89,7 @@ export async function jupiterJson<T>(path: string, schema: z.ZodType<T>, signal?
         return parsed.data;
       });
     } catch (error) {
-      if (error instanceof JupiterApiError && error.kind === 'rate-limited' && attempt === 0 && error.retryAfterSeconds !== null && error.retryAfterSeconds <= 5) {
+      if (options.retryRateLimit !== false && error instanceof JupiterApiError && error.kind === 'rate-limited' && attempt === 0 && error.retryAfterSeconds !== null && error.retryAfterSeconds <= 5) {
         noteRetry({ provider: 'JUPITER', operation, retryAttempt: attempt + 1, delayMs: error.retryAfterSeconds * 1_000 });
         await waitFor(error.retryAfterSeconds * 1_000, signal);
         continue;

@@ -20,6 +20,7 @@ import { AssetIcon } from './portfolio/portfolio-sections';
 import { OverviewView } from './views/overview-view';
 import { PortfolioView } from './views/portfolio-view';
 import { StocksView } from './views/stocks-view';
+import { CanonicalStocksView } from './views/canonical-stocks-view';
 
 type View = 'overview' | 'stocks' | 'portfolio' | 'exposure' | 'protect';
 const WORKSPACE_KEY = 'positionlayer:workspace:v1';
@@ -27,6 +28,9 @@ const THEME_KEY = 'positionlayer:theme:v1';
 export function Dashboard() {
   const wallet = useWallet();
   const [view, setView] = useState<View>('overview');
+  const [canonicalPreview, setCanonicalPreview] = useState(process.env.NEXT_PUBLIC_MARKET_V2_UI_PREVIEW === 'true');
+  const canonicalPreviewAvailable = process.env.NODE_ENV !== 'production'
+    || process.env.NEXT_PUBLIC_MARKET_V2_UI_PREVIEW === 'true';
   const [mode, setMode] = useState<'sample' | 'live'>('live');
   const [watched, setWatched] = useState<string | null>(null);
   const [workspaceReady, setWorkspaceReady] = useState(false);
@@ -121,7 +125,8 @@ export function Dashboard() {
   const context: ReadContext = { owner: mode==='sample'?null:owner, cluster:'solana:mainnet', now };
   const viewCopy = {
     overview: { title: 'Overview', eyebrow: 'YOUR PORTFOLIO, IN PERSPECTIVE', heading: 'Know what you hold.', description: 'Your essential portfolio, exposure, and loan-risk answers.' },
-    stocks: { title: 'Stocks', eyebrow: '300 ISSUER-CONFIRMED ASSETS · NO WALLET REQUIRED', heading: 'Tokenized Stock Prices on Solana', description: 'A broad issuer-confirmed market with shared keyless price updates every 30 seconds.' },
+    stocks: canonicalPreview ? { title: 'Stocks', eyebrow: 'CANONICAL CATALOG PREVIEW · NO WALLET REQUIRED', heading: 'Tokenized Stock Prices on Solana', description: 'Exact issuer identities, independently reported prices, and explicit data coverage.' }
+      : { title: 'Stocks', eyebrow: '300 ISSUER-CONFIRMED ASSETS · NO WALLET REQUIRED', heading: 'Tokenized Stock Prices on Solana', description: 'A broad issuer-confirmed market with shared keyless price updates every 30 seconds.' },
     portfolio: { title: 'Portfolio', eyebrow: 'EVERY POSITION · ONE RECONCILED VIEW', heading: 'Your whole portfolio.', description: 'Wallet, Earn, borrow, indexed, and excluded records—clearly separated.' },
     exposure: { title: 'Exposure', eyebrow: 'UNDERLY · LOOK THROUGH YOUR HOLDINGS', heading: 'Different tokens. Shared exposure.', description: 'See the companies you own directly and through your ETFs.' },
     protect: { title: 'Protect', eyebrow: 'POSITIONLAYER · READ-ONLY PROTECTION PLANNING', heading: 'Plan for a different market.', description: 'Explore a scenario, choose a target, and understand the cash it would take.' },
@@ -157,7 +162,17 @@ export function Dashboard() {
       <main id="main">
         {view !== 'stocks' && <div className={`mode-banner ${mode}`}><div>{mode === 'sample' ? <FlaskConical size={17}/> : <Link2 size={17}/>}<strong>{mode === 'sample' ? 'Sample portfolio · simulated values' : `Live portfolio · ${wallet.account ? 'connected wallet' : watched ? 'public address · read only' : 'not connected'}`}</strong><span>{mode === 'sample' ? 'Explore how your holdings fit together.' : owner ? `${short(owner)} · Solana mainnet` : 'Connect to read your onchain holdings.'}</span></div><div className="mode-choices" role="group" aria-label="Data mode"><button className="mode-choice sample" type="button" aria-pressed={mode === 'sample'} onClick={() => changeMode('sample')}>Sample</button><button className="mode-choice live" type="button" aria-pressed={mode === 'live'} onClick={() => changeMode('live')}>Live</button></div></div>}
         <div className="page-heading"><div className="eyebrow">{viewCopy.eyebrow}</div><div className="heading-row"><div><h1>{viewCopy.heading}</h1><p>{viewCopy.description}</p></div>{view !== 'stocks' && <button className="button secondary refresh" onClick={() => setRefresh(r => r+1)} disabled={loading || disconnected}><RefreshCw size={14} className={loading ? 'spin' : ''}/>{loading ? 'Reading…' : 'Refresh data'}</button>}</div></div>
-        {view === 'stocks' ? <StocksView portfolio={data} initialMint={focusedMarketMint} onPortfolio={() => setView('portfolio')} onExposure={() => setView('exposure')} onProtect={() => setView('protect')}/> : <>
+        {view === 'stocks' ? <>
+          {canonicalPreviewAvailable && <div className="canonical-preview-switch" role="group" aria-label="Stock catalog view">
+            <button type="button" aria-pressed={!canonicalPreview} onClick={() => setCanonicalPreview(false)}>Current market</button>
+            <button type="button" aria-pressed={canonicalPreview} onClick={() => setCanonicalPreview(true)}>Canonical preview</button>
+            <span>Preview is opt-in; the approved market remains the rollback view.</span>
+          </div>}
+          {canonicalPreview ? <CanonicalStocksView portfolio={data} initialMint={focusedMarketMint}
+            onPortfolio={() => setView('portfolio')} onExposure={() => setView('exposure')} onProtect={() => setView('protect')}/>
+            : <StocksView portfolio={data} initialMint={focusedMarketMint}
+              onPortfolio={() => setView('portfolio')} onExposure={() => setView('exposure')} onProtect={() => setView('protect')}/>}
+        </> : <>
         {wallet.error && <div role="alert" className="notice error"><AlertCircle size={17}/>{wallet.error}</div>}
         {disconnected && <ConnectionEmpty onConnect={() => setConnectOpen(true)} onWatch={address => { setWatched(address); setSelection(undefined); }}/ >}
         {loading && <Loading/>}
