@@ -9,6 +9,11 @@ test-results
 playwright-report
 coverage
 .research
+.public-release
+.market-data
+.agents
+.codex
+CLAUDE.md
 docs
 *.log
 *.tsbuildinfo

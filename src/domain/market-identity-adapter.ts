@@ -52,6 +52,9 @@ export function adaptLegacyXstockRecord(record: StockMarketRecord): LegacyIdenti
       pending: multiplier?.pending ?? null, activationAt: multiplier?.activationAt ?? null,
     },
     tradingHalted: record.intelligence?.market.tradingHalted ?? null,
+    listing: { currency: record.intelligence?.market.currency ?? null,
+      period: record.intelligence?.market.period ?? null, openNow: record.intelligence?.market.openNow ?? null,
+      nextChangeAt: record.intelligence?.market.nextChangeAt ?? null },
     verification: exactIssuer ? 'issuer-confirmed' : 'indexed-only',
     eligibility: eligible ? 'eligible' : 'unresolved',
     availability: {

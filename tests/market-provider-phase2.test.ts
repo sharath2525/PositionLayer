@@ -26,14 +26,17 @@ describe('Phase 2 bounded optional market providers', () => {
     const fetcher = vi.fn(async (input: RequestInfo | URL) => {
       const url = new URL(String(input));
       expect(url.searchParams.get('network')).toBe('Solana');
-      expect(url.searchParams.get('listingCountry')).toBe('US');
+      expect(url.searchParams.has('listingCountry')).toBe(false);
       expect(url.searchParams.get('pageSize')).toBe('100');
       return url.searchParams.get('page') === '0' ? page(0, [asset(mintA)], true)
         : page(1, [asset(mintB)]);
     });
-    const reader = createXstocksIssuerReader({ fetchImpl: fetcher as typeof fetch, now: () => start });
+    const sleeps: number[] = [];
+    const reader = createXstocksIssuerReader({ fetchImpl: fetcher as typeof fetch,
+      sleep: async ms => { sleeps.push(ms); }, now: () => start });
     const [first, concurrent] = await Promise.all([reader.read(), reader.read()]);
     expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(sleeps).toEqual([2100]);
     expect(first).toEqual(concurrent);
     expect(first.status).toBe('ready');
     expect(first.records.map(row => row.variant.mint)).toEqual([mintA, mintB]);
@@ -101,13 +104,14 @@ describe('Phase 2 bounded optional market providers', () => {
     expect(recovered.lastSuccess).not.toBe(initial.lastSuccess);
   });
 
-  it('excludes non-US and non-Solana xStocks without inferring identity', async () => {
+  it('keeps non-US Solana identities without widening US eligibility and excludes other chains', async () => {
     const nonUs = { ...asset(mintB), underlying: { ...asset(mintB).underlying, listingCountry: 'GB' } };
     const nonSolana = { ...asset(mintB), deployments: [{ address: mintB, network: 'Ethereum' }] };
     const fetcher = vi.fn(async () => page(0, [asset(mintA), nonUs, nonSolana]));
     const result = await createXstocksIssuerReader({ fetchImpl: fetcher as typeof fetch, now: () => start }).read();
     expect(result.status).toBe('ready');
-    expect(result.records.map(row => row.variant.mint)).toEqual([mintA]);
+    expect(result.records.map(row => row.variant.mint)).toEqual([mintA, mintB]);
+    expect(result.records[1].variant).toMatchObject({ eligibility: 'unresolved', underlying: { listingCountry: 'GB' } });
   });
 
   it('retains an exact US Solana issuer mint when the issuer omits its security class', async () => {
@@ -137,7 +141,7 @@ describe('Phase 2 bounded optional market providers', () => {
     const empty = createXstocksIssuerReader({ fetchImpl: vi.fn(async () => page(0, [])) as typeof fetch, now: () => start });
     expect(await empty.read()).toMatchObject({ status: 'ready', records: [], issues: [] });
     const fetcher = vi.fn(async (input: RequestInfo | URL) => page(Number(new URL(String(input)).searchParams.get('page')), [asset(mintA)], true));
-    const bounded = createXstocksIssuerReader({ fetchImpl: fetcher as typeof fetch, now: () => start });
+    const bounded = createXstocksIssuerReader({ fetchImpl: fetcher as typeof fetch, sleep: async () => {}, now: () => start });
     const result = await bounded.read();
     expect(fetcher).toHaveBeenCalledTimes(25);
     expect(result.status).toBe('partial');
@@ -151,7 +155,7 @@ describe('Phase 2 bounded optional market providers', () => {
       const number = Number(new URL(String(input)).searchParams.get('page'));
       return page(number, [asset(mintA.slice(0, -1) + letters[number])], number < 11);
     });
-    const reader = createXstocksIssuerReader({ fetchImpl: fetcher as typeof fetch, now: () => start });
+    const reader = createXstocksIssuerReader({ fetchImpl: fetcher as typeof fetch, sleep: async () => {}, now: () => start });
     const result = await reader.read();
     expect(fetcher).toHaveBeenCalledTimes(12);
     expect(result.status).toBe('ready');

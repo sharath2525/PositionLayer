@@ -93,7 +93,7 @@ describe('Phase 6 dynamic prices and versioned canonical API', () => {
     expect(calls.every((call, index) => index === 0 || call.at - calls[index - 1].at >= 2_100)).toBe(true);
     const current = (await store.readCurrent())!;
     expect(current.prices).toMatchObject({ totalBatches: 21, processedBatches: 21,
-      successfulCount: 1050, missingCount: 0, failedCount: 0, durationMs: 42_000 });
+      successfulCount: 1050, missingCount: 0, failedCount: 0, durationMs: 50_000 });
     expect(current.capCoverage?.summary).toMatchObject({ status: 'unavailable', valueUsd: null,
       verifiedMintCount: 1050, eligibleMintCount: 0, coveragePct: '0' });
     const read = await readMarketSnapshot({ store, bundledCatalog: null, nowMs: clock });
@@ -101,11 +101,19 @@ describe('Phase 6 dynamic prices and versioned canonical API', () => {
     expect(first).toMatchObject({ version: 2, source: 'current', summary: {
       canonicalCount: 1050, verifiedUnderlyingCount: 1050, issuerConfirmedUnderlyingCount: 1050,
       exactMintCount: 1050, issuerConfirmedMintCount: 1050,
-      eligibleVerifiedMintCount: 1050, priceAvailableMintCount: 1050,
+      eligibleVerifiedMintCount: 1050, priceAvailableMintCount: 950,
+      displayPriceDelayedMintCount: 100,
       coveredSolanaTokenizedCap: { status: 'unavailable', valueUsd: null, verifiedMintCount: 1050 },
     }, pagination: { total: 1050, totalPages: 21, pageSize: 50 } });
     expect(first.records).toHaveLength(50);
-    expect(JSON.stringify(first).length).toBeLessThan(75_000);
+    // Fifty page rows plus at most twenty compact ticker observations.
+    expect(JSON.stringify(first).length).toBeLessThan(85_000);
+    // This price-only fixture has no company caps; never rank it by token price instead.
+    expect(first.ticker).toHaveLength(0);
+    const filteredTicker = projectCanonicalMarket({ read, query: query({ search: mint(1049) }), nowMs: clock });
+    expect(filteredTicker.records).toHaveLength(1);
+    expect(filteredTicker.ticker).toEqual(first.ticker);
+    expect(projectCanonicalMarket({ read, query: query(), nowMs: clock + 601_000 }).ticker).toEqual([]);
     const callsBeforeReaders = calls.length;
     await Promise.all(Array.from({ length: 24 }, () => readMarketSnapshot({ store,
       bundledCatalog: null, nowMs: clock })));

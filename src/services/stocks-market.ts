@@ -1,5 +1,6 @@
 import 'server-only';
 import { JupiterApiError } from '@/adapters/jupiter-api/client';
+import { marketSnapshotsManaged } from './market-durable-store';
 import {
   activeSolanaXstockAssets,
   mergeJupiterStockMetadata,
@@ -678,7 +679,7 @@ export function trackComparisonTransition(mint: string, comparison: MarketSource
   state.comparisonStates.set(mint, { ...prior, divergedCount: 0, agreedCount: 0 });
 }
 
-function marketEvidenceFor(record: StockMarketRecord, pool: PoolObservation | null, now = Date.now()) {
+export function marketEvidenceFor(record: StockMarketRecord, pool: PoolObservation | null, now = Date.now()) {
   const observation = record.marketObservation ?? projectJupiterObservation({
     mint: record.mint, priceUsd: record.priceUsd, priceChange24hPct: record.priceChange24hPct,
     blockId: null, decimals: record.decimals, retrievedAt: record.priceUpdatedAt,
@@ -743,6 +744,7 @@ export function boundedIntelligenceRecords(records: StockMarketRecord[]) {
 }
 
 export async function readStockMarketPage(query: StockMarketQuery, signal?: AbortSignal): Promise<{ page: StockMarketPage; retryAfterSeconds: number | null }> {
+  if (marketSnapshotsManaged()) return (await import('./market-legacy-reader')).readManagedLegacyPage(query);
   if (signal?.aborted) throw new JupiterApiError('aborted', null, 'Market request was cancelled.');
   seedCatalog();
   const universeRead = await state.universe.read(() => Promise.resolve(issuerSnapshotUniverse()));
@@ -798,6 +800,7 @@ export async function readStockMarketPage(query: StockMarketQuery, signal?: Abor
 }
 
 export async function readStockMarketDetail(mint: string) {
+  if (marketSnapshotsManaged()) return (await import('./market-legacy-reader')).readManagedLegacyDetail(mint);
   const now = Date.now();
   seedCatalog();
   const universeRead = await state.universe.read(() => Promise.resolve(issuerSnapshotUniverse()));
@@ -807,6 +810,19 @@ export async function readStockMarketDetail(mint: string) {
   prioritizePrices([mint]);
   const core = resolvedMarketRecords(universeRead.value.records, now).find(record => record.mint === mint);
   if (!core) return null;
+  return enrichStockMarketDetail(core, now, universeRead.state === 'stale');
+}
+
+const contextRoot = globalThis as typeof globalThis & { __positionLayerStockContext?: Map<string, ReturnType<typeof StockMarketDetailSchema.parse>> };
+const contextCache = contextRoot.__positionLayerStockContext ??= new Map();
+export function getCachedStockContext(mint: string) { return contextCache.get(mint) ?? null; }
+export async function refreshStockContextFromWorker(core: StockMarketRecord) {
+  const value = await enrichStockMarketDetail(core, Date.now(), false);
+  contextCache.set(core.mint, value);
+  if (contextCache.size > 300) contextCache.delete(contextCache.keys().next().value!);
+  return value;
+}
+async function enrichStockMarketDetail(core: StockMarketRecord, now: number, stale: boolean) {
   state.counts.detailLoads++;
   const [issuer, lend, supplyRead, reserveRead, meteora] = await Promise.all([
     readIssuerIntelligence(core, now),
@@ -835,7 +851,7 @@ export async function readStockMarketDetail(mint: string) {
   if (lend.vaults === null) issues.push('Jupiter Lend vault availability is unavailable.');
   issues.push(...meteora.issues);
   const marketEvidence = marketEvidenceFor(record, meteora.pool, now);
-  return StockMarketDetailSchema.parse({ status: universeRead.state === 'stale' ? 'stale' : issues.length ? 'partial' : 'ready', record, marketEvidence, issues: [...new Set(issues)].slice(0, 12) });
+  return StockMarketDetailSchema.parse({ status: stale ? 'stale' : issues.length ? 'partial' : 'ready', record, marketEvidence, issues: [...new Set(issues)].slice(0, 12) });
 }
 
 export function getStockMarketCacheStats() { return { ...state.counts, priceKeys: state.worker.prices.size, issuerPriceKeys: state.issuerPrices.size, multiplierKeys: state.multipliers.size, supplyKeys: state.supplies.size, reserveKeys: state.reserves.size, meteoraPoolKeys: state.meteoraPools.size, worker: priceWorkerSnapshot() }; }

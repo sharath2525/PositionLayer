@@ -3,6 +3,14 @@ import {
   CanonicalMarketDetailSchema, CanonicalMarketPageSchema,
   type CanonicalMarketQuery,
 } from '@/domain/market-api-v2';
+import { ageCanonicalPage } from '@/domain/market-client-freshness';
+
+const cachedPages=new Map<string,{at:number;page:ReturnType<typeof CanonicalMarketPageSchema.parse>}>();
+const key=(query:CanonicalMarketQuery)=>JSON.stringify(query);
+export function cachedCanonicalPage(query:CanonicalMarketQuery) {
+  const item=cachedPages.get(key(query));
+  return item&&Date.now()-item.at<300_000?ageCanonicalPage(item.page):null;
+}
 
 export async function readBrowserCanonicalPage(query: CanonicalMarketQuery, signal?: AbortSignal) {
   const params = new URLSearchParams(Object.entries(query).map(([key, value]) => [key, String(value)]));
@@ -13,6 +21,8 @@ export async function readBrowserCanonicalPage(query: CanonicalMarketQuery, sign
     ? 'The catalog search or filters are invalid.' : 'The canonical catalog is temporarily unavailable.');
   const result = CanonicalMarketPageSchema.safeParse(await response.json());
   if (!result.success) throw Error('The canonical market response failed validation.');
+  cachedPages.delete(key(query));cachedPages.set(key(query),{at:Date.now(),page:result.data});
+  while(cachedPages.size>32)cachedPages.delete(cachedPages.keys().next().value!);
   return result.data;
 }
 

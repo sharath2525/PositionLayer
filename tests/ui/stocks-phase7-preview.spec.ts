@@ -4,8 +4,13 @@ import { mkdir } from 'node:fs/promises';
 async function openPreview(page: import('@playwright/test').Page) {
   await page.goto('/');
   await page.getByRole('button', { name: 'Stocks', exact: true }).click();
-  await page.getByRole('button', { name: 'Canonical preview' }).click();
-  await expect(page.getByRole('region', { name: 'Canonical Solana stock catalog preview' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Solana stock market' })).toBeVisible();
+}
+
+async function openCoverage(page: import('@playwright/test').Page) {
+  const panel = page.locator('.canonical-coverage-details');
+  await expect(panel).toBeVisible();
+  if (await panel.getAttribute('open') === null) await panel.locator('summary').click();
 }
 
 test('canonical preview is wallet-independent, server-paged, keyboard accessible, and responsive', async ({ page, request }) => {
@@ -17,9 +22,9 @@ test('canonical preview is wallet-independent, server-paged, keyboard accessible
   });
   await page.route('**/api/markets/stocks**', route => route.fulfill({ status: 503 }));
   await openPreview(page);
-  await expect(page.getByText('Searchable identities')).toBeVisible();
-  await expect(page.getByText('Token prices shown')).toBeVisible();
-  await page.getByText('Full catalog and provider coverage').click();
+  await expect(page.getByText('Total searchable identities / Unique Solana mints')).toBeVisible();
+  await expect(page.getByText('Onchain-price available')).toBeVisible();
+  await openCoverage(page);
   await expect(page.getByText('Price targets / attempted / returned')).toBeVisible();
   await expect(page.getByText('Company cap available / unavailable / N/A')).toBeVisible();
   await expect(page.getByText('Covered Solana tokenized cap')).toBeVisible();
@@ -87,8 +92,9 @@ test('provider degradation, missing logo, company-cap distinction, and recovery 
   await page.route('**/api/markets/v2/assets/**', route => route.fulfill({ json: detail }));
   await page.route('https://xstocks-metadata.backed.fi/logos/tokens/MISSING.png', route => route.abort());
   await openPreview(page);
-  await expect(page.getByText('Partial market coverage.')).toBeVisible();
-  await expect(page.getByText('Unavailable · stale-price')).toBeVisible();
+  await expect(page.getByText('Partial market coverage.')).toHaveCount(0);
+  await expect(page.getByRole('table').locator('[title*="stale-price"]').first()).toBeVisible();
+  await page.getByRole('button', { name: 'Listed', exact: true }).click();
   await expect(page.getByText('N/A · ETF').first()).toBeVisible();
   await expect(page.locator('.canonical-market .market-avatar[data-logo-state="initials-fallback"]').first()).toBeVisible();
   await page.getByRole('button', { name: `View ${first.name} variants` }).first().click();
@@ -107,17 +113,16 @@ test('canonical preview remains independent of Sample and failed Live portfolio 
   await page.goto('/');
   await page.getByRole('button', { name: 'Sample', exact: true }).click();
   await page.getByRole('button', { name: 'Stocks', exact: true }).click();
-  await page.getByRole('button', { name: 'Canonical preview' }).click();
-  await expect(page.getByText('Searchable identities')).toBeVisible();
+  await expect(page.getByText('Total searchable identities / Unique Solana mints')).toBeVisible();
   await page.getByRole('button', { name: 'Overview' }).click();
   await page.getByRole('button', { name: 'Live', exact: true }).click();
   await page.getByText('Read a public address', { exact: true }).click();
   await page.getByLabel('Solana wallet address').fill('11111111111111111111111111111111');
   await page.getByRole('button', { name: 'Read', exact: true }).click();
   await page.getByRole('button', { name: 'Stocks', exact: true }).click();
-  await expect(page.getByText('Searchable identities')).toBeVisible();
-  await page.getByRole('button', { name: 'Current market' }).click();
-  await expect(page.getByText('300 issuer-confirmed Solana assets')).toBeVisible();
+  await expect(page.getByText('Total searchable identities / Unique Solana mints')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Current market' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Tokenized', exact: true })).toBeVisible();
 });
 
 test('each optional source outage, total fallback, and recovery remain field-specific snapshot reads', async ({ page, request }) => {
@@ -138,13 +143,16 @@ test('each optional source outage, total fallback, and recovery remain field-spe
       providers: { ...base.providers, ...statuses } } });
   });
   await openPreview(page);
-  await expect(page.getByText(/issuer registry: unavailable/)).toBeVisible();
+  await openCoverage(page);
+  await expect(page.locator('.canonical-coverage-details dl > div').filter({has:page.getByText('xStocks issuer read',{exact:true})})).toContainText('unavailable');
   source = 'discovery';
   await page.getByRole('combobox', { name: 'Sort canonical market' }).selectOption('variants');
-  await expect(page.getByText(/discovery index: unavailable/)).toBeVisible();
+  await openCoverage(page);
+  await expect(page.locator('.canonical-coverage-details dl > div').filter({has:page.getByText('Jupiter stocks tag read',{exact:true})}).getByText(/unavailable/)).toBeVisible();
   source = 'price';
   await page.getByRole('combobox', { name: 'Sort canonical market' }).selectOption('reportedCap');
-  await expect(page.getByText(/Price V3: unavailable/)).toBeVisible();
+  await openCoverage(page);
+  await expect(page.locator('.canonical-coverage-details dl > div').filter({has:page.getByText('Price provider',{exact:true})}).getByText(/unavailable/)).toBeVisible();
   source = 'total';
   await page.getByRole('combobox', { name: 'Sort canonical market' }).selectOption('price');
   await expect(page.getByText('Dated reviewed catalog fallback.')).toBeVisible();

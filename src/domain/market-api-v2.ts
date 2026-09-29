@@ -8,13 +8,21 @@ import { ResolvedCanonicalPriceSchema, VariantPriceDecisionSchema, resolveCanoni
   canQueryExactIssuerPrice,
   type VariantTokenObservation } from './market-price-policy';
 import type { MarketSnapshotRead } from '@/services/market-snapshot-reader';
+import { MarketEnrichmentSchema } from './market-enrichment';
+import { StockMarketDetailSchema, StockIntelligenceSchema } from './stocks';
+import { StockRichDataSchema, ageRichData, listedSession, type StockRichData } from './stock-rich-data';
 
 export const CanonicalMarketQuerySchema = z.object({
+  view: z.enum(['tokenized', 'listed']).default('tokenized'),
   search: z.string().trim().max(64).default(''),
   type: z.enum(['all', 'equity', 'etf', 'other']).default('all'),
   verification: z.enum(['all', 'issuer-confirmed', 'other']).default('all'),
   price: z.enum(['all', 'observed', 'available', 'unavailable']).default('all'),
-  sort: z.enum(['name', 'availability', 'price', 'variants', 'reportedCap']).default('name'),
+  market: z.enum(['all', 'open', 'closed', 'halted', 'unknown']).default('all'),
+  country: z.string().regex(/^(all|[A-Z]{2})$/).default('all'),
+  currency: z.string().regex(/^(all|[A-Z]{3})$/).default('all'),
+  sort: z.enum(['name', 'availability', 'price', 'variants', 'reportedCap', 'listedCap', 'liquidity', 'volume', 'change', 'holders', 'fdv']).default('name'),
+  watchlist: z.string().max(4500).default('').refine(value => !value || value === 'none' || (value.split(',').length <= 100 && value.split(',').every(mint => /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(mint))), 'Invalid watchlist'),
   direction: z.enum(['asc', 'desc']).default('asc'),
   page: z.coerce.number().int().min(1).max(1000).default(1),
   pageSize: z.coerce.number().int().min(1).max(50).default(20),
@@ -35,12 +43,54 @@ export const CanonicalMarketRowSchema = z.object({
   liquidMintCount: z.number().int().nonnegative(),
   reportedVolume24hUsd: z.string().nullable(), reportedVolumeMintCount: z.number().int().nonnegative(),
   reportedTokenizedCapUsd: z.string().nullable(), reportedCapMintCount: z.number().int().nonnegative(),
-  reportedCapSource: z.literal('jupiter-tokens-v2').nullable(),
+  reportedCapSource: z.enum(['jupiter-tokens-v2','dexscreener','mixed']).nullable(),
   reportedCapRetrievedAt: MarketTimestampSchema.nullable(),
   companyCap: OptionalCompanyCapSchema,
+  marketData: MarketEnrichmentSchema.nullable().default(null),
+  listedData: MarketEnrichmentSchema.nullable().default(null),
+  listingCountry: z.string().nullable().default(null),
+  listingExchange: z.string().nullable().default(null),
+  listingCurrency: z.string().nullable().default(null),
+  tokenSymbol: z.string().nullable().default(null),
+  marketStatus: z.enum(['open', 'closed', 'halted', 'unknown']).default('unknown'),
+  marketStatusValidUntil: MarketTimestampSchema.nullable().default(null),
+  issuerContext: StockIntelligenceSchema.pick({ issuerIndicativePriceUsd: true,
+    issuerPriceRetrievedAt: true, issuerPriceSourceUrl: true, supply: true, reserve: true }).nullable().default(null),
+  rich: StockRichDataSchema.nullable().default(null),
 }).strict();
 
+export const MarketTickerItemSchema = CanonicalMarketRowSchema.pick({ id: true, symbol: true,
+  name: true, displayPrice: true }).extend({
+  change24h: MarketEnrichmentSchema.shape.change24h,
+}).strict();
+
+type CompanyRow = z.infer<typeof CanonicalMarketRowSchema>;
+const companyCapField = (row: CompanyRow) => ['equity', 'private', 'unknown'].includes(row.productClass)
+  ? row.listedData?.companyCap ?? null : null;
+
+/** No FX guesses: USD, then unlabelled provider caps, then other currency groups.
+ * Missing caps always follow ranked companies, even for ascending sorts. */
+export function compareCompanyCaps(a: CompanyRow, b: CompanyRow, direction: 'asc' | 'desc' = 'desc') {
+  const left = companyCapField(a), right = companyCapField(b);
+  if (!left || !right) return Number(!left) - Number(!right) || a.id.localeCompare(b.id);
+  const group = (currency: string | null) => currency === 'USD' ? '0' : currency === null ? '1' : `2${currency}`;
+  return group(left.currency).localeCompare(group(right.currency))
+    || (direction === 'desc' ? -1 : 1) * decimal(String(left.value)).comparedTo(right.value)
+    || a.id.localeCompare(b.id);
+}
+
+export function topCompanyRows(rows: readonly CompanyRow[]) {
+  const seen = new Set<string>();
+  return rows.filter(row => row.displayPrice.priceUsd !== null && companyCapField(row)
+    && ['equity', 'private'].includes(row.productClass)).sort(compareCompanyCaps).filter(row => {
+    const key = row.isin ?? `${row.listingCountry ?? ''}:${row.symbol.toUpperCase()}`;
+    if (seen.has(key)) return false;
+    seen.add(key); return true;
+  }).slice(0, 20);
+}
+
 export const CanonicalMarketPageSchema = z.object({
+  enrichmentVersion: z.string().nullable().default(null),
   version: z.literal(2), status: z.enum(['ready', 'degraded', 'unavailable']),
   source: z.enum(['current', 'previous', 'local-previous', 'bundled', 'unavailable']),
   catalog: z.object({ id: z.string().nullable(), status: z.string(), publishedAt: MarketTimestampSchema.nullable(),
@@ -57,6 +107,8 @@ export const CanonicalMarketPageSchema = z.object({
     cycleState: z.enum(['idle', 'running', 'backoff', 'complete', 'failed']),
   }).strict(),
   summary: z.object({ canonicalCount: z.number().int().nonnegative(),
+    referencePriceCount: z.number().int().nonnegative().default(0),
+    providerCompanyCapCount: z.number().int().nonnegative().default(0),
     inputCandidateRecordCount: z.number().int().nonnegative(), inputUniqueMintCount: z.number().int().nonnegative(),
     inputDuplicateRecordCount: z.number().int().nonnegative(), reviewedCandidateRecordCount: z.number().int().nonnegative(),
     verifiedUnderlyingCount: z.number().int().nonnegative(), issuerConfirmedUnderlyingCount: z.number().int().nonnegative(),
@@ -84,22 +136,29 @@ export const CanonicalMarketPageSchema = z.object({
       verifiedMintCount: z.number().int().nonnegative(), coveragePct: z.string(),
       calculatedAt: MarketTimestampSchema.nullable() }).strict(),
     reportedTokenizedCapUsd: z.string().nullable(), reportedCapMintCount: z.number().int().nonnegative(),
-    reportedCapSource: z.literal('jupiter-tokens-v2').nullable(),
+    reportedCapSource: z.enum(['jupiter-tokens-v2','dexscreener','mixed']).nullable(),
     reportedCapOldestRetrievedAt: MarketTimestampSchema.nullable(),
   }).strict(),
   pagination: z.object({ page: z.number().int().positive(), pageSize: z.number().int().min(1).max(50),
     total: z.number().int().nonnegative(), totalPages: z.number().int().nonnegative() }).strict(),
   records: z.array(CanonicalMarketRowSchema).max(50),
+  ticker: z.array(MarketTickerItemSchema).max(20).default([]),
+  facets: z.object({ countries: z.array(z.string()).max(250),
+    currencies: z.array(z.string()).max(250) }).strict().default({ countries: [], currencies: [] }),
 }).strict();
 
 export const CanonicalMarketDetailSchema = z.object({
   version: z.literal(2), asset: CanonicalStockAssetSchema,
+  enrichmentVersion: z.string().nullable().default(null),
+  context: StockMarketDetailSchema.nullable().default(null),
   selectedPrice: ResolvedCanonicalPriceSchema,
   variants: z.array(z.object({
     mint: z.string(), variant: SolanaStockVariantSchema,
     catalogState: z.enum(['active', 'pending-removal', 'quarantined', 'delisted']),
     conflicts: z.array(z.string()), lastAttempt: z.enum(['success', 'omitted', 'failed']).nullable(),
     retainedLastGood: z.boolean(), tokenPrice: VariantPriceDecisionSchema,
+    marketData: MarketEnrichmentSchema.nullable().default(null),
+    rich: StockRichDataSchema.nullable().default(null),
     displayPrice: DisplayTokenPriceSchema,
     lastObservation: z.object({ priceUsd: z.string(), unit: z.string(),
       observedAt: MarketTimestampSchema, retrievedAt: MarketTimestampSchema }).strict().nullable(),
@@ -127,10 +186,20 @@ function companyCap(productClass: Row['productClass']): Row['companyCap'] {
     : { status: 'unavailable', valueUsd: null, reason: 'missing-cik' });
 }
 
+export function withDexDisplay(display: z.infer<typeof DisplayTokenPriceSchema>, rich: StockRichData | null | undefined, allowed: boolean, now: number) {
+  const dex=rich?.dex, age=dex?now-Date.parse(dex.retrievedAt):Infinity;
+  if(display.status==='UNAVAILABLE'&&allowed&&dex?.priceUsd&&age>=0&&age<=600_000)return DisplayTokenPriceSchema.parse({
+    mint:display.mint,priceUsd:String(dex.priceUsd),observedAt:dex.retrievedAt,retrievedAt:dex.retrievedAt,
+    source:'dexscreener',reason:null,status:age<=45_000?'LIVE':age<=120_000?'DELAYED':'STALE',eligibleForSensitiveUse:false});
+  return display;
+}
+
 /** A bounded response projection: no provider reads, no client-side full-universe payload. */
 export function projectCanonicalMarket(input: {
   read: MarketSnapshotRead; query: CanonicalMarketQuery; nowMs: number;
   progress?: { state: 'running' | 'backoff' | 'complete' | 'failed' } | null;
+  rich?: ReadonlyMap<string, StockRichData>; enrichmentVersion?: string;
+  onFilteredRows?: (rows:Row[])=>void;
 }): Page {
   const query = CanonicalMarketQuerySchema.parse(input.query);
   const snapshot = input.read.snapshot;
@@ -138,16 +207,32 @@ export function projectCanonicalMarket(input: {
   const registry = snapshot?.catalog.registry;
   const active = registry?.entries.filter(entry => entry.catalogState !== 'delisted') ?? [];
   const entryByMint = new Map(active.map(entry => [entry.variant.mint, entry]));
+  const rich = new Map(active.map(e => [e.variant.mint, e.conflicts.length === 0 && e.variant.verification === 'issuer-confirmed' ? ageRichData(input.rich?.get(e.variant.mint),input.nowMs) : null]));
+  const tokenCap = (mint: string) => rich.get(mint)?.dex?.marketCap?.toString() ?? entryByMint.get(mint)?.variant.reportedTokenizedCapUsd ?? null;
+  const capTime=(mint:string)=>rich.get(mint)?.dex?.marketCap!=null?rich.get(mint)!.dex!.retrievedAt:entryByMint.get(mint)?.variant.reportedMarketRetrievedAt;
+  const capSource=(entries:typeof active):'dexscreener'|'jupiter-tokens-v2'|'mixed'|null=>{
+    const sources=new Set(entries.filter(e=>tokenCap(e.variant.mint)!=null).map(e=>rich.get(e.variant.mint)?.dex?.marketCap!=null?'dexscreener':'jupiter-tokens-v2'));
+    return sources.size>1?'mixed':[...sources][0] as 'dexscreener'|'jupiter-tokens-v2'|undefined??null;
+  };
+  const tokenVolume = (mint: string) => rich.get(mint)?.dex?.volume24h?.toString() ?? entryByMint.get(mint)?.variant.reportedVolume24hUsd ?? null;
   const priceRows = new Map(snapshot?.prices?.rows.map(row => [row.mint, row]) ?? []);
+  const hasLiquidity = (entry: typeof active[number]) => {
+    const observed = priceRows.get(entry.variant.mint)?.enrichment?.liquidity;
+    const value = rich.get(entry.variant.mint)?.dex?.liquidity?.toString() ?? observed?.value.toString() ?? entry.variant.reportedLiquidityUsd;
+    return value != null && decimal(value).gt(0);
+  };
   const variantsByAsset = registry?.assets.map(asset => ({ asset,
     entries: asset.variantMints.flatMap(mint => { const entry = entryByMint.get(mint); return entry ? [entry] : []; }),
   })).filter(group => group.entries.length > 0) ?? [];
   const variantCountByMint = new Map(variantsByAsset.flatMap(({ asset }) =>
     asset.variantMints.map(mint => [mint, asset.variantMints.length] as const)));
-  const displayByMint = new Map(active.map(entry => [entry.variant.mint,
-    resolveDisplayTokenPrice({ variant: entry.variant, catalogState: entry.catalogState,
+  const displayByMint = new Map(active.map(entry => {
+    const base = resolveDisplayTokenPrice({ variant: entry.variant, catalogState: entry.catalogState,
       conflicts: entry.conflicts.length, observation: priceRows.get(entry.variant.mint)?.observation,
-      now: input.nowMs })] as const));
+      now: input.nowMs });
+    const display=withDexDisplay(base,rich.get(entry.variant.mint),canQueryExactIssuerPrice(entry)&&entry.conflicts.length===0,input.nowMs);
+    return [entry.variant.mint,display] as const;
+  }));
   const rows: Array<Row & { search: string }> = variantsByAsset.map(({ asset, entries }) => {
     const prices = entries.map(entry => {
       const observation = priceRows.get(entry.variant.mint)?.observation;
@@ -161,13 +246,13 @@ export function projectCanonicalMarket(input: {
       .sort((a, b) => (a.status === 'UNAVAILABLE' ? 1 : 0) - (b.status === 'UNAVAILABLE' ? 1 : 0)
         || (b.observedAt ?? '').localeCompare(a.observedAt ?? '') || a.mint.localeCompare(b.mint))[0];
     const first = entries[0]?.variant;
-    const reported = entries.map(entry => entry.variant.reportedTokenizedCapUsd)
+    const reported = entries.map(entry => tokenCap(entry.variant.mint))
       .filter((value): value is string => value !== null);
-    const volumes = entries.map(entry => entry.variant.reportedVolume24hUsd ?? null)
+    const volumes = entries.map(entry => tokenVolume(entry.variant.mint))
       .filter((value): value is string => value !== null);
     const symbol = first?.underlying.symbol ?? first?.tokenSymbol ?? asset.id;
     return { id: asset.id, symbol, name: first?.tokenName ?? symbol, isin: asset.underlyingIsin,
-      productClass: asset.productClass, verification: asset.verification,
+      productClass: asset.productClass==='unknown' && rich.get(displayed.mint)?.listed?.kind !== 'unknown' ? rich.get(displayed.mint)?.listed?.kind ?? asset.productClass : asset.productClass, verification: asset.verification,
       variantCount: entries.length, variantMints: entries.map(entry => entry.variant.mint),
       logoUrl: first ? issuerLogo(first.tokenSymbol, first.verification === 'issuer-confirmed' && first.issuer === 'xstocks') : null,
       price: selected ? {
@@ -177,18 +262,31 @@ export function projectCanonicalMarket(input: {
       } : null,
       priceUnavailableReason: selected ? null : prices.find(item => item.status === 'blocked')?.reason ?? 'no-token-observation',
       displayPrice: displayed,
-      liquidMintCount: entries.filter(entry => entry.variant.reportedLiquidityUsd !== null
-        && entry.variant.reportedLiquidityUsd !== undefined
-        && decimal(entry.variant.reportedLiquidityUsd).gt(0)).length,
+      liquidMintCount: entries.filter(hasLiquidity).length,
       reportedVolume24hUsd: volumes.length ? volumes.reduce((sum, value) => sum.plus(value), decimal('0')).toFixed() : null,
       reportedVolumeMintCount: volumes.length,
       reportedTokenizedCapUsd: reported.length ? reported.reduce((sum, value) => sum.plus(value), decimal('0')).toFixed() : null,
       reportedCapMintCount: reported.length,
-      reportedCapSource: reported.length ? 'jupiter-tokens-v2' as const : null,
-      reportedCapRetrievedAt: entries.filter(entry => entry.variant.reportedTokenizedCapUsd !== null)
-        .flatMap(entry => entry.variant.reportedMarketRetrievedAt ? [entry.variant.reportedMarketRetrievedAt] : [])
-        .sort()[0] ?? null,
+      reportedCapSource: capSource(entries),
+      reportedCapRetrievedAt: entries.flatMap(e=>capTime(e.variant.mint)??[]).sort()[0]??null,
       companyCap: companyCap(asset.productClass),
+      marketData: priceRows.get(displayed.mint)?.enrichment ?? null,
+      rich: rich.get(displayed.mint) ?? null,
+      listedData: entries.flatMap(entry => {
+        const data = priceRows.get(entry.variant.mint)?.enrichment;
+        return data?.referencePrice && entry.conflicts.length === 0 ? [data] : [];
+      }).sort((a, b) => b.referencePrice!.retrievedAt.localeCompare(a.referencePrice!.retrievedAt) || a.mint.localeCompare(b.mint))[0] ?? null,
+      listingCountry: first?.underlying.listingCountry ?? null,
+      issuerContext: null,
+      listingExchange: first?.listing?.exchange ?? null,
+      listingCurrency: rich.get(displayed.mint)?.listed?.currency ?? first?.listing?.currency ?? null,
+      tokenSymbol: entryByMint.get(displayed.mint)?.variant.tokenSymbol ?? first?.tokenSymbol ?? null,
+      // A cached session flag is no longer authoritative after its next transition.
+      marketStatus: query.view==='listed'?listedSession(rich.get(displayed.mint)?.listed,input.nowMs).status:first?.tradingHalted === true ? 'halted' as const
+        : first?.listing?.nextChangeAt && Date.parse(first.listing.nextChangeAt) > input.nowMs
+          ? first.listing.openNow === true ? 'open' as const : first.listing.openNow === false ? 'closed' as const : 'unknown' as const
+          : 'unknown' as const,
+      marketStatusValidUntil: query.view==='listed'?listedSession(rich.get(displayed.mint)?.listed,input.nowMs).until:first?.listing?.nextChangeAt ?? null,
       search: [asset.id, ...entries.flatMap(entry => [entry.variant.mint, entry.variant.tokenName ?? '', entry.variant.tokenSymbol,
         entry.variant.underlying.symbol ?? '', entry.variant.underlying.isin ?? ''])].join(' ').toLowerCase(),
     };
@@ -204,19 +302,25 @@ export function projectCanonicalMarket(input: {
       conflicts: 0, observations: [observation], canonicalVariantCount: variantCountByMint.get(entry.variant.mint) ?? 1,
       now: input.nowMs }).status === 'eligible';
   }).length;
-  const reportedMintRows = active.map(entry => entry.variant.reportedTokenizedCapUsd)
+  const reportedMintRows = active.map(entry => tokenCap(entry.variant.mint))
     .filter((value): value is string => value !== null);
-  const volumeMintRows = active.map(entry => entry.variant.reportedVolume24hUsd ?? null)
+  const volumeMintRows = active.map(entry => tokenVolume(entry.variant.mint))
     .filter((value): value is string => value !== null);
   const covered = snapshot?.capCoverage?.summary;
   const needle = query.search.toLowerCase();
+  const displayedValue = (row: Row) => query.view === 'listed'
+    ? row.rich?.listed?.price?.toString() ?? row.listedData?.referencePrice?.value.toString() ?? null : row.displayPrice.priceUsd;
+  const watch = new Set(query.watchlist.split(','));
   const filtered = rows.filter(row => (!needle || row.search.includes(needle))
+    && (!query.watchlist || row.variantMints.some(mint=>watch.has(mint)))
+    && (query.market === 'all' || row.marketStatus === query.market)
+    && (query.country === 'all' || row.listingCountry === query.country)
+    && (query.currency === 'all' || row.listingCurrency === query.currency)
     && (query.type === 'all' || (query.type === 'other' ? !['equity', 'etf'].includes(row.productClass) : row.productClass === query.type))
     && (query.verification === 'all' || (query.verification === 'issuer-confirmed'
       ? row.verification === 'issuer-confirmed' : row.verification !== 'issuer-confirmed'))
-    && (query.price === 'all' || (query.price === 'available' ? row.price !== null
-      : query.price === 'observed' ? row.displayPrice.status !== 'UNAVAILABLE'
-        : row.displayPrice.status === 'UNAVAILABLE')));
+    && (query.price === 'all' || (query.price === 'available' ? (query.view === 'listed' ? displayedValue(row) !== null : row.price !== null)
+      : query.price === 'observed' ? displayedValue(row) !== null : displayedValue(row) === null)));
   const compareNumber = (left: string | null, right: string | null) => {
     if (left === null) return right === null ? 0 : 1;
     if (right === null) return -1;
@@ -224,22 +328,35 @@ export function projectCanonicalMarket(input: {
     return query.direction === 'asc' ? result : -result;
   };
   filtered.sort((a, b) => {
-    const compare = query.sort === 'name' ? a.name.localeCompare(b.name, 'en', { sensitivity: 'base' })
+    const metric = (row:Row) => query.sort==='liquidity' ? row.rich?.dex?.liquidity ?? row.marketData?.liquidity?.value
+      : query.sort==='volume' ? (query.view==='listed'?row.rich?.listed?.volume:row.reportedVolume24hUsd)
+      : query.sort==='change' ? (query.view==='listed'?row.rich?.listed?.change:row.rich?.dex?.change24h ?? row.marketData?.change24h?.value)
+      : query.sort==='holders'?row.rich?.holders?.count:row.rich?.dex?.fdv;
+    const compare = ['liquidity','volume','change','holders','fdv'].includes(query.sort) ? compareNumber(metric(a)?.toString()??null,metric(b)?.toString()??null)
+      : query.sort === 'name' ? a.name.localeCompare(b.name, 'en', { sensitivity: 'base' })
       : query.sort === 'availability'
-        ? (a.displayPrice.status === 'UNAVAILABLE' ? 1 : 0) - (b.displayPrice.status === 'UNAVAILABLE' ? 1 : 0)
+        ? (displayedValue(a) === null ? 1 : 0) - (displayedValue(b) === null ? 1 : 0)
           || a.name.localeCompare(b.name, 'en', { sensitivity: 'base' })
+      : query.sort === 'listedCap'
+        ? compareCompanyCaps(a, b, query.direction)
       : query.sort === 'variants' ? a.variantCount - b.variantCount
-        : compareNumber(query.sort === 'price' ? a.displayPrice.priceUsd : a.reportedTokenizedCapUsd,
-          query.sort === 'price' ? b.displayPrice.priceUsd : b.reportedTokenizedCapUsd);
+        : query.view === 'listed' && query.sort === 'price'
+          // Different currencies must not be ranked as comparable dollar values.
+          ? (a.rich?.listed?.currency ?? a.listedData?.referencePrice?.currency ?? '~').localeCompare(b.rich?.listed?.currency ?? b.listedData?.referencePrice?.currency ?? '~')
+            || compareNumber(displayedValue(a), displayedValue(b))
+          : compareNumber(query.sort === 'price' ? displayedValue(a) : a.reportedTokenizedCapUsd,
+            query.sort === 'price' ? displayedValue(b) : b.reportedTokenizedCapUsd);
     return (query.sort === 'name' || query.sort === 'availability' || query.sort === 'variants') && query.direction === 'desc' ? -compare || a.id.localeCompare(b.id)
       : compare || a.id.localeCompare(b.id);
   });
   const totalPages = Math.ceil(filtered.length / query.pageSize);
+  input.onFilteredRows?.(filtered.map(({search,...row})=>{void search;return row;}));
   const page = totalPages ? Math.min(query.page, totalPages) : 1;
   const records = filtered.slice((page - 1) * query.pageSize, page * query.pageSize)
     .map(({ search, ...row }) => { void search; return row; });
   const progressState = input.progress?.state ?? 'idle';
   return CanonicalMarketPageSchema.parse({ version: 2,
+    enrichmentVersion:input.enrichmentVersion??null,
     status: empty ? 'unavailable' : input.read.degraded || (snapshot?.prices?.failedCount ?? 0) > 0 ? 'degraded' : 'ready', source: input.read.source,
     catalog: { id: snapshot?.catalog.id ?? null, status: registry?.status ?? 'unavailable',
       publishedAt: snapshot?.catalog.publishedAt ?? null, truncated: registry?.truncation.truncated ?? false },
@@ -264,6 +381,8 @@ export function projectCanonicalMarket(input: {
       incomplete: snapshot?.prices === null || (snapshot?.prices?.failedCount ?? 0) > 0,
       cycleState: progressState },
     summary: { canonicalCount: rows.length,
+      referencePriceCount: rows.filter(row => row.rich?.listed?.price!=null||row.listedData?.referencePrice).length,
+      providerCompanyCapCount: rows.filter(row => row.productClass !== 'etf' && row.listedData?.companyCap).length,
       inputCandidateRecordCount: registry?.inputCoverage.candidateRecords ?? 0,
       inputUniqueMintCount: registry?.inputCoverage.uniqueCandidateMints ?? 0,
       inputDuplicateRecordCount: registry?.inputCoverage.duplicateCandidateRecords ?? 0,
@@ -295,9 +414,7 @@ export function projectCanonicalMarket(input: {
       displayPriceUnderlyingCount: rows.filter(row => row.displayPrice.status !== 'UNAVAILABLE').length,
       eligibleVerifiedMintCount: verifiedMints.length,
       priceAvailableMintCount, priceAvailableUnderlyingCount: rows.filter(row => row.price !== null).length,
-      liquidMintCount: active.filter(entry => entry.variant.reportedLiquidityUsd !== null
-        && entry.variant.reportedLiquidityUsd !== undefined
-        && decimal(entry.variant.reportedLiquidityUsd).gt(0)).length,
+      liquidMintCount: active.filter(hasLiquidity).length,
       reportedVolumeMintCount: volumeMintRows.length,
       reportedVolume24hUsd: volumeMintRows.length
         ? volumeMintRows.reduce((sum, value) => sum.plus(value), decimal('0')).toFixed() : null,
@@ -311,11 +428,19 @@ export function projectCanonicalMarket(input: {
       reportedTokenizedCapUsd: reportedMintRows.length
         ? reportedMintRows.reduce((sum, value) => sum.plus(value), decimal('0')).toFixed() : null,
       reportedCapMintCount: reportedMintRows.length,
-      reportedCapSource: reportedMintRows.length ? 'jupiter-tokens-v2' : null,
-      reportedCapOldestRetrievedAt: active.filter(entry => entry.variant.reportedTokenizedCapUsd !== null)
-        .flatMap(entry => entry.variant.reportedMarketRetrievedAt ? [entry.variant.reportedMarketRetrievedAt] : [])
-        .sort()[0] ?? null },
+      reportedCapSource: capSource(active),
+      reportedCapOldestRetrievedAt: active.flatMap(e=>capTime(e.variant.mint)??[]).sort()[0]??null },
     pagination: { page, pageSize: query.pageSize, total: filtered.length, totalPages }, records,
+    facets: { countries: [...new Set(rows.flatMap(row => row.listingCountry ? [row.listingCountry] : []))].sort(),
+      currencies: [...new Set(rows.flatMap(row => row.listingCurrency ? [row.listingCurrency] : []))].sort() },
+    // Top companies are independent of table filters and use the same token quotes.
+    ticker: topCompanyRows(rows).map(row => {
+      const dex=row.rich?.dex;
+      const change = dex?.change24h!=null ? {value:dex.change24h,currency:null,retrievedAt:dex.retrievedAt} : row.marketData?.change24h;
+      const age = change ? input.nowMs - Date.parse(change.observedAt ?? change.retrievedAt) : Infinity;
+      return { id: row.id, symbol: row.tokenSymbol ?? row.symbol, name: row.name,
+        displayPrice: row.displayPrice, change24h: age >= -5000 && age <= 600_000 ? change ?? null : null };
+    }),
   });
 }
 
@@ -338,6 +463,7 @@ export function projectCanonicalDetail(read: MarketSnapshotRead, assetId: string
     return { mint, variant: entry.variant, catalogState: entry.catalogState,
       conflicts: entry.conflicts.map(conflict => conflict.reason),
       lastAttempt: priceRow?.attempt ?? null, retainedLastGood: priceRow?.retainedLastGood ?? false,
+      marketData: entry.conflicts.length === 0 ? priceRow?.enrichment ?? null : null,
       tokenPrice: resolveVariantTokenPrice({ variant: entry.variant, catalogState: entry.catalogState,
         conflicts: entry.conflicts.length, observations: priceRow?.observation ? [priceRow.observation] : [],
         canonicalVariantCount: asset.variantMints.length, now: nowMs }),

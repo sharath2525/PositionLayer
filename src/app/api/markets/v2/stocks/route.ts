@@ -6,7 +6,7 @@ import { readCanonicalMarketPage } from '@/services/market-v2-reader';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const allowed = new Set(['search', 'type', 'verification', 'price', 'sort', 'direction', 'page', 'pageSize']);
+const allowed = new Set(['view', 'search', 'type', 'verification', 'price', 'market', 'country', 'currency', 'sort', 'direction', 'page', 'pageSize', 'watchlist']);
 
 export async function GET(request: Request) {
   if (request.headers.get('X-PositionLayer-Market-Hop') && process.env.MARKET_V2_WRITER_ORIGIN) {

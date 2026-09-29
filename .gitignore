@@ -27,5 +27,12 @@ Thumbs.db
 
 
 
+
 # Local clean-history export prepared for a first public GitHub commit.
 /.public-release/
+.market-data/
+
+# Local agent notes are not part of the public application.
+/CLAUDE.md
+/.agents/
+/.codex/

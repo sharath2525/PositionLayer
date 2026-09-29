@@ -1,0 +1,95 @@
+{
+  "retrievedAt": "2026-09-27T16:45:54.188Z",
+  "requested": [
+    "Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh",
+    "XsensupeZBdHxZtdnLptf1UfWpVyancWcit7qWFYZrJ",
+    "XsoCS1TfEyfFhfvj8EtZ528L3CaKBDBRqRapnBbDF2W",
+    "Xs8NtGgTwwHAjdDvdhjcDBDYbEoF39ggi5QKKAwWu97",
+    "Xs8w8HvDjT1DxYeHzhSkRT8wYUahJB9kRC7Fuiic2Hf",
+    "XshoX6qy11Q4HHcaJKU6h7JVmVqXiAXPLACiGLqLTxZ"
+  ],
+  "data": {
+    "Xs8NtGgTwwHAjdDvdhjcDBDYbEoF39ggi5QKKAwWu97": {
+      "createdAt": "2026-08-14T13:24:24Z",
+      "decimals": 8,
+      "stockData": {
+        "id": "xstocks",
+        "price": 2068,
+        "mcap": 2317276720,
+        "updatedAt": "2026-09-27T16:42:45.925Z"
+      }
+    },
+    "Xs8w8HvDjT1DxYeHzhSkRT8wYUahJB9kRC7Fuiic2Hf": {
+      "createdAt": "2026-08-24T14:12:29Z",
+      "decimals": 8,
+      "stockData": {
+        "id": "xstocks",
+        "updatedAt": "2026-09-27T16:41:30.014Z"
+      }
+    },
+    "Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh": {
+      "createdAt": "2025-06-11T09:39:59Z",
+      "liquidity": 3032626.488206614,
+      "usdPrice": 224.84008630835308,
+      "blockId": 451054563,
+      "decimals": 8,
+      "priceChange24h": 0.010966303933251603,
+      "stockData": {
+        "id": "xstocks",
+        "price": 224.9975,
+        "mcap": 5434765290000,
+        "updatedAt": "2026-09-27T16:42:14.818Z"
+      },
+      "scaledUiConfig": {
+        "multiplier": 1.0009180758490996,
+        "newMultiplier": 1.001701196801074,
+        "newMultiplierEffectiveAt": "2026-09-10T00:30:00Z",
+        "circSupplyPrescaled": 321272.40252228,
+        "totalSupplyPrescaled": 321272.40252228,
+        "usdPricePrescaled": 225.22258354393406
+      }
+    },
+    "XsensupeZBdHxZtdnLptf1UfWpVyancWcit7qWFYZrJ": {
+      "createdAt": "2026-09-03T18:21:50Z",
+      "decimals": 8,
+      "stockData": {
+        "id": "xstocks",
+        "price": 3.2848,
+        "mcap": 435964176.52,
+        "updatedAt": "2026-09-27T16:43:15.925Z"
+      }
+    },
+    "XshoX6qy11Q4HHcaJKU6h7JVmVqXiAXPLACiGLqLTxZ": {
+      "createdAt": "2026-08-14T12:10:36Z",
+      "decimals": 8,
+      "stockData": {
+        "id": "xstocks",
+        "price": 3236,
+        "mcap": 4518601544,
+        "updatedAt": "2026-09-27T16:41:45.116Z"
+      }
+    },
+    "XsoCS1TfEyfFhfvj8EtZ528L3CaKBDBRqRapnBbDF2W": {
+      "createdAt": "2025-06-11T09:41:51Z",
+      "liquidity": 5054516.011897398,
+      "usdPrice": 768.3602558200895,
+      "blockId": 451054544,
+      "decimals": 8,
+      "priceChange24h": -0.10058487687545416,
+      "stockData": {
+        "id": "xstocks",
+        "price": 771.35,
+        "mcap": 696221182178,
+        "updatedAt": "2026-09-27T16:41:57.919Z"
+      },
+      "scaledUiConfig": {
+        "multiplier": 1.003909240011759,
+        "newMultiplier": 1.005714560286254,
+        "newMultiplierEffectiveAt": "2026-06-18T04:00:00Z",
+        "circSupplyPrescaled": 95231.07170937,
+        "totalSupplyPrescaled": 95231.07170937,
+        "usdPricePrescaled": 772.751096823535
+      }
+    }
+  }
+}

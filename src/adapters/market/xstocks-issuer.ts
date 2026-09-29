@@ -67,7 +67,7 @@ export function createXstocksIssuerReader(options: {
   const pages = new Map<number, { page: Page; etag: string | null }>();
   const requestPage = async (pageNumber: number): Promise<Page> => {
     const old = pages.get(pageNumber);
-    const url = `${BASE_URL}?network=Solana&listingCountry=US&page=${pageNumber}&pageSize=${PAGE_SIZE}`;
+    const url = `${BASE_URL}?network=Solana&page=${pageNumber}&pageSize=${PAGE_SIZE}`;
     for (let attempt = 0; attempt < 2; attempt++) {
       const timeout = AbortSignal.timeout(12_000);
       try {
@@ -124,21 +124,26 @@ export function createXstocksIssuerReader(options: {
         if (!parsed.success) { badRecord = true; return []; }
         const asset = parsed.data;
         // The live issuer currently omits underlying.type on many otherwise
-        // exact Solana deployments. Keep the issuer proof and US listing, but
+        // exact Solana deployments. Keep issuer proof and the actual country, but
         // preserve an unknown class instead of silently dropping every mint.
         // Class-dependent calculations remain separately gated downstream.
-        if (asset.underlying?.listingCountry !== 'US') return [];
         return [asset];
       });
       if (badRecord) issues.push('INVALID_RECORD');
       for (const record of normalizeStockUniverse(valid, [], retrievedAt)) {
         if (seen.has(record.mint)) continue;
         seen.add(record.mint);
-        const parsed = ProviderCandidateSchema.safeParse({ variant: adaptLegacyXstockRecord(record).variant, supply: null });
+        const variant = adaptLegacyXstockRecord(record).variant;
+        const raw = valid.find(asset => asset.deployments.some(deployment => deployment.network === 'Solana' && deployment.address === record.mint));
+        const exchange = z.object({ abbreviation: z.string().min(1).max(80).optional(), mic: z.string().min(1).max(80).optional() })
+          .safeParse(raw?.trading?.exchange);
+        if (variant.listing && exchange.success) variant.listing.exchange = exchange.data.abbreviation ?? exchange.data.mic ?? null;
+        const parsed = ProviderCandidateSchema.safeParse({ variant, supply: null });
         if (parsed.success) records.push(parsed.data);
         else issues.push('INVALID_RECORD');
       }
       if (!page.page.hasNextPage) return { records, complete: !issues.includes('INVALID_RECORD'), issues };
+      await sleep(2_100);
     }
     return { records, complete: false, issues: [...issues, 'PAGE_LIMIT'] };
   };

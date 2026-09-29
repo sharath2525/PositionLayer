@@ -5,12 +5,12 @@ import { MarketMintSchema, type SolanaStockVariant } from '@/domain/market-types
 import { VariantTokenObservationSchema } from '@/domain/market-price-policy';
 import { type MarketBatchRead } from '@/services/market-snapshot-coordinator';
 import { jupiterJson, JupiterApiError } from '@/adapters/jupiter-api/client';
+import { parseMarketEnrichment } from '@/domain/market-enrichment';
 
 const PriceEntrySchema = z.object({
   usdPrice: z.number().finite().positive(),
   blockId: z.number().int().nonnegative(),
   decimals: z.number().int().min(0).max(30),
-  priceChange24h: z.number().finite().nullable().optional(),
 }).passthrough();
 const ResponseSchema = z.record(z.string(), z.unknown());
 
@@ -52,7 +52,11 @@ export async function readJupiterPriceV3Batch(input: {
         providerObservedAt: null, retrievedAt });
       return observation.success ? [observation.data] : [];
     });
-    return { status: 'ok', observations };
+    const enrichments = Object.entries(response).flatMap(([mint, value]) => {
+      const parsed = parseMarketEnrichment(mint, value, retrievedAt);
+      return parsed ? [parsed] : [];
+    });
+    return { status: 'ok', observations, ...(enrichments.length ? { enrichments } : {}) };
   } catch (error) {
     if (error instanceof JupiterApiError && error.kind === 'rate-limited') {
       return { status: 'rate-limited', retryAfterMs: Math.min(300_000,

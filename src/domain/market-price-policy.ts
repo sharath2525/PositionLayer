@@ -37,7 +37,7 @@ export const DisplayTokenPriceSchema = z.object({
   status: z.enum(['LIVE', 'DELAYED', 'STALE', 'UNAVAILABLE']),
   mint: MarketMintSchema, priceUsd: z.string().regex(/^\d+(?:\.\d+)?$/).nullable(),
   observedAt: MarketTimestampSchema.nullable(), retrievedAt: MarketTimestampSchema.nullable(),
-  reason: PriceBlockerSchema.nullable(), source: z.literal('jupiter-price-v3').nullable(),
+  reason: PriceBlockerSchema.nullable(), source: z.enum(['jupiter-price-v3', 'dexscreener']).nullable(),
   eligibleForSensitiveUse: z.literal(false),
 }).strict().superRefine((value, context) => {
   const available = value.status !== 'UNAVAILABLE';

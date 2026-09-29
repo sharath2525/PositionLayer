@@ -3,6 +3,7 @@ import { decimal } from './amounts';
 import { CoveredSolanaCapSchema, MarketMintSchema, MarketTimestampSchema } from './market-types';
 import { VariantTokenObservationSchema } from './market-price-policy';
 import { REGISTRY_INPUT_CEILING, UniverseRegistrySchema } from './universe-registry';
+import { MarketEnrichmentSchema } from './market-enrichment';
 
 const VersionIdSchema = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._:-]{0,119}$/);
 
@@ -18,7 +19,11 @@ export const PriceSnapshotRowSchema = z.object({
   observation: VariantTokenObservationSchema.nullable(),
   // Retained observations keep their original successful retrieval time.
   retainedLastGood: z.boolean(),
+  enrichment: MarketEnrichmentSchema.optional(),
 }).strict().superRefine((row, context) => {
+  if (row.enrichment && row.enrichment.mint !== row.mint) {
+    context.addIssue({ code: 'custom', message: 'Enrichment must match the exact mint.' });
+  }
   if (row.attempt === 'success' && (row.observation === null || row.retainedLastGood)) {
     context.addIssue({ code: 'custom', message: 'Successful batch rows need a new observation.' });
   }
@@ -73,6 +78,11 @@ export const CompletePriceSnapshotSchema = z.object({
       || snapshot.rows.some(row => row.observation?.retrievedAt
         && Date.parse(row.observation.retrievedAt) > Date.parse(snapshot.completedAt))) {
     context.addIssue({ code: 'custom', message: 'Snapshot time cannot precede its inputs or cycle start.' });
+  }
+  if (snapshot.rows.some(row => row.enrichment && Object.values(row.enrichment).some(field =>
+    field && typeof field === 'object' && (Date.parse(field.retrievedAt) > Date.parse(snapshot.completedAt)
+      || (field.observedAt && Date.parse(field.observedAt) > Date.parse(snapshot.completedAt) + 5_000))))) {
+    context.addIssue({ code: 'custom', message: 'Supplementary observations cannot be future-dated.' });
   }
 });
 

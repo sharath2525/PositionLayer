@@ -10,6 +10,7 @@ import {
   type MarketWriterLease,
 } from '@/domain/market-snapshot';
 import type { MarketSnapshotStore } from './market-snapshot-store';
+import { MarketEnrichmentSchema, mergeMarketEnrichment } from '@/domain/market-enrichment';
 
 function samePriceIdentity(left: CatalogVersion['registry']['entries'][number]['variant'],
   right: CatalogVersion['registry']['entries'][number]['variant']) {
@@ -24,7 +25,8 @@ function samePriceIdentity(left: CatalogVersion['registry']['entries'][number]['
 }
 
 const BatchReadSchema = z.discriminatedUnion('status', [
-  z.object({ status: z.literal('ok'), observations: z.array(VariantTokenObservationSchema).max(50) }).strict(),
+  z.object({ status: z.literal('ok'), observations: z.array(VariantTokenObservationSchema).max(50),
+    enrichments: z.array(MarketEnrichmentSchema).max(50).optional() }).strict(),
   z.object({ status: z.literal('rate-limited'), retryAfterMs: z.number().int().min(0).max(300_000) }).strict(),
   z.object({ status: z.literal('failed') }).strict(),
 ]);
@@ -51,6 +53,7 @@ export type PriceCycleInput = {
   leaseTtlMs?: number;
   requestTimeoutMs?: number;
   maxRateLimitRetries?: number;
+  signal?: AbortSignal;
 };
 
 /** Explicit writer entry point: never run this from a reader request. The
@@ -99,6 +102,11 @@ export async function runMarketPriceCycle(input: PriceCycleInput): Promise<Price
       return row.observation && previous && current && samePriceIdentity(previous, current)
         ? [[row.mint, row.observation] as const] : [];
     }) ?? []);
+    const priorEnrichment = new Map(prior?.prices?.rows.flatMap(row => {
+      const previous = priorEntries.get(row.mint), current = currentEntries.get(row.mint);
+      return row.enrichment && previous && current && samePriceIdentity(previous, current)
+        ? [[row.mint, row.enrichment] as const] : [];
+    }) ?? []);
     const startedAt = new Date(now()).toISOString();
     let lastCallAt: number | null = null;
     let lastBatchAt: string | null = null;
@@ -113,6 +121,7 @@ export async function runMarketPriceCycle(input: PriceCycleInput): Promise<Price
     if (!await input.store.writeProgress(progress, lease, now())) return result('lost-lease');
 
     const renew = async () => {
+      if (input.signal?.aborted) return false;
       lease = await input.store.renewLease(lease!, now(), leaseTtlMs);
       return lease !== null;
     };
@@ -120,7 +129,7 @@ export async function runMarketPriceCycle(input: PriceCycleInput): Promise<Price
       let remaining = Math.max(0, durationMs);
       while (remaining > 0) {
         if (!await renew()) return false;
-        const chunk = Math.min(remaining, Math.floor(leaseTtlMs / 2));
+        const chunk = Math.min(remaining, 1_000, Math.floor(leaseTtlMs / 2));
         await wait(chunk);
         remaining -= chunk;
         if (!await renew()) return false;
@@ -143,12 +152,17 @@ export async function runMarketPriceCycle(input: PriceCycleInput): Promise<Price
             timeout = setTimeout(() => { controller.abort(); reject(new Error('Market batch timed out.')); }, requestTimeoutMs);
           });
           const parsed = BatchReadSchema.parse(await Promise.race([
-            input.readBatch(batch, { cycleId, batchIndex: index, attempt, signal: controller.signal }), timed,
+            input.readBatch(batch, { cycleId, batchIndex: index, attempt,
+              signal: input.signal ? AbortSignal.any([controller.signal, input.signal]) : controller.signal }), timed,
           ]));
           if (parsed.status === 'ok') {
             const expected = new Set(batch);
             const seen = new Set<string>();
-            if (parsed.observations.some(item => {
+            const enriched = parsed.enrichments ?? [];
+            if (new Set(enriched.map(item => item.mint)).size !== enriched.length
+              || enriched.some(item => !expected.has(item.mint) || Object.values(item).some(field =>
+                field && typeof field === 'object' && Date.parse(field.retrievedAt) > now()))
+              || parsed.observations.some(item => {
               if (!expected.has(item.mint) || seen.has(item.mint) || item.currency !== 'USD'
                   || item.price === null || decimal(item.price).lte(0)
                   || !item.retrievedAt || Date.parse(item.retrievedAt) > now()) return true;
@@ -161,12 +175,12 @@ export async function runMarketPriceCycle(input: PriceCycleInput): Promise<Price
         } catch { response = { status: 'failed' }; }
         finally { if (timeout) clearTimeout(timeout); }
         if (!await renew()) return result('lost-lease');
-        if (response.status === 'rate-limited' && attempt < maxRetries) {
+        if (response.status === 'rate-limited') {
           progress = MarketCycleProgressSchema.parse({ ...progress, state: 'backoff',
             nextAttemptAt: new Date(now() + response.retryAfterMs).toISOString() });
           if (!await input.store.writeProgress(progress, lease!, now())
               || !await waitFenced(response.retryAfterMs)) return result('lost-lease');
-          continue;
+          if (attempt < maxRetries) continue;
         }
         break;
       }
@@ -177,7 +191,10 @@ export async function runMarketPriceCycle(input: PriceCycleInput): Promise<Price
         const fresh = current.get(mint);
         const attempt = fresh ? 'success' : response.status === 'ok' ? 'omitted' : 'failed';
         const observation = fresh ?? priorPrices.get(mint) ?? null;
-        rows.push({ mint, attempt, observation, retainedLastGood: !fresh && observation !== null });
+        const enrichment = mergeMarketEnrichment(response.status === 'ok'
+          ? response.enrichments?.find(item => item.mint === mint) : undefined, priorEnrichment.get(mint));
+        rows.push({ mint, attempt, observation, retainedLastGood: !fresh && observation !== null,
+          ...(enrichment ? { enrichment } : {}) });
         if (attempt === 'success') success++;
         else if (attempt === 'omitted') missing++;
         else failed++;

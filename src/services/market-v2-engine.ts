@@ -12,7 +12,9 @@ import { type ProviderReadResult } from '@/domain/market-provider';
 import { buildUniverseRegistry } from '@/domain/universe-registry';
 import { recordMarketEvent } from '@/services/monitoring/log-manager';
 import { runMarketPriceCycle, type MarketBatchRead, type PriceCycleResult } from './market-snapshot-coordinator';
-import { getProcessMarketSnapshotStore, type MarketSnapshotStore } from './market-snapshot-store';
+import { type MarketSnapshotStore } from './market-snapshot-store';
+import { getRuntimeMarketSnapshotStore, marketWriterAllowed, closeRuntimeMarketSnapshotStore } from './market-durable-store';
+import { startStockRichWorker, stopStockRichWorker, stockRichWorkerStatus } from './stock-rich-worker';
 
 const CATALOG_REFRESH_MS = 60 * 60_000;
 const MIN_CYCLE_MS = 60_000;
@@ -20,6 +22,8 @@ const MIN_CYCLE_MS = 60_000;
 type MarketV2State = {
   started: boolean; running: boolean; timer: ReturnType<typeof setTimeout> | null;
   catalog: CatalogVersion | null; catalogLoadedAt: number; lastResult: PriceCycleResult | null;
+  controller?: AbortController; storeReady?: boolean; shutdownInstalled?: boolean;
+  contextCursor?: number;
 };
 type EngineGlobal = typeof globalThis & { __positionLayerMarketV2?: MarketV2State };
 const root = globalThis as EngineGlobal;
@@ -69,13 +73,14 @@ export async function runMarketV2Once(input: {
   catalog: CatalogVersion; store: MarketSnapshotStore;
   readBatch?: (mints: string[], signal: AbortSignal) => Promise<MarketBatchRead>;
   now?: () => number; wait?: (ms: number) => Promise<void>;
+  signal?: AbortSignal; paceMs?: number;
 }): Promise<PriceCycleResult> {
   const targets = priceTargetMints(input.catalog);
   if (targets.length === 0) return { status: 'publication-rejected', snapshotId: null, batchCalls: 0 };
   const variants = new Map(input.catalog.registry.entries.map(entry => [entry.variant.mint, entry.variant]));
   return runMarketPriceCycle({ store: input.store, ownerId: 'market-v2-process-writer',
     cycleId: `cycle-${randomUUID()}`, catalog: input.catalog, targetMints: targets,
-    now: input.now, wait: input.wait, batchSize: 50, paceMs: 2_100,
+    now: input.now, wait: input.wait, signal: input.signal, batchSize: 50, paceMs: input.paceMs ?? 2_500,
     requestTimeoutMs: 20_000, leaseTtlMs: 60_000, maxRateLimitRetries: 2,
     readBatch: (mints, context) => input.readBatch
       ? input.readBatch(mints, context.signal)
@@ -103,7 +108,16 @@ async function tick() {
   if (!state.started || state.running) return;
   state.running = true;
   const started = Date.now();
+  state.controller = new AbortController();
   try {
+    const store = getRuntimeMarketSnapshotStore();
+    if (!state.storeReady) {
+      const restored = await store.readCurrent();
+      state.catalog = restored?.catalog ?? null;
+      state.catalogLoadedAt = restored ? Date.parse(restored.catalog.publishedAt) : 0;
+      state.storeReady = true;
+    }
+    if (process.env.MARKET_PRICE_PAUSED === 'true') return;
     if (state.catalog && !CatalogVersionSchema.safeParse(state.catalog).success) {
       state.catalog = null;
       state.catalogLoadedAt = 0;
@@ -112,13 +126,15 @@ async function tick() {
       state.catalog = await refreshMarketV2Catalog({ previous: state.catalog });
       state.catalogLoadedAt = Date.now();
     }
+    if (!state.started || state.controller.signal.aborted) return;
+    try { startStockRichWorker(state.catalog); } catch { /* enrichment storage failure must not interrupt prices */ }
     if (priceTargetMints(state.catalog).length === 0) {
       recordMarketEvent({ severity: 'WARN', provider: 'SYSTEM', operation: 'price_worker',
         status: 'STALE_DATA', errorCode: 'STALE',
         message: 'Versioned catalog has no active exact issuer mints; previous snapshots remain available.' });
     } else {
       state.lastResult = await runMarketV2Once({ catalog: state.catalog,
-        store: getProcessMarketSnapshotStore() });
+        store, signal: state.controller.signal, paceMs: marketWriterPaceMs() });
     }
   } catch {
     recordMarketEvent({ severity: 'ERROR', provider: 'SYSTEM', operation: 'price_worker',
@@ -126,19 +142,43 @@ async function tick() {
       message: 'Versioned market cycle failed; the last complete snapshot was retained.' });
   } finally {
     state.running = false;
-    schedule(Math.max(5_000, MIN_CYCLE_MS - (Date.now() - started)));
+    if (!state.started) { await stopStockRichWorker(); closeRuntimeMarketSnapshotStore(); state.storeReady = false; }
+    const interval = Number(process.env.MARKET_REFRESH_INTERVAL_MS ?? MIN_CYCLE_MS);
+    schedule(Math.max(5_000, (Number.isInteger(interval) && interval >= MIN_CYCLE_MS && interval <= 3_600_000
+      ? interval : MIN_CYCLE_MS) - (Date.now() - started)));
   }
 }
 
 /** Opt-in for a proven persistent, single-process Node host only. Never enable
  * this process-local lease as a multi-instance/serverless global writer. */
 export function startProcessMarketV2Engine() {
-  if (process.env.MARKET_V2_WRITER_ENABLED !== 'true' || process.env.MARKET_V2_WRITER_ORIGIN || state.started) return;
+  if (!marketWriterAllowed() || state.started) return;
   state.started = true;
+  if (!state.shutdownInstalled) {
+    process.once('SIGTERM', stopProcessMarketV2Engine);
+    process.once('SIGINT', stopProcessMarketV2Engine);
+    state.shutdownInstalled = true;
+  }
   schedule(1_000);
+}
+
+export function stopProcessMarketV2Engine() {
+  const drained=stopStockRichWorker();
+  state.started = false;
+  if (state.timer) clearTimeout(state.timer);
+  state.timer = null;
+  state.controller?.abort();
+  if (!state.running) { void drained.then(()=>{ closeRuntimeMarketSnapshotStore(); state.storeReady = false; }); }
+}
+
+export function marketWriterPaceMs() {
+  const value = Number(process.env.MARKET_PRICE_PACE_MS ?? 2_500);
+  // Leave budget for other Jupiter operations sharing the same provider/IP.
+  return Number.isInteger(value) && value >= 2_100 && value <= 30_000 ? value : 2_500;
 }
 
 export function marketV2EngineStatus() {
   return { started: state.started, running: state.running, catalogId: state.catalog?.id ?? null,
-    lastResult: state.lastResult };
+    lastResult: state.lastResult, storageReady: state.storeReady ?? false,
+    writerAllowed: marketWriterAllowed(), paceMs: marketWriterPaceMs(), paused: process.env.MARKET_PRICE_PAUSED === 'true', enrichment:stockRichWorkerStatus() };
 }

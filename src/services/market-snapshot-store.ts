@@ -45,11 +45,15 @@ export class MemoryMarketSnapshotStore implements MarketSnapshotStore {
   private lease: MarketWriterLease | null = null;
   private lastFencingToken = 0;
 
-  constructor(private readonly historyLimit = 3) {
+  constructor(private readonly historyLimit = 3, initial: PublishedMarketSnapshot[] = []) {
     if (!Number.isInteger(historyLimit) || historyLimit < 2 || historyLimit > 5) {
       throw new Error('Snapshot history limit must be between two and five.');
     }
+    for (const snapshot of initial.slice(0, historyLimit).reverse()) this.install(PublishedMarketSnapshotSchema.parse(snapshot));
   }
+
+  /** Durable subclasses commit synchronously before the visible pointer moves. */
+  protected beforePublish(snapshot: PublishedMarketSnapshot): void { void snapshot; }
 
   private assemble(id: string): PublishedMarketSnapshot | null {
     const bundle = this.bundles.get(id);
@@ -113,6 +117,12 @@ export class MemoryMarketSnapshotStore implements MarketSnapshotStore {
         throw new Error('Immutable market snapshot version ID was reused with different contents.');
       }
     }
+    this.beforePublish(valid);
+    this.install(valid);
+    return true;
+  }
+
+  private install(valid: PublishedMarketSnapshot) {
     // No awaits between immutable writes and the pointer switch. A distributed
     // adapter must perform the equivalent as one fenced transaction.
     this.catalogs.set(valid.catalog.id, copy(CatalogVersionSchema.parse(valid.catalog)));
@@ -123,7 +133,6 @@ export class MemoryMarketSnapshotStore implements MarketSnapshotStore {
     this.currentId = valid.id;
     this.historyIds = [valid.id, ...this.historyIds.filter(id => id !== valid.id)].slice(0, this.historyLimit);
     this.prune();
-    return true;
   }
 
   private prune() {

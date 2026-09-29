@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Activity, ArrowRight, ArrowUpRight, BriefcaseBusiness, ChartNoAxesCombined, ChevronRight, CircleHelp, Clock3, ExternalLink, Eye, Fingerprint, FlaskConical, Layers3, LayoutDashboard, LockKeyhole, RefreshCw, Search, Shield, Wallet, AlertCircle, Database, CircleCheck, Link2, Moon, Sun } from 'lucide-react';
+import { Activity, ArrowRight, ArrowUpRight, BriefcaseBusiness, ChartNoAxesCombined, ChevronRight, CircleHelp, Clock3, ExternalLink, Eye, Fingerprint, FlaskConical, Layers3, LayoutDashboard, LockKeyhole, RefreshCw, Search, Shield, Wallet, AlertCircle, Database, CircleCheck, Link2, Moon, Sun, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { brand } from '@/config/brand';
 import { verifiedVaults } from '@/config/instruments';
 import { exposure, type CompanyExposure, type SectorExposure } from '@/domain/exposure';
@@ -19,8 +19,8 @@ import type { ReadContext } from '@/domain/guards';
 import { AssetIcon } from './portfolio/portfolio-sections';
 import { OverviewView } from './views/overview-view';
 import { PortfolioView } from './views/portfolio-view';
-import { StocksView } from './views/stocks-view';
 import { CanonicalStocksView } from './views/canonical-stocks-view';
+import { WorkspaceStockTicker } from './workspace-stock-ticker';
 
 type View = 'overview' | 'stocks' | 'portfolio' | 'exposure' | 'protect';
 const WORKSPACE_KEY = 'positionlayer:workspace:v1';
@@ -28,9 +28,15 @@ const THEME_KEY = 'positionlayer:theme:v1';
 export function Dashboard() {
   const wallet = useWallet();
   const [view, setView] = useState<View>('overview');
-  const [canonicalPreview, setCanonicalPreview] = useState(process.env.NEXT_PUBLIC_MARKET_V2_UI_PREVIEW === 'true');
-  const canonicalPreviewAvailable = process.env.NODE_ENV !== 'production'
-    || process.env.NEXT_PUBLIC_MARKET_V2_UI_PREVIEW === 'true';
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  useEffect(() => {
+    try { const saved = localStorage.getItem('positionlayer:sidebar-collapsed:v1') === 'true';
+      void Promise.resolve().then(() => setSidebarCollapsed(saved)); } catch { /* Storage is optional. */ }
+  }, []);
+  function toggleSidebar() {
+    const next = !sidebarCollapsed; setSidebarCollapsed(next);
+    try { localStorage.setItem('positionlayer:sidebar-collapsed:v1', String(next)); } catch { /* Storage is optional. */ }
+  }
   const [mode, setMode] = useState<'sample' | 'live'>('live');
   const [watched, setWatched] = useState<string | null>(null);
   const [workspaceReady, setWorkspaceReady] = useState(false);
@@ -125,35 +131,40 @@ export function Dashboard() {
   const context: ReadContext = { owner: mode==='sample'?null:owner, cluster:'solana:mainnet', now };
   const viewCopy = {
     overview: { title: 'Overview', eyebrow: 'YOUR PORTFOLIO, IN PERSPECTIVE', heading: 'Know what you hold.', description: 'Your essential portfolio, exposure, and loan-risk answers.' },
-    stocks: canonicalPreview ? { title: 'Stocks', eyebrow: 'CANONICAL CATALOG PREVIEW · NO WALLET REQUIRED', heading: 'Tokenized Stock Prices on Solana', description: 'Exact issuer identities, independently reported prices, and explicit data coverage.' }
-      : { title: 'Stocks', eyebrow: '300 ISSUER-CONFIRMED ASSETS · NO WALLET REQUIRED', heading: 'Tokenized Stock Prices on Solana', description: 'A broad issuer-confirmed market with shared keyless price updates every 30 seconds.' },
+    stocks: { title: 'Stocks', eyebrow: '', heading: 'Tokenized Stock Prices on Solana', description: '' },
     portfolio: { title: 'Portfolio', eyebrow: 'EVERY POSITION · ONE RECONCILED VIEW', heading: 'Your whole portfolio.', description: 'Wallet, Earn, borrow, indexed, and excluded records—clearly separated.' },
     exposure: { title: 'Exposure', eyebrow: 'UNDERLY · LOOK THROUGH YOUR HOLDINGS', heading: 'Different tokens. Shared exposure.', description: 'See the companies you own directly and through your ETFs.' },
     protect: { title: 'Protect', eyebrow: 'POSITIONLAYER · READ-ONLY PROTECTION PLANNING', heading: 'Plan for a different market.', description: 'Explore a scenario, choose a target, and understand the cash it would take.' },
   }[view];
   function changeMode(next: 'sample' | 'live') { setMode(next); setSelection(undefined); }
   function disconnect() { setWatched(null); setSelection(undefined); void wallet.disconnect(); }
-  return <div className="app-shell">
+  return <WorkspaceStockTicker stocksActive={view === 'stocks'} onOpenStocks={() => setView('stocks')}><div className={`app-shell stocks-ticker-enabled${view === 'stocks' ? ' stocks-workspace' : ''}${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
     <a href="#main" className="skip-link">Skip to content</a>
-    <aside className="sidebar">
-      <Link href="/" className="brand"><span className="brand-mark"><Image src="/brand/positionlayer-layer-mark.png" alt="" width={38} height={38}/></span>{brand.name}<span className="brand-dot">.</span></Link>
+    <div className="workspace-brand">
+      <Link href="/" className="brand"><span className="brand-mark"><Image src="/brand/positionlayer-layer-mark.png" alt="" width={38} height={38}/></span><span className="brand-wordmark">{brand.name}<span className="brand-dot">.</span></span></Link>
+    </div>
+    <aside className="sidebar" id="workspace-sidebar">
       <div className="workspace-label">YOUR WORKSPACE</div>
       <nav aria-label="Main navigation">
-        <button className={view === 'overview' ? 'nav-item active' : 'nav-item'} onClick={() => setView('overview')}><LayoutDashboard size={18}/>Overview</button>
-        <button aria-label="Stocks" className={view === 'stocks' ? 'nav-item active' : 'nav-item'} onClick={() => { setFocusedMarketMint(null); setView('stocks'); }}><ChartNoAxesCombined size={18}/>Stocks</button>
-        <button className="nav-item unavailable" type="button" disabled aria-disabled="true" title="Market analysis is coming soon"><Activity size={18}/>Market analysis<span className="nav-tag">Soon</span></button>
-        <button aria-label="Portfolio" className={view === 'portfolio' ? 'nav-item active' : 'nav-item'} onClick={() => setView('portfolio')}><BriefcaseBusiness size={18}/>Portfolio</button>
-        <button aria-label="Exposure" className={view === 'exposure' ? 'nav-item active' : 'nav-item'} onClick={() => setView('exposure')}><Layers3 size={18}/>Exposure<span className="nav-tag">Underly</span></button>
-        <button aria-label="Protect" className={view==='protect'?'nav-item active':'nav-item'} onClick={()=>setView('protect')}><Shield size={18}/>Protect<span className="nav-tag">Plan</span></button>
+        <button aria-label="Overview" title="Overview" className={view === 'overview' ? 'nav-item active' : 'nav-item'} onClick={() => setView('overview')}><LayoutDashboard size={18}/><span className="nav-label">Overview</span></button>
+        <button aria-label="Stocks" title="Stocks" className={view === 'stocks' ? 'nav-item active' : 'nav-item'} onClick={() => { setFocusedMarketMint(null); setView('stocks'); }}><ChartNoAxesCombined size={18}/><span className="nav-label">Stocks</span></button>
+        <button aria-label="Market analysis Soon" className="nav-item unavailable" type="button" disabled aria-disabled="true" title="Market analysis is coming soon"><Activity size={18}/><span className="nav-label">Market analysis</span><span className="nav-tag">Soon</span></button>
+        <button aria-label="Portfolio" title="Portfolio" className={view === 'portfolio' ? 'nav-item active' : 'nav-item'} onClick={() => setView('portfolio')}><BriefcaseBusiness size={18}/><span className="nav-label">Portfolio</span></button>
+        <button aria-label="Exposure" title="Exposure" className={view === 'exposure' ? 'nav-item active' : 'nav-item'} onClick={() => setView('exposure')}><Layers3 size={18}/><span className="nav-label">Exposure</span><span className="nav-tag">Underly</span></button>
+        <button aria-label="Protect" title="Protect" className={view==='protect'?'nav-item active':'nav-item'} onClick={()=>setView('protect')}><Shield size={18}/><span className="nav-label">Protect</span><span className="nav-tag">Plan</span></button>
       </nav>
       <div className="sidebar-bottom">
         <div className="read-only-card"><Eye size={19}/><strong>A clearer view.<br/>You stay in control.</strong><p>Explore your portfolio and review hypothetical plans.</p><span><LockKeyhole size={11}/>Read only · no signing</span></div>
-        <button className="source-nav" onClick={() => setSourcesOpen(true)}><Database size={16}/>Data & methodology<ArrowUpRight size={14}/></button>
+        <button aria-label="Data and methodology" title="Data and methodology" className="source-nav" onClick={() => setSourcesOpen(true)}><Database size={16}/>Data & methodology<ArrowUpRight size={14}/></button>
         <div className="network"><span className="status-dot"/>Solana mainnet <span>Read only</span></div>
       </div>
     </aside>
     <div className="workspace">
-      <header className="topbar"><div className="breadcrumb">Workspace<ChevronRight size={13}/><strong>{viewCopy.title}</strong></div><div className="topbar-actions">
+      <header className="topbar"><div className="workspace-controls">
+        <button type="button" className="icon-button workspace-toggle" aria-label={sidebarCollapsed ? 'Expand workspace sidebar' : 'Collapse workspace sidebar'}
+          aria-expanded={!sidebarCollapsed} aria-controls="workspace-sidebar" title={sidebarCollapsed ? 'Expand workspace sidebar' : 'Collapse workspace sidebar'} onClick={toggleSidebar}>
+          {sidebarCollapsed ? <PanelLeftOpen size={18}/> : <PanelLeftClose size={18}/>}
+        </button><div className="breadcrumb">Workspace<ChevronRight size={13}/><strong>{viewCopy.title}</strong></div></div><div className="topbar-actions">
         <span className="read-only-label"><Shield size={14}/>Wallet controlled</span>
         <button className="icon-button theme-toggle" aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`} title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`} onClick={toggleTheme}>{theme === 'light' ? <Moon size={18}/> : <Sun size={18}/>}</button>
         <button className="icon-button" aria-label="Data and methodology" onClick={() => setSourcesOpen(true)}><CircleHelp size={18}/></button>
@@ -161,17 +172,10 @@ export function Dashboard() {
       </div></header>
       <main id="main">
         {view !== 'stocks' && <div className={`mode-banner ${mode}`}><div>{mode === 'sample' ? <FlaskConical size={17}/> : <Link2 size={17}/>}<strong>{mode === 'sample' ? 'Sample portfolio · simulated values' : `Live portfolio · ${wallet.account ? 'connected wallet' : watched ? 'public address · read only' : 'not connected'}`}</strong><span>{mode === 'sample' ? 'Explore how your holdings fit together.' : owner ? `${short(owner)} · Solana mainnet` : 'Connect to read your onchain holdings.'}</span></div><div className="mode-choices" role="group" aria-label="Data mode"><button className="mode-choice sample" type="button" aria-pressed={mode === 'sample'} onClick={() => changeMode('sample')}>Sample</button><button className="mode-choice live" type="button" aria-pressed={mode === 'live'} onClick={() => changeMode('live')}>Live</button></div></div>}
-        <div className="page-heading"><div className="eyebrow">{viewCopy.eyebrow}</div><div className="heading-row"><div><h1>{viewCopy.heading}</h1><p>{viewCopy.description}</p></div>{view !== 'stocks' && <button className="button secondary refresh" onClick={() => setRefresh(r => r+1)} disabled={loading || disconnected}><RefreshCw size={14} className={loading ? 'spin' : ''}/>{loading ? 'Reading…' : 'Refresh data'}</button>}</div></div>
+        <div className="page-heading">{viewCopy.eyebrow && <div className="eyebrow">{viewCopy.eyebrow}</div>}<div className="heading-row"><div><h1>{viewCopy.heading}</h1>{viewCopy.description && <p>{viewCopy.description}</p>}</div>{view !== 'stocks' && <button className="button secondary refresh" onClick={() => setRefresh(r => r+1)} disabled={loading || disconnected}><RefreshCw size={14} className={loading ? 'spin' : ''}/>{loading ? 'Reading…' : 'Refresh data'}</button>}</div></div>
         {view === 'stocks' ? <>
-          {canonicalPreviewAvailable && <div className="canonical-preview-switch" role="group" aria-label="Stock catalog view">
-            <button type="button" aria-pressed={!canonicalPreview} onClick={() => setCanonicalPreview(false)}>Current market</button>
-            <button type="button" aria-pressed={canonicalPreview} onClick={() => setCanonicalPreview(true)}>Canonical preview</button>
-            <span>Preview is opt-in; the approved market remains the rollback view.</span>
-          </div>}
-          {canonicalPreview ? <CanonicalStocksView portfolio={data} initialMint={focusedMarketMint}
+          <CanonicalStocksView portfolio={data} initialMint={focusedMarketMint}
             onPortfolio={() => setView('portfolio')} onExposure={() => setView('exposure')} onProtect={() => setView('protect')}/>
-            : <StocksView portfolio={data} initialMint={focusedMarketMint}
-              onPortfolio={() => setView('portfolio')} onExposure={() => setView('exposure')} onProtect={() => setView('protect')}/>}
         </> : <>
         {wallet.error && <div role="alert" className="notice error"><AlertCircle size={17}/>{wallet.error}</div>}
         {disconnected && <ConnectionEmpty onConnect={() => setConnectOpen(true)} onWatch={address => { setWatched(address); setSelection(undefined); }}/ >}
@@ -186,7 +190,7 @@ export function Dashboard() {
     </div>
     {connectOpen && <Modal title="Connect your wallet" onClose={() => setConnectOpen(false)}><p className="modal-description">Authorize access to your public Solana address only. PositionLayer uses it for read-only account analysis.</p>{wallet.wallets.length === 0 ? <div className="wallet-empty"><Wallet size={30}/><h3>No compatible wallet detected</h3><p>Open this app in a browser with a Solana Wallet Standard wallet installed, such as Phantom or Solflare.</p><p>You can also use Live → Read a public address.</p></div> : <div className="wallet-list">{wallet.wallets.map(w => <button key={w.name} disabled={wallet.connecting} onClick={async () => { await wallet.connect(w); setMode('live'); setWatched(null); setSelection(undefined); setConnectOpen(false); }}><Wallet size={19}/>{w.name}<ArrowRight size={17}/></button>)}</div>}<div className="modal-foot"><LockKeyhole size={14}/>PositionLayer does not request message signing, transaction signing, or transaction submission.</div></Modal>}
     {sourcesOpen && <Modal title="Data & methodology" onClose={() => setSourcesOpen(false)}><SourceDetails data={data}/></Modal>}
-  </div>;
+  </div></WorkspaceStockTicker>;
 }
 
 function ConnectionEmpty({ onConnect, onWatch }: { onConnect: () => void; onWatch: (address: string) => void }) {

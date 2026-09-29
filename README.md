@@ -88,11 +88,11 @@ PositionLayer brings those pieces together in one workspace.
 
 > **Stocks works without connecting a wallet.**
 
-### Canonical catalog preview
+### Stocks workspace
 
-The Stocks workspace also has an opt-in **Canonical preview**. It keeps reviewed and live issuer-confirmed Solana mints searchable instead of stopping at the current market's 300-mint display set. It reports unique mints, actual Jupiter Price V3 observations, freshness, failed/omitted batches, and source coverage separately. A mint in the catalog is **not** a promise of a live price or a verified U.S. equity classification. Unpriced entries remain visible; the preview leads with observed token prices when available. The approved **Current market** view remains one-click rollback.
+Stocks opens directly with **Tokenized** and **Listed** tabs. It includes search and filters, selectable columns, watchlists, CSV export, asset details, and a shared Top Stocks ticker. Tokenized rows default to reported token market cap descending; Listed rows default to company cap. Unpriced identities remain searchable. A catalog entry is not a guarantee of an available quote or a verified equity classification.
 
-Canonical prices come from a single, paced, server-side writer on a continuously running Node process. Website requests only read a completed snapshot; on a cold start or market-host outage, the reviewed catalog remains searchable without inventing prices. A Vercel deployment must point its server-only reader at that persistent writer; enabling the writer inside Vercel Functions is not a supported deployment. See [hosting and release](docs/HOSTING_AND_RELEASE.md) for exact variables, validation, and limitations. The preview's covered Solana tokenized cap and original company cap remain unavailable without qualifying supply/company evidence; they are never derived from an unrelated reported token cap.
+Prices come from one paced worker on a persistent Node backend with durable SQLite storage. Website requests read snapshots and never start a price cycle. Optional enrichment supplies independently sourced DEX metrics, listed quotes/history, backing and holder information where available. Reported token cap and underlying company cap remain separate. A Vercel deployment must connect to this backend; keyless providers do not remove that requirement. See [hosting and release](docs/HOSTING_AND_RELEASE.md) for configuration and acceptance steps. Public-host verification remains pending.
 
 ---
 

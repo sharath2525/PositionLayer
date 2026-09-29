@@ -2,6 +2,7 @@ import 'server-only';
 import { CanonicalMarketDetailSchema, CanonicalMarketPageSchema,
   type CanonicalMarketQuery } from '@/domain/market-api-v2';
 import { StockMarketDetailSchema, StockMarketPageSchema, type StockMarketQuery } from '@/domain/stocks';
+import { ageCanonicalPage, ageCanonicalDetail } from '@/domain/market-client-freshness';
 
 const MAX_RESPONSE_BYTES = 1_500_000;
 const READ_TIMEOUT_MS = 15_000;
@@ -14,6 +15,7 @@ type RemoteValue = ReturnType<typeof CanonicalMarketPageSchema.parse>
   | ReturnType<typeof StockMarketDetailSchema.parse>;
 type CachedRead = { expiresAt: number; promise: Promise<RemoteValue> };
 const reads = new Map<string, CachedRead>();
+const lastGood = new Map<string, { value: RemoteValue; at: number }>();
 
 /** A server-only, fixed-origin reader. Browser inputs can select only the
  * validated canonical page/detail contracts, never an arbitrary upstream URL. */
@@ -62,7 +64,7 @@ async function boundedJson(response: Response): Promise<unknown> {
 }
 
 async function fetchRemote<T extends RemoteValue>(key: string, url: URL,
-  schema: { parse: (value: unknown) => T }, fetcher: typeof fetch): Promise<T> {
+  schema: { parse: (value: unknown) => T }, fetcher: typeof fetch, fallback?: (value: T) => T): Promise<T> {
   const now = Date.now();
   for (const [entryKey, entry] of reads) if (entry.expiresAt <= now) reads.delete(entryKey);
   const cached = reads.get(key);
@@ -77,21 +79,32 @@ async function fetchRemote<T extends RemoteValue>(key: string, url: URL,
   })();
   reads.set(key, { expiresAt: now + DEDUPE_MS, promise });
   if (reads.size > MAX_CACHE_ENTRIES) reads.delete(reads.keys().next().value!);
-  try { return await promise; }
-  catch (error) { if (reads.get(key)?.promise === promise) reads.delete(key); throw error; }
+  try {
+    const value = await promise;
+    lastGood.set(key, { value: structuredClone(value), at: now });
+    if (lastGood.size > MAX_CACHE_ENTRIES) lastGood.delete(lastGood.keys().next().value!);
+    return value;
+  } catch (error) {
+    if (reads.get(key)?.promise === promise) reads.delete(key);
+    const previous = lastGood.get(key);
+    if (fallback && previous && Date.now() - previous.at < 3_600_000) return fallback(schema.parse(previous.value));
+    throw error;
+  }
 }
 
 export async function readRemoteCanonicalPage(origin: string, query: CanonicalMarketQuery,
   fetcher: typeof fetch = fetch) {
   const url = new URL('/api/markets/v2/stocks', origin);
   for (const [key, value] of Object.entries(query)) url.searchParams.set(key, String(value));
-  return fetchRemote(`page:${url.href}`, url, CanonicalMarketPageSchema, fetcher);
+  return fetchRemote(`page:${url.href}`, url, CanonicalMarketPageSchema, fetcher,
+    value => ageCanonicalPage(value, Date.now(), true));
 }
 
 export async function readRemoteCanonicalDetail(origin: string, assetId: string,
   fetcher: typeof fetch = fetch) {
   const url = new URL(`/api/markets/v2/assets/${encodeURIComponent(assetId)}`, origin);
-  return fetchRemote(`detail:${url.href}`, url, CanonicalMarketDetailSchema, fetcher);
+  return fetchRemote(`detail:${url.href}`, url, CanonicalMarketDetailSchema, fetcher,
+    value => ageCanonicalDetail(value, Date.now(), true));
 }
 
 /** The approved legacy Stocks view reads the same persistent host in a split

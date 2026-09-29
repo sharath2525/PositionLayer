@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { decimal } from './amounts';
 
-// Phase 1 contracts only. None of these schemas is used by the live market route.
+// Canonical Stocks contracts; unrelated wallet and valuation models are separate.
 export const MarketMintSchema = z.string().regex(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/);
 export const MarketTimestampSchema = z.iso.datetime({ offset: true });
 export const MarketNonnegativeDecimalSchema = z.string().regex(/^\d+(?:\.\d+)?$/);
@@ -79,6 +79,9 @@ export const SolanaStockVariantSchema = z.object({
   // Exact-mint Jupiter Tokens V2 24-hour traded volume; not issuer volume.
   reportedVolume24hUsd: MarketNonnegativeDecimalSchema.nullable().optional(),
   reportedMarketRetrievedAt: MarketTimestampSchema.nullable().optional(),
+  listing: z.object({ currency: z.string().nullable(), period: z.string().nullable(),
+    openNow: z.boolean().nullable(), nextChangeAt: MarketTimestampSchema.nullable(),
+    exchange: z.string().min(1).max(80).nullable().optional() }).strict().optional(),
 }).strict().superRefine((variant, context) => {
   const exactIssuerProof = variant.evidence.some(evidence => evidence.kind === 'issuer-declaration'
     && evidence.provider === variant.issuer && evidence.exactMint === variant.mint);
