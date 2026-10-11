@@ -17,6 +17,40 @@ type CachedRead = { expiresAt: number; promise: Promise<RemoteValue> };
 const reads = new Map<string, CachedRead>();
 const lastGood = new Map<string, { value: RemoteValue; at: number }>();
 
+type ReaderFailureStage = 'origin_validation' | 'remote_fetch' | 'response_validation' | 'fallback';
+const safeErrorTypes = new Set(['Error', 'TypeError', 'SyntaxError', 'ZodError', 'TimeoutError', 'AbortError']);
+const safeReasons = new Map([
+  ['Canonical market writer origin must use HTTPS.', 'origin_requires_https'],
+  ['Canonical market writer origin must be a bare origin.', 'origin_not_bare'],
+  ['Canonical market writer origin must not point to this website.', 'origin_self_reference'],
+  ['Canonical market writer response unavailable.', 'response_unavailable'],
+  ['Canonical market writer response too large.', 'response_too_large'],
+  ['Canonical market writer returned an empty response.', 'response_empty'],
+]);
+
+/** Never serialize the exception: messages, names, causes and stacks can contain secrets. */
+export function logCanonicalReaderFailure(stage: ReaderFailureStage, error: unknown) {
+  if (process.env.VERCEL !== '1') return;
+  let errorType = 'UnknownError';
+  let reason = 'unclassified_failure';
+  try {
+    if (error instanceof Error) {
+      const name = error.name;
+      errorType = safeErrorTypes.has(name) ? name : 'UnknownError';
+      reason = safeReasons.get(error.message) ?? (
+        stage === 'origin_validation' && errorType === 'TypeError' ? 'invalid_origin_url'
+          : errorType === 'ZodError' ? 'schema_validation_failed'
+            : errorType === 'SyntaxError' ? 'invalid_json'
+              : errorType === 'TimeoutError' ? 'request_timeout'
+                : errorType === 'AbortError' ? 'request_aborted'
+                  : stage === 'remote_fetch' ? 'fetch_failed' : 'unclassified_failure');
+    }
+  } catch { /* An unusual thrown value must not prevent the original error handling. */ }
+  try {
+    console.error({ event: 'canonical_reader_failure', stage, errorType, reason });
+  } catch { /* Diagnostics must never change a response or fallback decision. */ }
+}
+
 /** A server-only, fixed-origin reader. Browser inputs can select only the
  * validated canonical page/detail contracts, never an arbitrary upstream URL. */
 export function marketV2WriterOrigin(raw = process.env.MARKET_V2_WRITER_ORIGIN): string | null {
@@ -64,18 +98,26 @@ async function boundedJson(response: Response): Promise<unknown> {
 }
 
 async function fetchRemote<T extends RemoteValue>(key: string, url: URL,
-  schema: { parse: (value: unknown) => T }, fetcher: typeof fetch, fallback?: (value: T) => T): Promise<T> {
+  schema: { parse: (value: unknown) => T }, fetcher: typeof fetch, fallback?: (value: T) => T,
+  diagnoseCanonicalPage = false): Promise<T> {
   const now = Date.now();
   for (const [entryKey, entry] of reads) if (entry.expiresAt <= now) reads.delete(entryKey);
   const cached = reads.get(key);
   if (cached && cached.expiresAt > now) return cached.promise as Promise<T>;
   const promise = (async () => {
-    const response = await fetcher(url, {
-      method: 'GET', cache: 'no-store', redirect: 'error',
-      headers: { Accept: 'application/json', 'X-PositionLayer-Market-Hop': '1' },
-      signal: AbortSignal.timeout(READ_TIMEOUT_MS),
-    });
-    return schema.parse(await boundedJson(response));
+    let stage: ReaderFailureStage = 'remote_fetch';
+    try {
+      const response = await fetcher(url, {
+        method: 'GET', cache: 'no-store', redirect: 'error',
+        headers: { Accept: 'application/json', 'X-PositionLayer-Market-Hop': '1' },
+        signal: AbortSignal.timeout(READ_TIMEOUT_MS),
+      });
+      stage = 'response_validation';
+      return schema.parse(await boundedJson(response));
+    } catch (error) {
+      if (diagnoseCanonicalPage) logCanonicalReaderFailure(stage, error);
+      throw error;
+    }
   })();
   reads.set(key, { expiresAt: now + DEDUPE_MS, promise });
   if (reads.size > MAX_CACHE_ENTRIES) reads.delete(reads.keys().next().value!);
@@ -87,7 +129,13 @@ async function fetchRemote<T extends RemoteValue>(key: string, url: URL,
   } catch (error) {
     if (reads.get(key)?.promise === promise) reads.delete(key);
     const previous = lastGood.get(key);
-    if (fallback && previous && Date.now() - previous.at < 3_600_000) return fallback(schema.parse(previous.value));
+    if (fallback && previous && Date.now() - previous.at < 3_600_000) {
+      try { return fallback(schema.parse(previous.value)); }
+      catch (fallbackError) {
+        if (diagnoseCanonicalPage) logCanonicalReaderFailure('fallback', fallbackError);
+        throw fallbackError;
+      }
+    }
     throw error;
   }
 }
@@ -97,7 +145,7 @@ export async function readRemoteCanonicalPage(origin: string, query: CanonicalMa
   const url = new URL('/api/markets/v2/stocks', origin);
   for (const [key, value] of Object.entries(query)) url.searchParams.set(key, String(value));
   return fetchRemote(`page:${url.href}`, url, CanonicalMarketPageSchema, fetcher,
-    value => ageCanonicalPage(value, Date.now(), true));
+    value => ageCanonicalPage(value, Date.now(), true), true);
 }
 
 export async function readRemoteCanonicalDetail(origin: string, assetId: string,

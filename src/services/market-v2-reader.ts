@@ -5,7 +5,7 @@ import { readMarketSnapshot } from './market-snapshot-reader';
 import { getProcessMarketSnapshotStore } from './market-snapshot-store';
 import { getRuntimeMarketSnapshotStore } from './market-durable-store';
 import { bundledMarketV2Catalog } from './market-v2-engine';
-import { marketV2WriterOrigin, readRemoteCanonicalDetail, readRemoteCanonicalPage } from './market-v2-remote';
+import { marketV2WriterOrigin, readRemoteCanonicalDetail, readRemoteCanonicalPage, logCanonicalReaderFailure } from './market-v2-remote';
 import { recordMarketEvent } from './monitoring/log-manager';
 import { currentRichStore } from './stock-rich-store';
 import { ageRichData } from '@/domain/stock-rich-data';
@@ -23,7 +23,12 @@ export async function readCurrentMarketSnapshot() {
 
 /** Versioned API reader. It cannot start or prioritize a provider cycle. */
 export async function readCanonicalMarketPage(query: CanonicalMarketQuery) {
-  const origin = marketV2WriterOrigin();
+  let origin: string | null;
+  try { origin = marketV2WriterOrigin(); }
+  catch (error) {
+    logCanonicalReaderFailure('origin_validation', error);
+    throw error;
+  }
   if (origin) {
     try { return await readRemoteCanonicalPage(origin, query); }
     catch {
@@ -33,21 +38,26 @@ export async function readCanonicalMarketPage(query: CanonicalMarketQuery) {
         fallbackUsed: 'reviewed-catalog' });
     }
   }
-  const { read, progress } = await readCurrentMarketSnapshot();
-  const rich=currentRichStore();
-  const page = projectCanonicalMarket({ read, query, nowMs: Date.now(), progress, rich:rich?.rows, enrichmentVersion:rich?.version });
-  // Reuse the persistent host's existing optional context. Page visits do not fetch it.
-  const { getCachedStockContext } = await import('./stocks-market');
-  for (const row of page.records) {
-    const context = getCachedStockContext(row.displayPrice.mint)?.record.intelligence;
-    if (context && row.verification === 'issuer-confirmed') row.issuerContext = {
-      issuerIndicativePriceUsd: context.issuerIndicativePriceUsd,
-      issuerPriceRetrievedAt: context.issuerPriceRetrievedAt,
-      issuerPriceSourceUrl: context.issuerPriceSourceUrl,
-      supply: context.supply, reserve: context.reserve,
-    };
+  try {
+    const { read, progress } = await readCurrentMarketSnapshot();
+    const rich=currentRichStore();
+    const page = projectCanonicalMarket({ read, query, nowMs: Date.now(), progress, rich:rich?.rows, enrichmentVersion:rich?.version });
+    // Reuse the persistent host's existing optional context. Page visits do not fetch it.
+    const { getCachedStockContext } = await import('./stocks-market');
+    for (const row of page.records) {
+      const context = getCachedStockContext(row.displayPrice.mint)?.record.intelligence;
+      if (context && row.verification === 'issuer-confirmed') row.issuerContext = {
+        issuerIndicativePriceUsd: context.issuerIndicativePriceUsd,
+        issuerPriceRetrievedAt: context.issuerPriceRetrievedAt,
+        issuerPriceSourceUrl: context.issuerPriceSourceUrl,
+        supply: context.supply, reserve: context.reserve,
+      };
+    }
+    return page;
+  } catch (error) {
+    logCanonicalReaderFailure('fallback', error);
+    throw error;
   }
-  return page;
 }
 
 export async function readCanonicalMarketDetail(assetId: string) {
