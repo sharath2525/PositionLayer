@@ -92,6 +92,15 @@ PositionLayer brings those pieces together in one workspace.
 
 Stocks opens directly with **Tokenized** and **Listed** tabs. It includes search and filters, selectable columns, watchlists, CSV export, asset details, and a shared Top Stocks ticker. Tokenized rows default to reported token market cap descending; Listed rows default to company cap. Unpriced identities remain searchable. A catalog entry is not a guarantee of an available quote or a verified equity classification.
 
+| Stocks view | What you can explore |
+| --- | --- |
+| **Tokenized** | Solana token prices, 24-hour changes, session trends, reported token market cap, liquidity, and trading volume. Optional columns include underlying identity, token age, reference quotes, FDV, supply, backing shares, multiplier, exact mint, market status, exchange, flow, and holders where available. |
+| **Listed** | Underlying stock references: company, listed price, change since the previous close, five-day history, company market cap, trading volume, market status, and exchange. Token links connect the underlying listing to its Solana asset. |
+
+Use **Columns** to check or uncheck fields independently for each view. Column choices, watchlists, and compact/comfortable row density are saved in the browser. Search by name, ticker, ISIN, or exact mint; narrow results by asset type, identity verification, price availability, market status, country, or currency. Choose 20 or 50 rows per page, or export the filtered results and selected columns as CSV.
+
+The shared **Top 20** ticker ranks eligible assets with available token prices by underlying company market cap and opens asset details when selected. The Stocks page automatically reads updated snapshots while visible. Asset details retain source and update-time information; individual fields and histories appear only when their providers supply them.
+
 Prices come from one paced worker on a persistent Node backend with durable SQLite storage. Website requests read snapshots and never start a price cycle. Optional enrichment supplies independently sourced DEX metrics, listed quotes/history, backing and holder information where available. Reported token cap and underlying company cap remain separate. A Vercel deployment must connect to this backend; keyless providers do not remove that requirement. See [hosting and release](docs/HOSTING_AND_RELEASE.md) for configuration and acceptance steps. Public-host verification remains pending.
 
 ---
