@@ -319,7 +319,7 @@ Technical setup is intentionally kept outside the main README so this page stays
 
 ## Built for Stocklana
 
-PositionLayer was built for the **Stocklana — Stocks on Solana Hackathon**.
+PositionLayer was built for the **Stocklana — Stocks**.
 
 The project explores what happens when tokenized stocks stop being isolated wallet assets and become part of a broader on-chain portfolio, lending, liquidity, and risk environment.
 
